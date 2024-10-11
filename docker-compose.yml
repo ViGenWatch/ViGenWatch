@@ -1,0 +1,54 @@
+version: '3'
+
+services:
+  workspace:
+    container_name: nextclade_workspace
+    restart: always
+    build:
+      context: ./backend
+    volumes:
+      - ./backend/:/nextclade/backend/
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+    working_dir: /nextclade/backend/
+    ports:
+      - '5050:5050'
+    networks:
+      - nextclade
+
+  mysql-db:
+    image: mysql:8
+    container_name: nextclade_mysql
+    restart: always
+    expose:
+      - '3306'
+    environment:
+      MYSQL_DATABASE: nextclade_db
+      MYSQL_USER: khaitd0340
+      MYSQL_PASSWORD: khaitd262323
+      MYSQL_ROOT_PASSWORD: root
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+      timeout: 20s
+      retries: 10
+    networks:
+      - nextclade
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: nextclade_phpmyadmin
+    restart: always
+    ports:
+      - '5055:80'
+    environment:
+      PMA_HOST: mysql-db
+      PMA_PORT: 3306
+    depends_on:
+      - mysql-db
+    networks:
+      - nextclade
+
+networks:
+  nextclade:
+    driver: bridge

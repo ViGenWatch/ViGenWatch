@@ -1,12 +1,10 @@
-const express = require("express");
-
-let router = express.Router();
+import { Router } from "express";
+const { getUserTest } = require("../controllers/userController");
+let router = Router();
 
 let initWebRouter = (app) => {
-  router.get("/", (req, res) => {
-    return res.send("alo alo alo");
-  });
-  return app.use("/", router);
+  router.get("/user", getUserTest);
+  return app.use(router);
 };
 
-module.exports = initWebRouter;
+export default initWebRouter;
