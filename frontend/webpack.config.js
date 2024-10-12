@@ -1,7 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-// const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -79,9 +79,9 @@ module.exports = (env, argv) => {
     },
     devtool: isProduction ? false : 'source-map',
     plugins: [
-      // new MiniCssExtractPlugin({
-      //   filename: isProduction ? 'static/css/[name].[contenthash:6].css' : '[name].css'
-      // }),
+      new MiniCssExtractPlugin({
+        filename: isProduction ? 'static/css/[name].[contenthash:6].css' : '[name].css'
+      }),
       new Dotenv(),
       new CopyWebpackPlugin({
         patterns: [

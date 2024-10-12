@@ -1,11 +1,16 @@
 import React from 'react';
-import style from './styles.module.scss';
-import classNames from 'classnames/bind';
-
-const cx = classNames.bind(style);
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import HomePage from './pages/home';
 
 const App = () => {
-  return <div className={cx('app')}>Hello Anh Khai Nhe !</div>;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path='/home' element={<HomePage />} />
+        <Route path='/*' element={<Navigate to='/home' />} />
+      </Routes>
+    </BrowserRouter>
+  );
 };
 
 export default App;
