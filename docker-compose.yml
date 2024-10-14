@@ -8,6 +8,7 @@ services:
       context: ./backend
     volumes:
       - ./backend/:/nextclade/backend/
+      - ./data/:/nextclade/backend/upload
     depends_on:
       mysql-db:
         condition: service_healthy
@@ -46,6 +47,22 @@ services:
       PMA_PORT: 3306
     depends_on:
       - mysql-db
+    networks:
+      - nextclade
+
+  ubuntu:
+    container_name: nextclade_ubuntu
+    build:
+      args:
+        user: khaitd0340
+        uid: 1000
+      context: ./ubuntu
+      dockerfile: ubuntu.Dockerfile
+    command: bash
+    tty: true
+    volumes:
+      - ./data/:/augur_data
+    working_dir: /augur_data
     networks:
       - nextclade
 

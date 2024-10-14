@@ -1,10 +1,6 @@
-import { Router } from "express";
-const { getUserTest } = require("../controllers/userController");
-let router = Router();
+const express = require("express");
+const postFileRouter = require("./file.routers");
 
-let initWebRouter = (app) => {
-  router.get("/user", getUserTest);
-  return app.use(router);
-};
-
-export default initWebRouter;
+let router = express.Router();
+router.use("/file", postFileRouter);
+module.exports = router;
