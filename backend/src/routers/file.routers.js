@@ -1,9 +1,10 @@
 const express = require("express");
 const upload = require("../utils/storage");
 const uploadFileInput = require("../controllers/fileController");
+const process = require("process");
 
-let postFileRouter = express.Router();
+let postFileRouters = express.Router();
 
-postFileRouter.post("/upload", upload.single("file"), uploadFileInput);
+postFileRouters.post("/upload", upload.array("files", process.env.FILE_INPUT_NUMBER || 2), uploadFileInput);
 
-module.exports = postFileRouter;
+module.exports = postFileRouters;
