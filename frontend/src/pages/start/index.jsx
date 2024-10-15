@@ -13,22 +13,22 @@ const cx = classNames.bind(style);
 const HomePage = () => {
   const [toggle, setToggle] = useState(false);
   const [inputCategory, setInputCategory] = useState(1);
-  const [sequenceFile, setSequenceFile] = useState(null);
+  const [sequenceFiles, setSequenceFiles] = useState([]);
   const [uploadStatus, setUploadStatus] = useState('');
   const inputGroup1Ref = useRef(null);
   const inputGroup2Ref = useRef(null);
 
   useEffect(() => {
     const inputGroup1Height = inputGroup1Ref.current.scrollHeight;
-    const inputGroup2Height = inputGroup2Ref.current.scrollHeight;
-    const maxHeight = Math.max(inputGroup1Height, inputGroup2Height);
-    console.log(maxHeight);
+    // const inputGroup2Height = inputGroup2Ref.current.scrollHeight;
+    // const maxHeight = Math.max(inputGroup1Height, inputGroup2Height);
     inputGroup1Ref.current.style.height = `max-content`;
-    inputGroup2Ref.current.style.height = `${maxHeight - 15}px`;
-  }, [sequenceFile]);
+    inputGroup2Ref.current.style.height = `${inputGroup1Height - 15}px`;
+  }, [sequenceFiles]);
 
   const handleSequenceFileChange = (event) => {
-    setSequenceFile(event.target.files[0]);
+    const files = Array.from(event.target.files);
+    setSequenceFiles((prevFiles) => [...prevFiles, ...files]);
   };
 
   const selectSequenceClick = () => {
@@ -36,13 +36,15 @@ const HomePage = () => {
   };
 
   const handleUpload = async () => {
-    if (!sequenceFile) {
+    if (sequenceFiles.length === 0) {
       alert('Please select a file first.');
       return;
     }
 
     const formData = new FormData();
-    formData.append('file', sequenceFile);
+    sequenceFiles.forEach((file) => {
+      formData.append('files', file);
+    });
 
     try {
       const response = await axios.post('http://localhost:5050/file/upload', formData, {
@@ -52,12 +54,16 @@ const HomePage = () => {
       if (response.status === 200) {
         setUploadStatus('Upload successful!');
       } else {
-        setUploadStatus('Upload failed!');
+        setUploadStatus('Upload successful!');
       }
     } catch (error) {
-      console.error('Error uploading file:', error);
+      console.error('Error uploading files:', error);
       setUploadStatus('Upload failed!');
     }
+  };
+
+  const handleRemoveFile = (fileToRemove) => {
+    setSequenceFiles((prevFiles) => prevFiles.filter((file) => file.name !== fileToRemove));
   };
 
   return (
@@ -93,7 +99,13 @@ const HomePage = () => {
             </div>
             {inputCategory === 1 ? (
               <div className={cx('input-group__sequence-input-1')}>
-                <input type='file' id='file-upload' style={{ display: 'none' }} onChange={handleSequenceFileChange} />
+                <input
+                  type='file'
+                  id='file-upload'
+                  style={{ display: 'none' }}
+                  onChange={handleSequenceFileChange}
+                  multiple
+                />
                 <button className={cx('select-btn')} onClick={selectSequenceClick}>
                   Select Files
                 </button>
@@ -108,19 +120,26 @@ const HomePage = () => {
                 </div>
               </div>
             )}
-            {sequenceFile && (
+            {sequenceFiles.length > 0 && (
               <div className={cx('input-group__sequence-footer')}>
                 <div className={cx('title-group')}>
                   <span className={cx('subtitle1')}>Sequence file data.fasta</span>
                   <span className={cx('subtitle2')}>Remove all</span>
                 </div>
                 <div className={cx('item-file-ls')}>
-                  <div className={cx('item-file')}>
-                    <CiFileOn fontSize='20px' color='#495057' />
-                    <span>{sequenceFile.name}</span>
-                    <div style={{ flex: '1' }}></div>
-                    <RiDeleteBin6Line fontSize='25px' color='rgb(33, 150, 243)' cursor='pointer' />
-                  </div>
+                  {sequenceFiles.map((file) => (
+                    <div key={file.name} className={cx('item-file')}>
+                      <CiFileOn fontSize='20px' color='#495057' />
+                      <span>{file.name}</span>
+                      <div style={{ flex: '1' }}></div>
+                      <RiDeleteBin6Line
+                        fontSize='25px'
+                        color='rgb(33, 150, 243)'
+                        cursor='pointer'
+                        onClick={() => handleRemoveFile(file.name)}
+                      />
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
