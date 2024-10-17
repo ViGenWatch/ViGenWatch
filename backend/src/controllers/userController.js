@@ -5,6 +5,7 @@ const jwtVariable = require("../utils/jwt");
 const process = require("process");
 const authMethods = require("../utils/authMethods");
 const randToken = require("rand-token");
+const createWorkspace = require("../utils/workspace");
 
 const createUserController = async (req, res) => {
   try {
@@ -22,6 +23,7 @@ const createUserController = async (req, res) => {
       throw new CustomError("Exist User", 400);
     } else {
       const createUserComplete = await userServices.createUser({ firstName, lastName, userName, password, email });
+      await createWorkspace(userName);
       if (createUserComplete) {
         return res.status(200).json({ message: "Create User Successfull" });
       }
@@ -64,10 +66,16 @@ const userLoginController = async (req, res) => {
       newRefreshToken = user.refreshToken;
     }
     return res.status(200).json({
-      msg: "LoginSuccess",
-      accessToken,
-      newRefreshToken,
-      user
+      message: "LoginSuccess",
+      data: {
+        email: user.email,
+        userName: user.userName,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        id: user.id,
+        accessToken,
+        newRefreshToken
+      }
     });
   } catch (error) {
     if (error instanceof CustomError) {
@@ -78,4 +86,42 @@ const userLoginController = async (req, res) => {
   }
 };
 
-module.exports = { createUserController, userLoginController };
+const getAccountController = async (req, res) => {
+  const refreshToken = req.body.refreshToken;
+  try {
+    const user = await userServices.getUserAccountByToken(refreshToken);
+    if (!user) {
+      throw new CustomError("User Not Found", 400);
+    }
+    const accessTokenLife = process.env.ACCESS_TOKEN_LIFE || jwtVariable.accessTokenLife;
+    const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || jwtVariable.accessTokenSecret;
+    const dataForAccessToken = {
+      username: user.userName,
+      id: user.id
+    };
+
+    const accessToken = await authMethods.generateToken(dataForAccessToken, accessTokenSecret, accessTokenLife);
+    if (!accessToken) {
+      throw new CustomError("Login Faild", 400);
+    }
+    return res.status(200).json({
+      message: "LoginSuccess",
+      data: {
+        email: user.email,
+        userName: user.userName,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        id: user.id,
+        accessToken
+      }
+    });
+  } catch (error) {
+    if (error instanceof CustomError) {
+      process.env.NODE_ENV == "development" ? console.log(error) : null;
+      return res.status(error.statusCode).json({ message: error.message });
+    }
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = { createUserController, userLoginController, getAccountController };

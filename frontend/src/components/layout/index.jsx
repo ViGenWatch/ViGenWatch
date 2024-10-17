@@ -26,7 +26,7 @@ const LayoutComponent = ({ children }) => {
           </div>
           <RiArrowRightSFill fontSize={'25px'} />
           <div className={cx('button-nav-group__btn')}>
-            <NavLink className={cx('navlink')} to='/start'>
+            <NavLink className={cx('navlink')} to='/dataset'>
               Dataset
             </NavLink>
           </div>

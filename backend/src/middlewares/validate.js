@@ -23,4 +23,8 @@ const validateSignIn = () => {
   ];
 };
 
-module.exports = { validateRegisterUser, validateSignIn };
+const validateGetAccountByToken = () => {
+  return [check("refreshToken").notEmpty().withMessage("refreshToken is required")];
+};
+
+module.exports = { validateRegisterUser, validateSignIn, validateGetAccountByToken };

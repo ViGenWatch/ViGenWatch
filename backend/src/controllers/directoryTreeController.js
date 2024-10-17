@@ -1,13 +1,13 @@
 const DirectoryTree = require("../utils/directory-tree");
-const path = require("path");
+const storage = require("../utils/storage");
 const CustomError = require("../utils/customError");
 
 const getDirectoryTree = async (req, res) => {
   try {
-    const directoryPath = path.resolve(__dirname, "../../upload/");
+    const directoryPath = storage.uploadPath();
     let directotyTree = new DirectoryTree(directoryPath, "upload");
     const result = await directotyTree.loadDirectoryTree();
-    return res.status(200).json({ result: result });
+    return res.status(200).json({ result: result, message: "getDirectory Successfull" });
   } catch (error) {
     if (error instanceof CustomError) {
       process.env.NODE_ENV == "development" ? console.log(error) : null;

@@ -3,13 +3,18 @@ const path = require("path");
 const fs = require("fs");
 const CustomError = require("../utils/customError");
 
+const uploadPath = () => {
+  const storagePath = path.resolve(__dirname, "../../upload/");
+  return storagePath;
+};
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const uploadPath = path.resolve(__dirname, "../../upload");
-    if (!fs.existsSync(uploadPath)) {
-      fs.mkdirSync(uploadPath, { recursive: true });
+    const uploadPath_ = uploadPath();
+    if (!fs.existsSync(uploadPath_)) {
+      fs.mkdirSync(uploadPath_, { recursive: true });
     }
-    cb(null, uploadPath);
+    cb(null, uploadPath_);
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
@@ -29,4 +34,4 @@ const upload = multer({
   }
 });
 
-module.exports = upload;
+module.exports = { upload, uploadPath };

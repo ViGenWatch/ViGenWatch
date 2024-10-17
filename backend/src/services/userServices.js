@@ -24,6 +24,15 @@ const getUserAccountByEmail = async (email) => {
   }
 };
 
+const getUserAccountByToken = async (refreshToken) => {
+  try {
+    const userAccount = await db.User.findOne({ where: { refreshToken: refreshToken } });
+    return userAccount;
+  } catch (error) {
+    throw new CustomError(error.message, 400);
+  }
+};
+
 const createUser = async (user) => {
   console.log(user);
   try {
@@ -60,4 +69,4 @@ const updateUserByEmail = async (email, data) => {
     throw new CustomError(error.message, 400);
   }
 };
-module.exports = { getUserAccount, createUser, getUserAccountByEmail, updateUserByEmail };
+module.exports = { getUserAccount, createUser, getUserAccountByEmail, updateUserByEmail, getUserAccountByToken };
