@@ -7,10 +7,12 @@ import { IoMdArrowDropdown } from 'react-icons/io';
 import { CiFileOn } from 'react-icons/ci';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const cx = classNames.bind(style);
 
 const HomePage = () => {
+  const authState = useSelector((state) => state.auth);
   const [toggle, setToggle] = useState(false);
   const [inputCategory, setInputCategory] = useState(1);
   const [sequenceFiles, setSequenceFiles] = useState([]);
@@ -42,13 +44,18 @@ const HomePage = () => {
     }
 
     const formData = new FormData();
+    formData.append('userId', authState.user.id);
+    formData.append('userName', authState.user.userName);
     sequenceFiles.forEach((file) => {
       formData.append('files', file);
     });
 
     try {
-      const response = await axios.post('http://localhost:5050/file/upload', formData, {
-        withCredentials: true
+      const response = await axios.post('http://localhost:5050/api/file/upload', formData, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       });
 
       if (response.status === 200) {

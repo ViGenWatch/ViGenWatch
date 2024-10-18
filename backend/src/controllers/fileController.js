@@ -1,18 +1,20 @@
-const CustomError = require("../utils/customError");
+const CustomError = require("../entity/customError");
 const process = require("process");
-const uploadFileInput = (req, res) => {
+const executionService = require("../services/executionService");
+const uploadFileInput = async (req, res) => {
   try {
     if (!req.files || req.files.length === 0) {
       throw new CustomError("Please upload a file!", 400);
     }
-    const validFormats = [".fasta", ".tsv"];
-    for (const file in req.files) {
-      const fileExtension = file.originalname.split(".").pop();
-      if (!validFormats.includes(`.${fileExtension}`)) {
-        throw new CustomError("Invalid file format! Please upload a .fasta or .tsv file.", 400);
-      }
+
+    const newExecution = await executionService.createExecution({
+      userId: req.body.userId,
+      executionName: req.body.executionName,
+      executionNumber: req.body.executionNumber
+    });
+    if (newExecution) {
+      res.status(200).json({ message: "File uploaded successfully!" });
     }
-    res.status(200).json({ message: "File uploaded successfully!" });
   } catch (error) {
     if (error instanceof CustomError) {
       process.env.NODE_ENV == "development" ? console.log(error) : null;

@@ -1,5 +1,5 @@
 const db = require("../models/index");
-const CustomError = require("../utils/customError");
+const CustomError = require("../entity/customError");
 const { where, Op } = require("sequelize");
 
 const getUserAccount = async (user) => {
@@ -34,7 +34,6 @@ const getUserAccountByToken = async (refreshToken) => {
 };
 
 const createUser = async (user) => {
-  console.log(user);
   try {
     const newUser = await db.User.create({
       userName: user.userName,

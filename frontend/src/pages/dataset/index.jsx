@@ -1,8 +1,14 @@
 import React from 'react';
 import LayoutComponent from '../../components/layout';
-
+import DirectoryTree from '../../components/directoryTree';
 const DatasetPage = () => {
-  return <LayoutComponent>Dataset</LayoutComponent>;
+  return (
+    <LayoutComponent>
+      <div style={{ width: '100%', height: '100%', overflow: 'hidden' }}>
+        <DirectoryTree />
+      </div>
+    </LayoutComponent>
+  );
 };
 
 export default DatasetPage;

@@ -1,6 +1,6 @@
 const glob = require("glob-promise");
 const path = require("path");
-const CustomError = require("../utils/customError");
+const CustomError = require("./customError");
 
 class DirectoryTree {
   constructor(path, name) {

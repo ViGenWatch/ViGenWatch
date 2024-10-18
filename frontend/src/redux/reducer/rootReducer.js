@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
 import authReducer from './authReducer';
+import directoryTreeReducer from './directoryTreeReducer';
 
 const rootReducer = combineReducers({
-  auth: authReducer
+  auth: authReducer,
+  directoryTree: directoryTreeReducer
 });
 
 export default rootReducer;

@@ -1,0 +1,52 @@
+.section-direc-tree {
+  margin-top: 45px;
+  width: 16vw;
+  height: 95vh;
+  overflow-y: auto;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 8px;
+}
+
+.folder-tree {
+  padding: 30px;
+}
+
+.tree-node {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+
+  .nameContainer {
+    margin-left: 10px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #495057;
+
+    &:hover {
+      color: rgb(33, 150, 243);
+      cursor: pointer;
+    }
+  }
+}
+
+.children-container {
+  border-left: 1px solid #495057;
+  padding: 10px 20px;
+  margin-left: 10px;
+}
+
+.icon-size {
+  font-size: 22px;
+  font-weight: 200;
+  color: #495057;
+}

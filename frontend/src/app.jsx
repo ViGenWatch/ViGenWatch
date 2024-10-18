@@ -17,7 +17,7 @@ const App = () => {
         <Route path='/*' element={<Navigate to='/login' />} />
       </Routes>
     );
-  } else {
+  } else if (authState.user) {
     content = (
       <Routes>
         <Route path='/start' element={<HomePage />} />

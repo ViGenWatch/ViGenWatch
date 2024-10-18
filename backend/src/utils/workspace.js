@@ -1,14 +1,18 @@
 const { mkdir } = require("fs/promises");
-const storage = require("../utils/storage");
 const path = require("path");
-const CustomError = require("./customError");
+const CustomError = require("../entity/customError");
 
 const formatWorkspaceName = (username) => {
   return `${username}_workspace`;
 };
+
+const uploadPath = () => {
+  return path.resolve(__dirname, "../../upload/");
+};
+
 const createWorkspace = async (username) => {
   try {
-    const directoryPath = storage.uploadPath();
+    const directoryPath = uploadPath();
     const workspaceName = formatWorkspaceName(username);
     const workspacePath = path.join(directoryPath, workspaceName);
     await mkdir(workspacePath, { recursive: true });
@@ -17,4 +21,4 @@ const createWorkspace = async (username) => {
   }
 };
 
-module.exports = createWorkspace;
+module.exports = { createWorkspace, formatWorkspaceName };

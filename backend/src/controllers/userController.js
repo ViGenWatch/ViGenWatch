@@ -1,12 +1,12 @@
 const userServices = require("../services/userServices");
 const { validationResult } = require("express-validator");
-const CustomError = require("../utils/customError");
+const CustomError = require("../entity/customError");
 const jwtVariable = require("../utils/jwt");
 const process = require("process");
 const authMethods = require("../utils/authMethods");
 const randToken = require("rand-token");
-const createWorkspace = require("../utils/workspace");
-
+const workspace = require("../utils/workspace");
+const workspaceService = require("../services/workspaceService");
 const createUserController = async (req, res) => {
   try {
     const errors = validationResult(req);
@@ -23,8 +23,12 @@ const createUserController = async (req, res) => {
       throw new CustomError("Exist User", 400);
     } else {
       const createUserComplete = await userServices.createUser({ firstName, lastName, userName, password, email });
-      await createWorkspace(userName);
+      await workspace.createWorkspace(userName);
       if (createUserComplete) {
+        await workspaceService.createWorkspace({
+          workspaceName: workspace.formatWorkspaceName(userName),
+          userId: createUserComplete.id
+        });
         return res.status(200).json({ message: "Create User Successfull" });
       }
     }

@@ -21,7 +21,7 @@ function* getAccountSaga(action) {
     yield delay(1000);
     const response = yield call(getUserAccount, action.payload);
     if (response.status == 200) {
-      yield put(Actions.signInSuccess(response));
+      yield put(Actions.signInSuccess(response.data));
     } else {
       yield put(Actions.signInFailure({ error: response.message }));
     }

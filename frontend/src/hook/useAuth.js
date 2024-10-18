@@ -13,7 +13,6 @@ const useAuth = () => {
       ? dispatch(Actions.signInSuccess(dataSaveSession))
       : refreshToken && dispatch(Actions.getAccountRequest({ refreshToken }));
   }, []);
-
   useEffect(() => {
     if (!dataSaveSession && authState.user) {
       authState.user &&

@@ -1,24 +1,32 @@
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
-const CustomError = require("../utils/customError");
+const workspace = require("./workspace");
+const CustomError = require("../entity/customError");
+const executionService = require("../services/executionService");
 
-const uploadPath = () => {
-  const storagePath = path.resolve(__dirname, "../../upload/");
-  return storagePath;
+const uploadPath = (userName) => {
+  if (userName) {
+    return path.resolve(__dirname, `../../upload/${userName}`);
+  }
+  return path.resolve(__dirname, "../../upload/");
 };
 
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    const uploadPath_ = uploadPath();
+  destination: async function (req, file, cb) {
+    const workspaceName = workspace.formatWorkspaceName(req.body.userName);
+    const executionNumber = await executionService.getNextExecutionNumber(req.body.userId);
+    const executionName = `execution_${executionNumber}`;
+    req.body.executionNumber = executionNumber;
+    req.body.executionName = executionName;
+    const uploadPath_ = uploadPath(`${workspaceName}/${executionName}`);
     if (!fs.existsSync(uploadPath_)) {
       fs.mkdirSync(uploadPath_, { recursive: true });
     }
     cb(null, uploadPath_);
   },
   filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, file.fieldname + "-" + uniqueSuffix + path.extname(file.originalname));
+    cb(null, file.originalname);
   }
 });
 
