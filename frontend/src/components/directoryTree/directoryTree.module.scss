@@ -2,11 +2,12 @@
   margin-top: 45px;
   width: 16vw;
   height: 95vh;
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
@@ -37,6 +38,11 @@
       cursor: pointer;
     }
   }
+
+  .arrowIconContainer {
+    margin-left: 10px;
+    margin-top: 5px;
+  }
 }
 
 .children-container {
@@ -49,4 +55,11 @@
   font-size: 22px;
   font-weight: 200;
   color: #495057;
+}
+
+.arrow-icon {
+  &:hover {
+    color: rgb(33, 150, 243);
+    cursor: pointer;
+  }
 }

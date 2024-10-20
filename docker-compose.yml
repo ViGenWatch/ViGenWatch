@@ -61,8 +61,9 @@ services:
     command: bash
     tty: true
     volumes:
-      - ./data/:/augur_data
-    working_dir: /augur_data
+      - ./data/:/augur/augur_data
+      - ./ubuntu/script:/augur/augur_script
+    working_dir: /augur
     networks:
       - nextclade
 

@@ -19,10 +19,13 @@ const FolderTree = ({
     initCheckedStatus,
     initOpenStatus
   };
-  const { treeState } = useTreeState({ data, options, onChange });
+  const { treeState, reducers } = useTreeState({ data, options, onChange });
+  const { toggleOpen } = reducers;
+
   if (!treeState) return null;
   const configs = {
-    iconComponents
+    iconComponents,
+    handleToggle: toggleOpen
   };
 
   return (

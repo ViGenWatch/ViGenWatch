@@ -12,8 +12,10 @@ RUN apt-get update && apt-get install -y \
     git \
     curl \
     build-essential \
-    python3-setuptools \
-    nextstrain-augur
+    python3-setuptools 
+
+RUN pip3 install --upgrade pip && \
+    pip3 install nextstrain-augur
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
@@ -22,7 +24,7 @@ RUN useradd -G www-data,root -u $uid -d /home/$user $user
 RUN mkdir -p /home/$user/ && \
     chown -R $user:$user /home/$user
 
-WORKDIR /augur_data
+WORKDIR /augur
 
 USER $user
 
