@@ -8,7 +8,6 @@ const getDirectoryTree = async (req, res) => {
     const { userName } = req.params;
     const workspaceName = workspace.formatWorkspaceName(userName);
     const directoryPath = storage.uploadPath(workspaceName);
-    console.log(directoryPath);
     let directotyTree = new DirectoryTree(directoryPath, workspaceName);
     const result = await directotyTree.loadDirectoryTree();
     return res.status(200).json({ data: result, message: "getDirectory Successfull" });

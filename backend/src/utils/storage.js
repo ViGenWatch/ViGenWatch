@@ -4,7 +4,7 @@ const fs = require("fs");
 const workspace = require("./workspace");
 const CustomError = require("../entity/customError");
 const executionService = require("../services/executionService");
-
+const execution = require("../utils/execution");
 const uploadPath = (userName) => {
   if (userName) {
     return path.resolve(__dirname, `../../upload/${userName}`);
@@ -14,16 +14,19 @@ const uploadPath = (userName) => {
 
 const storage = multer.diskStorage({
   destination: async function (req, file, cb) {
-    const workspaceName = workspace.formatWorkspaceName(req.body.userName);
-    const executionNumber = await executionService.getNextExecutionNumber(req.body.userId);
-    const executionName = `execution_${executionNumber}`;
+    const { userName, userId } = req.body;
+    const workspaceName = workspace.formatWorkspaceName(userName);
+    const workspacePath = uploadPath(workspaceName);
+    const executionNumber = await executionService.getNextExecutionNumber(userId);
+    const executionName = execution.formatWorkspaceName(executionNumber);
+    const executionPath = path.join(workspacePath, executionName);
     req.body.executionNumber = executionNumber;
     req.body.executionName = executionName;
-    const uploadPath_ = uploadPath(`${workspaceName}/${executionName}`);
-    if (!fs.existsSync(uploadPath_)) {
-      fs.mkdirSync(uploadPath_, { recursive: true });
+    req.body.executionPath = executionPath;
+    if (!fs.existsSync(executionPath)) {
+      fs.mkdirSync(executionPath, { recursive: true });
     }
-    cb(null, uploadPath_);
+    cb(null, executionPath);
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);

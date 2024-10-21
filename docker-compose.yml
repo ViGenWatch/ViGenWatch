@@ -25,10 +25,10 @@ services:
     expose:
       - '3306'
     environment:
-      MYSQL_DATABASE: nextclade_db
-      MYSQL_USER: khaitd0340
-      MYSQL_PASSWORD: khaitd262323
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     healthcheck:
       test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
       timeout: 20s
@@ -55,7 +55,8 @@ services:
     build:
       args:
         user: khaitd0340
-        uid: 1000
+        uid: ${UID}
+        password: ${USER_PASSWORD}
       context: ./ubuntu
       dockerfile: ubuntu.Dockerfile
     command: bash
@@ -64,6 +65,8 @@ services:
       - ./data/:/augur/augur_data
       - ./ubuntu/script:/augur/augur_script
     working_dir: /augur
+    ports:
+      - '2222:22'
     networks:
       - nextclade
 
