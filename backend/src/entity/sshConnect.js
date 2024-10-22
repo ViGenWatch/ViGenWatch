@@ -1,5 +1,5 @@
 const { Client } = require("ssh2");
-
+const process = require("process");
 class SSHConnection {
   constructor() {
     this.client = new Client();
@@ -15,10 +15,10 @@ class SSHConnection {
           resolve();
         })
         .connect({
-          host: "nextclade_ubuntu",
-          port: 22,
-          username: "khaitd0340",
-          password: "khaitd262323"
+          host: process.env.SSH_HOST,
+          port: process.env.SSH_PORT,
+          username: process.env.SSH_USERNAME,
+          password: process.env.SSH_PASSWORD
         });
     });
   }
