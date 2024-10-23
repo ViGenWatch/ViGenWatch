@@ -5,6 +5,7 @@ import DatasetPage from './pages/dataset';
 import LoginPage from './pages/login';
 import useAuth from './hook/useAuth';
 import SignUp from './pages/signup';
+import ReferencePage from './pages/reference';
 
 const App = () => {
   const { authState, refreshToken, dataSaveSession } = useAuth();
@@ -21,6 +22,7 @@ const App = () => {
     content = (
       <Routes>
         <Route path='/start' element={<HomePage />} />
+        <Route path='/reference' element={<ReferencePage />} />
         <Route path='/dataset' element={<DatasetPage />} />
         <Route path='/*' element={<Navigate to='/start' />} />
       </Routes>

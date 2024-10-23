@@ -26,6 +26,12 @@ const LayoutComponent = ({ children }) => {
           </div>
           <RiArrowRightSFill fontSize={'25px'} />
           <div className={cx('button-nav-group__btn')}>
+            <NavLink className={cx('navlink')} to='/reference'>
+              Reference
+            </NavLink>
+          </div>
+          <RiArrowRightSFill fontSize={'25px'} />
+          <div className={cx('button-nav-group__btn')}>
             <NavLink className={cx('navlink')} to='/dataset'>
               Dataset
             </NavLink>

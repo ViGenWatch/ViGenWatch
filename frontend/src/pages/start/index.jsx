@@ -6,7 +6,6 @@ import LogoText from '../../components/logo-text';
 import { IoMdArrowDropdown } from 'react-icons/io';
 import { CiFileOn } from 'react-icons/ci';
 import { RiDeleteBin6Line } from 'react-icons/ri';
-import axios from 'axios';
 import { useSelector } from 'react-redux';
 
 const cx = classNames.bind(style);
@@ -51,18 +50,29 @@ const HomePage = () => {
     });
 
     try {
-      const response = await axios.post('http://localhost:5050/api/file/upload', formData, {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+      const response = await fetch('http://localhost:5050/api/file/upload', {
+        method: 'POST',
+        body: formData
       });
 
-      if (response.status === 200) {
-        setUploadStatus('Upload successful!');
-      } else {
-        setUploadStatus('Upload successful!');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder('utf-8');
+      let result = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        result += decoder.decode(value, { stream: true });
+      }
+
+      const data = JSON.parse(result);
+
+      console.log('Response from server:', data);
+      setUploadStatus('Upload successful!');
     } catch (error) {
       console.error('Error uploading files:', error);
       setUploadStatus('Upload failed!');

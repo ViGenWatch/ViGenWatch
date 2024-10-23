@@ -5,6 +5,8 @@ services:
     container_name: nextclade_workspace
     restart: always
     build:
+      args:
+        uid: ${UID}
       context: ./backend
     volumes:
       - ./backend/:/nextclade/backend/
