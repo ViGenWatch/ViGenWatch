@@ -18,7 +18,7 @@ module.exports = {
       referenceName: {
         type: Sequelize.STRING
       },
-      definiton: {
+      definition: {
         type: Sequelize.STRING
       },
       author: {

@@ -1,29 +1,14 @@
 import React from 'react';
-import style from './reference.module.scss';
+import style from './start.module.scss';
 import classNames from 'classnames/bind';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-import { Actions } from '../../redux/reducer/inputDataReducer';
 
 const cx = classNames.bind(style);
 
-const ItemReference = (props) => {
-  const { referenceName, author, definition, version, index } = props;
-  const inputDataState = useSelector((state) => state.inputData);
-
-  const dispatch = useDispatch();
+const ItemReferenceSelected = (props) => {
+  const { referenceName, author, definition, version } = props;
   return (
-    <div
-      role='button'
-      style={{
-        background:
-          inputDataState.indexReference !== null && inputDataState.indexReference === index
-            ? 'rgb(49, 158, 244)'
-            : 'white'
-      }}
-      onClick={() => dispatch(Actions.setIndexReference(index))}
-      className={cx('item-reference-container')}
-    >
+    <div className={cx('item-reference-container')}>
       <div className={cx('icon-reference-group')}>
         <div className={cx('icon-reference-group__background')}>
           <span className={cx('icon-text')}>{referenceName.charAt(0)}</span>
@@ -40,12 +25,11 @@ const ItemReference = (props) => {
   );
 };
 
-ItemReference.propTypes = {
+ItemReferenceSelected.propTypes = {
   referenceName: PropTypes.string.isRequired,
   author: PropTypes.string.isRequired,
   definition: PropTypes.string.isRequired,
-  version: PropTypes.string.isRequired,
-  index: PropTypes.number
+  version: PropTypes.string.isRequired
 };
 
-export default ItemReference;
+export default ItemReferenceSelected;

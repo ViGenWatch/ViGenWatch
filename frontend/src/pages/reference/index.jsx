@@ -4,17 +4,26 @@ import style from './reference.module.scss';
 import classNames from 'classnames/bind';
 import { IoIosArrowBack, IoIosSearch } from 'react-icons/io';
 import ItemReference from './itemReference';
+import useReferences from '../../hook/useReferences';
+import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(style);
 
 const ReferencePage = () => {
+  const { referencesState } = useReferences();
+  const navigate = useNavigate();
   return (
     <LayoutComponent>
       <div className={cx('section-reference')}>
         <div className={cx('section-reference-group')}>
           <div className={cx('section-reference-group__container')}>
             <div className={cx('section-reference-group__container-header')}>
-              <button className={cx('add-data-btn')}>
+              <button
+                className={cx('add-data-btn')}
+                onClick={() => {
+                  navigate('/start');
+                }}
+              >
                 <IoIosArrowBack className={cx('icon-btn')} />
                 <span className={cx('text-btn')}>Add Data</span>
               </button>
@@ -32,12 +41,10 @@ const ReferencePage = () => {
               </div>
             </div>
             <div className={cx('section-reference-group__container-content')}>
-              <ItemReference />
-              <ItemReference />
-              <ItemReference />
-              <ItemReference />
-              <ItemReference />
-              <ItemReference />
+              {referencesState.references &&
+                referencesState.references.map((reference, index) => (
+                  <ItemReference key={reference.id} {...reference} index={index} />
+                ))}
             </div>
           </div>
         </div>
@@ -45,5 +52,4 @@ const ReferencePage = () => {
     </LayoutComponent>
   );
 };
-
 export default ReferencePage;

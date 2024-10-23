@@ -6,18 +6,26 @@ import LogoText from '../../components/logo-text';
 import { IoMdArrowDropdown } from 'react-icons/io';
 import { CiFileOn } from 'react-icons/ci';
 import { RiDeleteBin6Line } from 'react-icons/ri';
-import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { Actions } from '../../redux/reducer/inputDataReducer';
+import useReferences from '../../hook/useReferences';
+import ItemReferenceSelected from './itemReferenceSelected';
+import FadeLoader from 'react-spinners/FadeLoader';
 
 const cx = classNames.bind(style);
 
 const HomePage = () => {
+  const { referencesState } = useReferences();
   const authState = useSelector((state) => state.auth);
   const [toggle, setToggle] = useState(false);
   const [inputCategory, setInputCategory] = useState(1);
-  const [sequenceFiles, setSequenceFiles] = useState([]);
-  const [uploadStatus, setUploadStatus] = useState('');
+  const [uploadingStatus, setUploadingStatus] = useState(false);
   const inputGroup1Ref = useRef(null);
   const inputGroup2Ref = useRef(null);
+  const navigate = useNavigate();
+  const inputDataState = useSelector((state) => state.inputData);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const inputGroup1Height = inputGroup1Ref.current.scrollHeight;
@@ -25,11 +33,11 @@ const HomePage = () => {
     // const maxHeight = Math.max(inputGroup1Height, inputGroup2Height);
     inputGroup1Ref.current.style.height = `max-content`;
     inputGroup2Ref.current.style.height = `${inputGroup1Height - 15}px`;
-  }, [sequenceFiles]);
+  }, [inputDataState.inputFilesData]);
 
   const handleSequenceFileChange = (event) => {
     const files = Array.from(event.target.files);
-    setSequenceFiles((prevFiles) => [...prevFiles, ...files]);
+    dispatch(Actions.setInputFilesData(files));
   };
 
   const selectSequenceClick = () => {
@@ -37,15 +45,17 @@ const HomePage = () => {
   };
 
   const handleUpload = async () => {
-    if (sequenceFiles.length === 0) {
+    if (inputDataState.inputFilesData.length === 0 || inputDataState.indexReference === null) {
       alert('Please select a file first.');
       return;
     }
-
+    setUploadingStatus(true);
     const formData = new FormData();
     formData.append('userId', authState.user.id);
     formData.append('userName', authState.user.userName);
-    sequenceFiles.forEach((file) => {
+    formData.append('referenceId', referencesState.references[inputDataState.indexReference].id);
+    formData.append('referencePath', referencesState.references[inputDataState.indexReference].referencePath);
+    inputDataState.inputFilesData.forEach((file) => {
       formData.append('files', file);
     });
 
@@ -70,126 +80,158 @@ const HomePage = () => {
       }
 
       const data = JSON.parse(result);
-
-      console.log('Response from server:', data);
-      setUploadStatus('Upload successful!');
+      console.log(data);
+      setUploadingStatus(false);
+      navigate('/dataset');
     } catch (error) {
       console.error('Error uploading files:', error);
-      setUploadStatus('Upload failed!');
     }
   };
 
-  const handleRemoveFile = (fileToRemove) => {
-    setSequenceFiles((prevFiles) => prevFiles.filter((file) => file.name !== fileToRemove));
-  };
-
   return (
-    <LayoutComponent>
-      <div className={cx('section-start')}>
-        <LogoText style={{ fontSize: '6rem', fontWeight: '300' }} />
-        <span className={cx('subtitle')}>Clade assignment, mutation calling, and sequence quality checks</span>
+    <div style={{ position: 'relative' }}>
+      <LayoutComponent>
+        <div className={cx('section-start')}>
+          <LogoText style={{ fontSize: '6rem', fontWeight: '300' }} />
+          <span className={cx('subtitle')}>Clade assignment, mutation calling, and sequence quality checks</span>
 
-        <div className={cx('input-group')}>
-          <div ref={inputGroup1Ref} className={cx('input-group__sequence')}>
-            <div className={cx('input-group__sequence-header')}>
-              <span>Select File Sequence Data</span>
-            </div>
-            <div className={cx('input-group__sequence-category')}>
-              <button
-                className={cx(`input-${inputCategory === 1 ? 'current' : 'category'}`)}
-                onClick={() => setInputCategory(1)}
-              >
-                <span>File</span>
-              </button>
+          <div className={cx('input-group')}>
+            <div ref={inputGroup1Ref} className={cx('input-group__sequence')}>
+              <div className={cx('input-group__sequence-header')}>
+                <span>Select File Sequence Data</span>
+              </div>
+              <div className={cx('input-group__sequence-category')}>
+                <button
+                  className={cx(`input-${inputCategory === 1 ? 'current' : 'category'}`)}
+                  onClick={() => setInputCategory(1)}
+                >
+                  <span>File</span>
+                </button>
 
-              <button
-                className={cx(`input-${inputCategory === 2 ? 'current' : 'category'}`)}
-                onClick={() => setInputCategory(2)}
-              >
-                <span>Text</span>
-              </button>
+                <button
+                  className={cx(`input-${inputCategory === 2 ? 'current' : 'category'}`)}
+                  onClick={() => setInputCategory(2)}
+                >
+                  <span>Text</span>
+                </button>
 
-              <button className={cx('input-category')}>
-                <span>Example</span>
-                <IoMdArrowDropdown />
-              </button>
-            </div>
-            {inputCategory === 1 ? (
-              <div className={cx('input-group__sequence-input-1')}>
-                <input
-                  type='file'
-                  id='file-upload'
-                  style={{ display: 'none' }}
-                  onChange={handleSequenceFileChange}
-                  multiple
-                />
-                <button className={cx('select-btn')} onClick={selectSequenceClick}>
-                  Select Files
+                <button className={cx('input-category')}>
+                  <span>Example</span>
+                  <IoMdArrowDropdown />
                 </button>
               </div>
-            ) : (
-              <div className={cx('input-group__sequence-input-2')}>
-                <span>Enter sequence data in FASTA format</span>
-                <textarea className={cx('text-input')} />
-                <div className={cx('submit-btn-group')}>
-                  <span className={cx('reset-btn')}>Clear</span>
-                  <button className={cx('btn-submit')}>OK</button>
+              {inputCategory === 1 ? (
+                <div className={cx('input-group__sequence-input-1')}>
+                  <input
+                    type='file'
+                    id='file-upload'
+                    style={{ display: 'none' }}
+                    onChange={handleSequenceFileChange}
+                    multiple
+                  />
+                  <button className={cx('select-btn')} onClick={selectSequenceClick}>
+                    Select Files
+                  </button>
                 </div>
-              </div>
-            )}
-            {sequenceFiles.length > 0 && (
-              <div className={cx('input-group__sequence-footer')}>
-                <div className={cx('title-group')}>
-                  <span className={cx('subtitle1')}>Sequence file data.fasta</span>
-                  <span className={cx('subtitle2')}>Remove all</span>
+              ) : (
+                <div className={cx('input-group__sequence-input-2')}>
+                  <span>Enter sequence data in FASTA format</span>
+                  <textarea className={cx('text-input')} />
+                  <div className={cx('submit-btn-group')}>
+                    <span className={cx('reset-btn')}>Clear</span>
+                    <button className={cx('btn-submit')}>OK</button>
+                  </div>
                 </div>
-                <div className={cx('item-file-ls')}>
-                  {sequenceFiles.map((file) => (
-                    <div key={file.name} className={cx('item-file')}>
-                      <CiFileOn fontSize='20px' color='#495057' />
-                      <span>{file.name}</span>
-                      <div style={{ flex: '1' }}></div>
-                      <RiDeleteBin6Line
-                        fontSize='25px'
-                        color='rgb(33, 150, 243)'
-                        cursor='pointer'
-                        onClick={() => handleRemoveFile(file.name)}
-                      />
-                    </div>
-                  ))}
+              )}
+              {inputDataState.inputFilesData.length > 0 && (
+                <div className={cx('input-group__sequence-footer')}>
+                  <div className={cx('title-group')}>
+                    <span className={cx('subtitle1')}>Sequence file data.fasta</span>
+                    <span className={cx('subtitle2')}>Remove all</span>
+                  </div>
+                  <div className={cx('item-file-ls')}>
+                    {inputDataState.inputFilesData.map((file) => (
+                      <div key={file.name} className={cx('item-file')}>
+                        <CiFileOn fontSize='20px' color='#495057' />
+                        <span>{file.name}</span>
+                        <div style={{ flex: '1' }}></div>
+                        <RiDeleteBin6Line
+                          fontSize='25px'
+                          color='rgb(33, 150, 243)'
+                          cursor='pointer'
+                          onClick={() => dispatch(Actions.removeInputFileData(file.name))}
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
-
-          <div ref={inputGroup2Ref} className={cx('input-group__dataset')}>
-            <div className={cx('input-group__dataset-header')}>
-              <span>Select File Reference Dataset</span>
-            </div>
-            <div className={cx('input-group__dataset-suggest')}>
-              <div className={cx('toggle-select')}>
-                <button className={cx('toggle-btn', { toggled: toggle })} onClick={() => setToggle(!toggle)}>
-                  <span className={cx('thumb')}></span>
-                </button>
-                <span>Suggest automatically</span>
-              </div>
-
-              <div className={cx('suggest-btn-group')}>
-                <span>Reset</span>
-                <button className={cx('suggest-btn-group__btn')} onClick={handleUpload}>
-                  Suggest
-                </button>
-                <span>{uploadStatus}</span>
-              </div>
+              )}
             </div>
 
-            <div className={cx('input-group__dataset-input')}>
-              <button className={cx('select-btn')}>Select Reference Files</button>
+            <div ref={inputGroup2Ref} className={cx('input-group__dataset')}>
+              <div className={cx('input-group__dataset-header')}>
+                <span>Select File Reference Dataset</span>
+              </div>
+              <div className={cx('input-group__dataset-suggest')}>
+                <div className={cx('toggle-select')} style={{ display: 'none' }}>
+                  <button className={cx('toggle-btn', { toggled: toggle })} onClick={() => setToggle(!toggle)}>
+                    <span className={cx('thumb')}></span>
+                  </button>
+                  <span>Suggest automatically</span>
+                </div>
+
+                <button
+                  className={cx(
+                    inputDataState.indexReference !== null ? 'change-reference-group-active' : 'change-reference-group'
+                  )}
+                  onClick={() => {
+                    if (inputDataState.indexReference !== null) {
+                      navigate('/reference');
+                    }
+                  }}
+                >
+                  Change reference
+                </button>
+
+                <div className={cx('suggest-btn-group')}>
+                  <span>Reset</span>
+                  <button className={cx('suggest-btn-group__btn')} onClick={handleUpload}>
+                    Run
+                  </button>
+                </div>
+              </div>
+
+              {inputDataState.indexReference !== null ? (
+                referencesState.references &&
+                referencesState.references.length > 0 &&
+                inputDataState.indexReference !== null && (
+                  <div className={cx('input-group__dataset-input')}>
+                    <ItemReferenceSelected {...referencesState.references[inputDataState.indexReference]} />
+                  </div>
+                )
+              ) : (
+                <div className={cx('input-group__dataset-input')}>
+                  <button
+                    className={cx('select-btn')}
+                    onClick={() => {
+                      navigate('/reference');
+                    }}
+                  >
+                    Select Reference Files
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
+      </LayoutComponent>
+      <div style={{ display: uploadingStatus ? 'flex' : 'none' }} className={cx('loading')}>
+        <div>
+          <FadeLoader color='rgba(255, 255, 255, 1)' height='10' width='6' />
+          <span style={{ fontWeight: '500', color: 'white', fontSize: '18px' }}>Loading...</span>
+        </div>
       </div>
-    </LayoutComponent>
+    </div>
   );
 };
 

@@ -32,6 +32,8 @@ module.exports = {
   rules: {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-no-target-blank': 'warn',
+    'jsx-a11y/click-events-have-key-events': 'off',
+    'jsx-a11y/interactive-supports-focus': 'off',
     'prettier/prettier': [
       'warn',
       {

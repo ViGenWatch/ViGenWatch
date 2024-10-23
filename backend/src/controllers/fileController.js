@@ -12,10 +12,9 @@ const uploadFileInput = async (req, res) => {
     if (!req.files || req.files.length === 0) {
       throw new CustomError("Please upload a file!", 400);
     }
-    const { executionPath, userId, executionName, executionNumber } = req.body;
-    const configPath = path.resolve(__dirname, "../../upload/config/zika_config");
+    const { executionPath, userId, executionName, executionNumber, referenceId, referencePath } = req.body;
+    const configPath = path.resolve(__dirname, referencePath);
     const uploadPath = path.resolve(__dirname, "../../upload");
-    console.log(configPath);
     const result = await execution.createOutputExecution(executionPath, configPath);
     if (result) {
       exec(
@@ -30,7 +29,8 @@ const uploadFileInput = async (req, res) => {
           const newExecution = await executionService.createExecution({
             userId: userId,
             executionName: executionName,
-            executionNumber: executionNumber
+            executionNumber: executionNumber,
+            referenceId: referenceId
           });
           if (newExecution) {
             if (!sshConnection.isConnected) {

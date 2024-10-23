@@ -20,7 +20,7 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   (response) => {
-    return { data: response.data.data, status: response.status };
+    return { data: response.data.data, status: response.status, message: response.message };
   },
   (error) => {
     if (error.response?.data) return Promise.reject(error.response?.data);

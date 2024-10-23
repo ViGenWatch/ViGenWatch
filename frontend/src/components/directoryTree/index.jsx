@@ -8,9 +8,6 @@ const cx = classNames.bind(styles);
 
 const DirectoryTree = () => {
   const { directoryTreeState } = useDirectoryTree();
-  if (directoryTreeState.nodeData) {
-    console.log(directoryTreeState);
-  }
   return (
     <div className={cx('section-direc-tree')}>
       {directoryTreeState.nodeData && <FolderTree data={directoryTreeState.nodeData} />}
