@@ -4,13 +4,17 @@ import style from './reference.module.scss';
 import classNames from 'classnames/bind';
 import { IoIosArrowBack, IoIosSearch } from 'react-icons/io';
 import ItemReference from './itemReference';
-import useReferences from '../../hook/useReferences';
 import { useNavigate } from 'react-router-dom';
+import RunButton from '../../components/runButton';
+import { useSelector } from 'react-redux';
+import useReferences from '../../hook/useReferences';
 
 const cx = classNames.bind(style);
 
 const ReferencePage = () => {
   const { referencesState } = useReferences();
+  const authState = useSelector((state) => state.auth);
+  const inputDataState = useSelector((state) => state.inputData);
   const navigate = useNavigate();
   return (
     <LayoutComponent>
@@ -37,7 +41,7 @@ const ReferencePage = () => {
               </div>
 
               <div className={cx('btn-run-group')}>
-                <button className={cx('btn-run')}>Run</button>
+                <RunButton inputDataState={inputDataState} referencesState={referencesState} authState={authState} />
               </div>
             </div>
             <div className={cx('section-reference-group__container-content')}>

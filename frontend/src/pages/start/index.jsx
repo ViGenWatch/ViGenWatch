@@ -12,6 +12,7 @@ import { Actions } from '../../redux/reducer/inputDataReducer';
 import useReferences from '../../hook/useReferences';
 import ItemReferenceSelected from './itemReferenceSelected';
 import FadeLoader from 'react-spinners/FadeLoader';
+import RunButton from '../../components/runButton';
 
 const cx = classNames.bind(style);
 
@@ -20,7 +21,6 @@ const HomePage = () => {
   const authState = useSelector((state) => state.auth);
   const [toggle, setToggle] = useState(false);
   const [inputCategory, setInputCategory] = useState(1);
-  const [uploadingStatus, setUploadingStatus] = useState(false);
   const inputGroup1Ref = useRef(null);
   const inputGroup2Ref = useRef(null);
   const navigate = useNavigate();
@@ -42,50 +42,6 @@ const HomePage = () => {
 
   const selectSequenceClick = () => {
     document.getElementById('file-upload').click();
-  };
-
-  const handleUpload = async () => {
-    if (inputDataState.inputFilesData.length === 0 || inputDataState.indexReference === null) {
-      alert('Please select a file first.');
-      return;
-    }
-    setUploadingStatus(true);
-    const formData = new FormData();
-    formData.append('userId', authState.user.id);
-    formData.append('userName', authState.user.userName);
-    formData.append('referenceId', referencesState.references[inputDataState.indexReference].id);
-    formData.append('referencePath', referencesState.references[inputDataState.indexReference].referencePath);
-    inputDataState.inputFilesData.forEach((file) => {
-      formData.append('files', file);
-    });
-
-    try {
-      const response = await fetch('http://localhost:5050/api/file/upload', {
-        method: 'POST',
-        body: formData
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder('utf-8');
-      let result = '';
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        result += decoder.decode(value, { stream: true });
-      }
-
-      const data = JSON.parse(result);
-      console.log(data);
-      setUploadingStatus(false);
-      navigate('/dataset');
-    } catch (error) {
-      console.error('Error uploading files:', error);
-    }
   };
 
   return (
@@ -195,9 +151,7 @@ const HomePage = () => {
 
                 <div className={cx('suggest-btn-group')}>
                   <span>Reset</span>
-                  <button className={cx('suggest-btn-group__btn')} onClick={handleUpload}>
-                    Run
-                  </button>
+                  <RunButton inputDataState={inputDataState} referencesState={referencesState} authState={authState} />
                 </div>
               </div>
 
@@ -225,7 +179,7 @@ const HomePage = () => {
           </div>
         </div>
       </LayoutComponent>
-      <div style={{ display: uploadingStatus ? 'flex' : 'none' }} className={cx('loading')}>
+      <div style={{ display: 'none' }} className={cx('loading')}>
         <div>
           <FadeLoader color='rgba(255, 255, 255, 1)' height='10' width='6' />
           <span style={{ fontWeight: '500', color: 'white', fontSize: '18px' }}>Loading...</span>

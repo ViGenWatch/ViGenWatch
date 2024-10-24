@@ -6,13 +6,15 @@ const path = require("path");
 const { exec } = require("child_process");
 const sshConnection = require("../entity/sshConnect");
 const fs = require("fs");
+const augurVariable = require("../utils/augur");
 
 const uploadFileInput = async (req, res) => {
   try {
     if (!req.files || req.files.length === 0) {
       throw new CustomError("Please upload a file!", 400);
     }
-    const { executionPath, userId, executionName, executionNumber, referenceId, referencePath } = req.body;
+    const { workspaceName, executionPath, userId, executionName, executionNumber, referenceId, referencePath } =
+      req.body;
     const configPath = path.resolve(__dirname, referencePath);
     const uploadPath = path.resolve(__dirname, "../../upload");
     const result = await execution.createOutputExecution(executionPath, configPath);
@@ -37,8 +39,8 @@ const uploadFileInput = async (req, res) => {
               await sshConnection.connect();
             }
             const result = await sshConnection.executeInline(
-              "./run_pipeline.sh ../augur_data/khaitd01_workspace/execution_4",
-              "/augur/augur_script/"
+              `${augurVariable.augur_run} ${augurVariable.augur_data_path}${workspaceName}/${executionName}`,
+              augurVariable.augur_script_path
             );
             if (result) {
               const dataPath = path.resolve(__dirname, "../../upload/khaitd01_workspace/execution_4/auspice/zika.json");

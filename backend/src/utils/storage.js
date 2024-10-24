@@ -21,6 +21,7 @@ const storage = multer.diskStorage({
     const executionNumber = await executionService.getNextExecutionNumber(userId);
     const executionName = execution.formatWorkspaceName(executionNumber);
     const executionPath = path.join(workspacePath, executionName);
+    req.body.workspaceName = workspaceName;
     req.body.executionNumber = executionNumber;
     req.body.executionName = executionName;
     req.body.executionPath = executionPath;
