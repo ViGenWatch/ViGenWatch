@@ -59,6 +59,7 @@ const uploadFileInput = async (req, res) => {
       );
     }
   } catch (error) {
+    console.log(error);
     if (error instanceof CustomError) {
       process.env.NODE_ENV == "development" ? console.log(error) : null;
       return res.status(error.statusCode).json({ message: error.message });

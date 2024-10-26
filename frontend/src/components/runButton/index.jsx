@@ -49,8 +49,11 @@ const RunButton = (props) => {
 
       const data = JSON.parse(result);
       const { tree } = preProcessingDataset(data, 'zika');
+      delete tree.nodeColors;
       dispatch(TreeActions.setTreeDataState(tree));
-      navigate('/dataset');
+      setTimeout(() => {
+        navigate('/dataset');
+      }, 3000);
     } catch (error) {
       console.error('Error uploading files:', error);
     }

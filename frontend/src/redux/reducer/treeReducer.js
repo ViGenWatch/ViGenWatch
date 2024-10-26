@@ -25,14 +25,10 @@ export const initTreeDataState = () => {
 
 const treeDataSlice = createSlice({
   name: 'tree',
-  initialState: initTreeDataState(),
+  initialState: {},
   reducers: {
     setTreeDataState: (state, action) => {
-      console.log(action.payload);
-      return {
-        ...state,
-        ...action.payload
-      };
+      return action.payload;
     }
   }
 });
