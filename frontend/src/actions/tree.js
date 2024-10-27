@@ -1,3 +1,8 @@
+import { createAction } from '../utils/reduxHelper';
+import * as types from './types';
+
+export const setDataStart = createAction(types.SET_DATA_START, 'data');
+
 export const applyInViewNodesToTree = (idx, tree) => {
   const validIdxRoot = idx !== undefined ? idx : tree.idxOfInViewRootNode;
   tree.nodes.forEach((d) => {

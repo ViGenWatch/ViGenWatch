@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { preProcessingDataset } from '../../actions/preProcessingDataset';
 import { useDispatch } from 'react-redux';
-import { TreeActions } from '../../redux/reducer/treeReducer';
+import { setDataStart } from '../../actions/tree';
 
 const RunButton = (props) => {
   const { inputDataState, referencesState, authState } = props;
@@ -50,10 +50,8 @@ const RunButton = (props) => {
       const data = JSON.parse(result);
       const { tree } = preProcessingDataset(data, 'zika');
       delete tree.nodeColors;
-      dispatch(TreeActions.setTreeDataState(tree));
-      setTimeout(() => {
-        navigate('/dataset');
-      }, 3000);
+      dispatch(setDataStart({ tree }));
+      navigate('/dataset');
     } catch (error) {
       console.error('Error uploading files:', error);
     }
