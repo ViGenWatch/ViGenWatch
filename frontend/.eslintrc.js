@@ -1,10 +1,12 @@
 const path = require('path');
 
 module.exports = {
+  parser: '@typescript-eslint/parser',
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
     'plugin:jsx-a11y/recommended',
+    'plugin:@typescript-eslint/recommended',
     'prettier',
     'eslint-config-prettier'
   ],
@@ -34,6 +36,8 @@ module.exports = {
     'react/jsx-no-target-blank': 'warn',
     'jsx-a11y/click-events-have-key-events': 'off',
     'jsx-a11y/interactive-supports-focus': 'off',
+    '@typescript-eslint/no-unused-expressions': 'off', //cho nhung bieu thuc chill ko lam gi
+    '@typescript-eslint/no-require-imports': 'off', //cho phep dung require
     'prettier/prettier': [
       'warn',
       {

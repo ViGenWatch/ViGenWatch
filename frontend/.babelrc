@@ -1,3 +1,25 @@
 {
-  "presets": ["@babel/preset-env", "@babel/preset-react"]
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "corejs": false,
+        "modules": "commonjs",
+        "shippedProposals": true,
+        "targets": { "node": "12" },
+        "exclude": ["transform-typeof-symbol"]
+      }
+    ],
+    "@babel/preset-react",
+    "@babel/preset-typescript"
+  ],
+  "plugins": [
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    ["@babel/plugin-proposal-class-properties", { "loose": true }],
+    "@babel/plugin-syntax-dynamic-import",
+    "babel-plugin-styled-components",
+    ["@babel/plugin-proposal-private-methods", { "loose": true }],
+    "@babel/plugin-transform-runtime",
+    "lodash"
+  ]
 }

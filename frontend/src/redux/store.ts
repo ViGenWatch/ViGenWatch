@@ -28,4 +28,6 @@ if (process.env.NODE_ENV !== 'production' && module.hot) {
   });
 }
 
+export type RootState = ReturnType<typeof store.getState>;
+
 export default store;

@@ -19,7 +19,7 @@ module.exports = (env, argv) => {
   const isAnalyze = Boolean(env?.analyze);
   const config = {
     resolve: {
-      extensions: ['.jsx', '.js'],
+      extensions: ['.tsx', '.ts', '.jsx', '.js'],
       alias: {
         '@pages': path.resolve(__dirname, 'src/pages'),
         '@': path.resolve(__dirname, 'src')
@@ -29,9 +29,31 @@ module.exports = (env, argv) => {
     module: {
       rules: [
         {
-          test: /\.jsx?$/,
-          exclude: /node_modules/,
-          use: ['babel-loader']
+          test: /\.(ts|tsx)$/,
+          use: [
+            {
+              loader: 'ts-loader',
+              options: {
+                allowTsInNodeModules: true,
+                transpileOnly: true
+              }
+            }
+          ],
+          exclude: /node_modules\/(?!(@khaitd0340\/auspice|auspice))/
+        },
+        {
+          test: /\.(js|jsx)$/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env', '@babel/preset-react'],
+              plugins: [
+                ['@babel/plugin-proposal-decorators', { legacy: true }],
+                ['@babel/plugin-proposal-class-properties', { loose: true }]
+              ]
+            }
+          },
+          exclude: /node_modules\/(?!(@khaitd0340\/auspice|auspice))/
         },
         {
           test: /\.(s[ac]ss|css)$/,
@@ -98,7 +120,7 @@ module.exports = (env, argv) => {
         filename: 'index.html'
       }),
       new ESLintPlugin({
-        extensions: ['.jsx', '.js']
+        extensions: ['.jsx', '.js', '.ts', '.tsx']
       })
     ]
   };
