@@ -1,5 +1,5 @@
-declare module 'auspice/src/reducers/browserDimensions' {
-  export declare type BrowserDimensionsState = Record<string, unknown>
-  declare function browserDimensions(State?: BrowserDimensionsState): BrowserDimensionsState | undefined
-  export default browserDimensions
+declare module '@khaitd0340/auspice/src/reducers/browserDimensions' {
+  export declare type BrowserDimensionsState = Record<string, unknown>;
+  declare function browserDimensions(State?: BrowserDimensionsState): BrowserDimensionsState | undefined;
+  export default browserDimensions;
 }

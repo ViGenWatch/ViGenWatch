@@ -35,9 +35,8 @@ declare module 'auspice' {
     version?: any;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
   export interface AuspiceMeasurementsState {
-    // TODO: add fields if this part of state is ever used
+    [key: string]: any;
   }
 
   export type Layout = 'rect' | 'radial' | 'unrooted' | 'clock' | 'scatter';
@@ -206,6 +205,7 @@ declare module 'auspice' {
     node_attrs?: NodeAttrs;
     branch_attrs?: BranchAttrs;
     children?: AuspiceTreeNode<NodeAttrs, BranchAttrs>[];
+    [key: string]: any;
   }
 
   export interface GeneMapJsonEntry {
@@ -237,7 +237,7 @@ declare module 'auspice' {
     maintainers?: { name?: string; url?: string }[];
     dataProvenance?: DataProvenance[];
     updated?: string;
-    colorings: { key?: string; title?: string; type?: string; scale?: string[][] }[];
+    colorings?: { key?: string; title?: string; type?: string; scale?: string[][] }[];
     displayDefaults: {
       branch_label?: string;
       color_by?: string;

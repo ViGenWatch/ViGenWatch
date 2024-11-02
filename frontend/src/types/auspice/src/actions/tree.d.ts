@@ -1,5 +1,5 @@
-declare module 'auspice/src/actions/tree' {
-  import { Action } from 'redux'
+declare module '@khaitd0340/auspice/src/actions/tree' {
+  import { Action } from 'redux';
 
-  export function applyFilter(mode: string, trait: string, values: string[]): Action
+  export function applyFilter(mode: string, trait: string, values: string[]): Action;
 }

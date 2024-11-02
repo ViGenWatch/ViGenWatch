@@ -12,5 +12,8 @@ function run_filter {
       --sequence-index "$sequence_index" \
       --metadata "$metadata" \
       --exclude "$exclude_strains" \
-      --output "$output_dir/filtered.fasta" 
+      --output "$output_dir/filtered.fasta" \
+      --group-by country year month \
+      --sequences-per-group 20 \
+      --min-date 2012
 }

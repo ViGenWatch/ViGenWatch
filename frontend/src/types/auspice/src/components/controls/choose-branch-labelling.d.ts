@@ -1,6 +1,6 @@
-declare module 'auspice/src/components/controls/choose-branch-labelling' {
-  import { FC } from 'react'
+declare module '@khaitd0340/auspice/src/components/controls/choose-branch-labelling' {
+  import { FC } from 'react';
 
-  const Component: FC
-  export default Component
+  const Component: FC;
+  export default Component;
 }

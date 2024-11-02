@@ -39,7 +39,7 @@ module.exports = (env, argv) => {
               }
             }
           ],
-          exclude: /node_modules\/(?!(@khaitd0340\/auspice|auspice))/
+          exclude: /node_modules\/(?!(@khaitd0340\/auspice))/
         },
         {
           test: /\.(js|jsx)$/,
@@ -53,7 +53,7 @@ module.exports = (env, argv) => {
               ]
             }
           },
-          exclude: /node_modules\/(?!(@khaitd0340\/auspice|auspice))/
+          exclude: /node_modules\/(?!(@khaitd0340\/auspice))/
         },
         {
           test: /\.(s[ac]ss|css)$/,

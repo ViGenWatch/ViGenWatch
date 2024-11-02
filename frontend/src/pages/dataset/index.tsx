@@ -1,8 +1,8 @@
 import LayoutComponent from '../../components/layout';
 import { useDispatch, useSelector } from 'react-redux';
-// import AuspiceTree from '@khaitd0340/auspice/src/components/tree/tree';
 import { useTranslation } from 'react-i18next';
 import { RootState } from '../../redux/store';
+import SideBar from './SideBar';
 import AuspiceTree from '@khaitd0340/auspice/src/components/tree/tree';
 const DatasetPage = () => {
   const state = useSelector((state: RootState) => state);
@@ -45,8 +45,20 @@ const DatasetPage = () => {
 
   return (
     <LayoutComponent>
-      <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100%', overflow: 'hidden' }}>
-        <AuspiceTree {...props} />
+      <div
+        style={{
+          position: 'relative',
+          display: 'flex',
+          flexDirection: 'row',
+          width: '100%',
+          height: '100%',
+          overflow: 'hidden'
+        }}
+      >
+        <SideBar width={300} height={950} />
+        <div style={{ marginLeft: '300px' }}>
+          <AuspiceTree {...props} />
+        </div>
       </div>
     </LayoutComponent>
   );

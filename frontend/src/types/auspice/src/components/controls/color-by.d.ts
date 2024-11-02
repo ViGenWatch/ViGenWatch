@@ -1,8 +1,14 @@
-declare module 'auspice/src/components/controls/color-by' {
-  import type { FC, ReactElement } from 'react'
+declare module '@khaitd0340/auspice/src/components/controls/color-by' {
+  import type { FC } from 'react';
 
-  const Component: FC
-  export default Component
+  export const ColorByInfo: FC;
 
-  export const ColorByInfo: ReactElement
+  export interface ColorByProps {
+    colorBy?: string;
+    colorings?: { key?: string; title?: string; type?: string; scale?: string[][] }[];
+    genomeMap?: any;
+  }
+
+  const Component: FC<ColorByProps>;
+  export default Component;
 }

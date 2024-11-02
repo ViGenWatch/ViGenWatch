@@ -11,5 +11,10 @@ function run_refine {
       --alignment "$aligned_sequences" \
       --metadata "$metadata" \
       --output-tree "$output_dir/tree.nwk" \
-      --output-node-data "$output_dir/branch_lengths.json"
+      --output-node-data "$output_dir/branch_lengths.json" \
+      --timetree \
+      --coalescent opt \
+      --date-confidence \
+      --date-inference marginal \
+      --clock-filter-iqd 4
 }
