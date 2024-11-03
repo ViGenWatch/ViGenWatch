@@ -2,7 +2,7 @@ import { SidebarContainer, sidebarTheme } from '@khaitd0340/auspice/src/componen
 import { useSelector } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import { RootState } from '../../redux/store';
-import Controls from './Controls';
+import Controls from '../../components/controls/Controls';
 
 interface SidebarProps {
   width: number;

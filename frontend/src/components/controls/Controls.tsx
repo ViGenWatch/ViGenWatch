@@ -6,6 +6,8 @@ import { Dispatch } from 'redux';
 import FilterDataSection from './FilterDataSection';
 import ChooseLayoutSection from './ChoooseLayout';
 import ChooseMetricSection from './ChooseMetric';
+import ChooseBranchLabelSection from './ChooseBranchLabel';
+import ChooseTipLabelSection from './ChooseTipLabel';
 
 export interface PropsTypeControls {
   state: RootState;
@@ -27,6 +29,8 @@ const Controls = () => {
       <span style={{ paddingTop: '10px' }} />
       <ChooseLayoutSection {...props} />
       <ChooseMetricSection {...props} />
+      <ChooseBranchLabelSection {...props} />
+      <ChooseTipLabelSection {...props} />
     </ControlsContainer>
   );
 };
