@@ -5,8 +5,8 @@ declare module '@khaitd0340/auspice/src/components/tree/tree' {
   import { TFunction } from 'i18next';
 
   export interface AuspiceTreeProps {
-    width: string;
-    height: string;
+    width?: number;
+    height?: number;
     tree?: AuspiceTreeState;
     treeToo?: AuspiceTreeState;
     selectedNode?: any;

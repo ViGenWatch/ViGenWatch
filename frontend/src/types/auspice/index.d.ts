@@ -46,7 +46,7 @@ declare module 'auspice' {
       distanceMeasure?: string;
       layout?: Layout;
       focus?: boolean;
-      geoResolution: ?string;
+      geoResolution?: string;
       filters?: Record<string, any>;
       filtersInFooter?: string[];
       colorBy?: string;
@@ -155,18 +155,20 @@ declare module 'auspice' {
     entropy?: AuspiceEntropyState;
     browserDimensions?: { browserDimensions?: { width?: number; height?: number; docHeight?: number } };
     notifications?: { stack?: any[]; counter?: number };
-    narrative?: {
-      loaded?: boolean;
-      blocks?: any;
-      blockIdx?: any;
-      pathname?: any;
-      display?: boolean;
-      title?: any;
-    };
+    narrative?: NarrativeState;
     treeToo?: AuspiceTreeState;
     general?: { language?: string };
     query?: any;
   };
+
+  export interface NarrativeState {
+    loaded?: boolean;
+    blocks?: any;
+    blockIdx?: any;
+    pathname?: any;
+    display?: boolean;
+    title?: any;
+  }
 
   export declare interface AuspiceTreeNodeAttrs {
     div?: number;
@@ -231,6 +233,7 @@ declare module 'auspice' {
   }
 
   export declare interface AuspiceMetadata {
+    loaded?: boolean;
     title?: string;
     description?: string;
     buildUrl?: string;

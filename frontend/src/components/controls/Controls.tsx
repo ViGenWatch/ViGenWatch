@@ -8,6 +8,7 @@ import ChooseLayoutSection from './ChoooseLayout';
 import ChooseMetricSection from './ChooseMetric';
 import ChooseBranchLabelSection from './ChooseBranchLabel';
 import ChooseTipLabelSection from './ChooseTipLabel';
+import GeoSolutionSection from './GeoSolution';
 
 export interface PropsTypeControls {
   state: RootState;
@@ -31,6 +32,7 @@ const Controls = () => {
       <ChooseMetricSection {...props} />
       <ChooseBranchLabelSection {...props} />
       <ChooseTipLabelSection {...props} />
+      <GeoSolutionSection {...props} />
     </ControlsContainer>
   );
 };
