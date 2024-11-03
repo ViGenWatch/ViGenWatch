@@ -43,7 +43,7 @@ const uploadFileInput = async (req, res) => {
               augurVariable.augur_script_path
             );
             if (result) {
-              const dataPath = path.resolve(__dirname, "../../upload/khaitd01_workspace/execution_5/auspice/zika.json");
+              const dataPath = path.resolve(__dirname, "../../upload/khaitd01_workspace/execution_1/auspice/zika.json");
               const readStream = fs.createReadStream(dataPath);
               readStream.on("open", () => {
                 res.set("Content-Type", "application/json");

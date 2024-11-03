@@ -50,9 +50,9 @@ const DatasetPage = () => {
     return inGrid() && evenNumberOfGridPanels;
   };
 
-  // const shouldShowMapLegend = () => {
-  //   return !shouldMapBeInGrid();
-  // };
+  const shouldShowMapLegend = () => {
+    return !shouldMapBeInGrid();
+  };
 
   const { availableWidth, availableHeight, sidebarWidth } = calcStyles(
     props.browserDimensions,
@@ -81,7 +81,7 @@ const DatasetPage = () => {
               width={shouldMapBeInGrid() ? grid.width : full.width}
               height={shouldMapBeInGrid() ? grid.height : full.height}
               justGotNewDatasetRenderNewMap={false}
-              legend={false}
+              legend={shouldShowMapLegend()}
             />
           ) : null}
           {props.panelsToDisplay?.includes('entropy') ? (

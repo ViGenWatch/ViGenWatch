@@ -43,6 +43,7 @@ const TreeSection: React.FC<TreeSectionProps> = (props: TreeSectionProps) => {
     narrativeMode: state.narrative?.display,
     animationPlayPauseButton: state.controls?.animationPlayPauseButton,
     showOnlyPanels: state.controls?.showOnlyPanels,
+    legendOpen: state.controls?.legendOpen || false,
     t,
     dispatch
   };

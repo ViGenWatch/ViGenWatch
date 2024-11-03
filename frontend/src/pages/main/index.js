@@ -1,23 +1,17 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
 import AuspiceMap from '@khaitd0340/auspice/src/components/map/map';
 import { useTranslation } from 'react-i18next';
-export interface MapSectionProps {
-  width?: number;
-  height?: number;
-  justGotNewDatasetRenderNewMap?: boolean;
-  legend?: boolean;
-}
-const MapSection: React.FC<MapSectionProps> = (props: MapSectionProps) => {
-  const { width, height, justGotNewDatasetRenderNewMap, legend } = props;
+import React from 'react';
+
+const MapSection1 = () => {
   const { t } = useTranslation();
-  const state = useSelector((state: RootState) => state);
+  const state = useSelector((state) => state);
   const dispatch = useDispatch();
   const auspiceMapProps = {
-    width,
-    height,
-    justGotNewDatasetRenderNewMap,
-    legend,
+    width: 600,
+    height: 600,
+    justGotNewDatasetRenderNewMap: false,
+    legend: true,
     branchLengthsToDisplay: state.controls?.branchLengthsToDisplay,
     absoluteDateMin: state.controls?.absoluteDateMin,
     absoluteDateMax: state.controls?.absoluteDateMax,
@@ -35,15 +29,15 @@ const MapSection: React.FC<MapSectionProps> = (props: MapSectionProps) => {
     dateMaxNumeric: state.controls?.dateMaxNumeric,
     panelLayout: state.controls?.panelLayout,
     colorBy: state.controls?.colorScale?.colorBy,
-    narrativeMode: state.narrative?.display as boolean,
+    narrativeMode: state.narrative?.display,
     pieChart:
       !state.controls?.colorScale?.continuous && state.controls?.geoResolution !== state.controls?.colorScale?.colorBy,
     legendValues: state.controls?.colorScale?.legendValues,
     showTransmissionLines: state.controls?.showTransmissionLines,
     showOnlyPanels: state.controls?.showOnlyPanels,
     colorings: state.metadata?.colorings,
-    colorScale: state.controls?.colorScale,
-    legendOpen: state.controls?.legendOpen || false,
+    colorScale: state.controls.colorScale,
+    legenOpen: state.controls?.legenOpen || false,
     t,
     dispatch
   };
@@ -54,4 +48,4 @@ const MapSection: React.FC<MapSectionProps> = (props: MapSectionProps) => {
   );
 };
 
-export default MapSection;
+export default MapSection1;

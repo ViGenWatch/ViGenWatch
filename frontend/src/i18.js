@@ -15,8 +15,8 @@ export function i18nAuspiceInit() {
       vi: { sidebar: viSidebar, translation: viTranslation },
       en: { sidebar: enSidebar, translation: enTranslation }
     },
-    lng: 'vi',
-    fallbackLng: 'vi',
+    lng: 'en',
+    fallbackLng: 'en',
     interpolation: { escapeValue: false },
     defaultNS: 'translation',
     initImmediate: true,

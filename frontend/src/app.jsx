@@ -6,6 +6,7 @@ import LoginPage from './pages/login';
 import useAuth from './hook/useAuth';
 import SignUp from './pages/signup';
 import ReferencePage from './pages/reference';
+import MapSection1 from './pages/main';
 
 const App = () => {
   const { authState, refreshToken, dataSaveSession } = useAuth();
@@ -21,6 +22,7 @@ const App = () => {
   } else if (authState.user) {
     content = (
       <Routes>
+        <Route path='/main' element={<MapSection1 />} />
         <Route path='/start' element={<HomePage />} />
         <Route path='/reference' element={<ReferencePage />} />
         <Route path='/dataset' element={<DatasetPage />} />
