@@ -4,7 +4,7 @@ const CustomError = require("../entity/customError");
 const getListReferences = async () => {
   try {
     const references = await db.Reference.findAll({
-      atributes: ["id", "referencePath", "referenceName", "definition", "author", "version"]
+      attributes: ["id", "referencePath", "referenceName", "definition", "author", "version"]
     });
     return references;
   } catch (error) {

@@ -7,6 +7,8 @@ const createExecution = async (execution) => {
     const newExecution = await db.Execution.create({
       executionName: execution.executionName,
       executionNumber: execution.executionNumber,
+      referenceId: execution.referenceId,
+      executionPath: execution.executionPath,
       userId: execution.userId
     });
 
@@ -29,4 +31,31 @@ const getNextExecutionNumber = async (userId) => {
   }
 };
 
-module.exports = { createExecution, getNextExecutionNumber };
+const getListExecutions = async (userId) => {
+  try {
+    const executions = await db.Execution.findAll({
+      attributes: ["id", "executionName", "executionNumber"],
+      where: {
+        userId: userId
+      }
+    });
+    return executions;
+  } catch (error) {
+    throw new CustomError(error.message, 400);
+  }
+};
+
+const getExecutionById = async (executionId) => {
+  try {
+    const execution = await db.Execution.findOne({
+      where: {
+        id: executionId
+      }
+    });
+    return execution;
+  } catch (error) {
+    throw new CustomError(error.message, 400);
+  }
+};
+
+module.exports = { createExecution, getNextExecutionNumber, getListExecutions, getExecutionById };

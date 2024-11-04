@@ -11,7 +11,6 @@ const getInView = (tree) => {
   try {
     inView = tree.nodes.map((d) => d.shell.inView);
   } catch (e) {
-    console.log(e);
     inView = tree.nodes.map((d) => (d.inView !== undefined ? d.inView : true));
   }
   return inView;

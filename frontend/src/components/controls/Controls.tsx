@@ -9,6 +9,7 @@ import ChooseMetricSection from './ChooseMetric';
 import ChooseBranchLabelSection from './ChooseBranchLabel';
 import ChooseTipLabelSection from './ChooseTipLabel';
 import GeoSolutionSection from './GeoSolution';
+import ChooseDataset from './ChooseDataset';
 
 export interface PropsTypeControls {
   state: RootState;
@@ -25,6 +26,7 @@ const Controls = () => {
 
   return (
     <ControlsContainer>
+      <ChooseDataset />
       <ColorBySection {...props} />
       <FilterDataSection {...props} />
       <span style={{ paddingTop: '10px' }} />

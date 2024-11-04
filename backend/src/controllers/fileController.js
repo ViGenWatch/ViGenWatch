@@ -15,6 +15,7 @@ const uploadFileInput = async (req, res) => {
     }
     const { workspaceName, executionPath, userId, executionName, executionNumber, referenceId, referencePath } =
       req.body;
+    console.log(req.body);
     const configPath = path.resolve(__dirname, referencePath);
     const uploadPath = path.resolve(__dirname, "../../upload");
     const result = await execution.createOutputExecution(executionPath, configPath);
@@ -32,7 +33,8 @@ const uploadFileInput = async (req, res) => {
             userId: userId,
             executionName: executionName,
             executionNumber: executionNumber,
-            referenceId: referenceId
+            referenceId: referenceId,
+            executionPath: executionPath
           });
           if (newExecution) {
             if (!sshConnection.isConnected) {
@@ -43,15 +45,7 @@ const uploadFileInput = async (req, res) => {
               augurVariable.augur_script_path
             );
             if (result) {
-              const dataPath = path.resolve(__dirname, "../../upload/khaitd01_workspace/execution_1/auspice/zika.json");
-              const readStream = fs.createReadStream(dataPath);
-              readStream.on("open", () => {
-                res.set("Content-Type", "application/json");
-                readStream.pipe(res);
-              });
-              readStream.on("error", (err) => {
-                throw new CustomError({ message: err.message }, 404);
-              });
+              await execution.getAuspiceOutputJson(executionPath, res);
             }
             console.log("successfull");
           }

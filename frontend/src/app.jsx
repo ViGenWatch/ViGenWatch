@@ -1,12 +1,11 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import HomePage from './pages/start';
-import DatasetPage from './pages/dataset';
+import MainPage from './pages/Main';
 import LoginPage from './pages/login';
 import useAuth from './hook/useAuth';
 import SignUp from './pages/signup';
 import ReferencePage from './pages/reference';
-import MapSection1 from './pages/main';
 
 const App = () => {
   const { authState, refreshToken, dataSaveSession } = useAuth();
@@ -22,10 +21,9 @@ const App = () => {
   } else if (authState.user) {
     content = (
       <Routes>
-        <Route path='/main' element={<MapSection1 />} />
         <Route path='/start' element={<HomePage />} />
         <Route path='/reference' element={<ReferencePage />} />
-        <Route path='/dataset' element={<DatasetPage />} />
+        <Route path='/main' element={<MainPage />} />
         <Route path='/*' element={<Navigate to='/start' />} />
       </Routes>
     );

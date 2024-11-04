@@ -9,7 +9,7 @@ import LogoText from '../logo-text';
 
 const cx = classNames.bind(style);
 
-const LayoutComponent = ({ children }) => {
+const LayoutComponent = ({ children, index }) => {
   return (
     <div className={cx('section-layout')}>
       <div className={cx('section-layout__navbar')}>
@@ -19,27 +19,45 @@ const LayoutComponent = ({ children }) => {
         </div>
 
         <div className={cx('button-nav-group')}>
-          <div className={cx('button-nav-group__btn')}>
-            <NavLink className={cx('navlink')} to='/start'>
+          <div
+            className={cx('button-nav-group__btn')}
+            style={{
+              background: index === 1 && '#2296f3',
+              fontWeight: index === 1 && '500'
+            }}
+          >
+            <NavLink style={{ color: index === 1 && '#ffffff' }} className={cx('navlink')} to='/start'>
               Start
             </NavLink>
           </div>
           <RiArrowRightSFill fontSize={'25px'} />
-          <div className={cx('button-nav-group__btn')}>
-            <NavLink className={cx('navlink')} to='/reference'>
+          <div
+            className={cx('button-nav-group__btn')}
+            style={{
+              background: index === 2 && '#2296f3',
+              fontWeight: index === 2 && '500'
+            }}
+          >
+            <NavLink style={{ color: index === 2 && '#ffffff' }} className={cx('navlink')} to='/reference'>
               Reference
             </NavLink>
           </div>
           <RiArrowRightSFill fontSize={'25px'} />
-          <div className={cx('button-nav-group__btn')}>
-            <NavLink className={cx('navlink')} to='/dataset'>
-              Dataset
+          <div
+            className={cx('button-nav-group__btn')}
+            style={{
+              background: index === 3 && '#2296f3',
+              fontWeight: index === 3 && '500'
+            }}
+          >
+            <NavLink style={{ color: index === 3 && '#ffffff' }} className={cx('navlink')} to='/main'>
+              Main
             </NavLink>
           </div>
           <RiArrowRightSFill fontSize={'25px'} />
           <div className={cx('button-nav-group__btn')}>
             <NavLink className={cx('navlink')} to='/start'>
-              Tree
+              Edit
             </NavLink>
           </div>
           <RiArrowRightSFill fontSize={'25px'} />
@@ -56,7 +74,8 @@ const LayoutComponent = ({ children }) => {
 };
 
 LayoutComponent.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  index: PropTypes.number.isRequired
 };
 
 export default LayoutComponent;

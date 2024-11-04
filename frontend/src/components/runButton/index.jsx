@@ -54,9 +54,7 @@ const RunButton = (props) => {
       const json = JSON.parse(result);
       const auspiceState = createAuspiceState(json, dispatch);
       dispatch(auspiceStartClean(auspiceState));
-      console.log(auspiceState);
-      // await dispatchCleanStart(dispatch, main, null, query, null);
-      navigate('/dataset');
+      navigate('/main');
     } catch (error) {
       console.error('Error uploading files:', error);
     }

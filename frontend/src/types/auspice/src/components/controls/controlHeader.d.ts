@@ -4,7 +4,7 @@ declare module '@khaitd0340/auspice/src/components/controls/controlHeader' {
 
   export interface ControlHeaderProps {
     title: TFunctionResult;
-    tooltip: FC;
+    tooltip?: FC;
   }
 
   export const ControlHeader: FC<ControlHeaderProps>;

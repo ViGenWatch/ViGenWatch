@@ -10,6 +10,7 @@ import TreeSection from '../../components/tree/Tree';
 import MapSection from '../../components/map/Map';
 import { Suspense } from 'react';
 import EntropySection from '../../components/entropy/EntropySection';
+import useExecution from '../../hook/useExecution';
 
 const MainContainer = styled.div`
     position: 'relative';
@@ -21,8 +22,9 @@ const MainContainer = styled.div`
     align-items: 'start',
   `;
 
-const DatasetPage = () => {
+const MainPage = () => {
   const state = useSelector((state: RootState) => state);
+  const { loading } = useExecution();
   const props = {
     panelsToDisplay: state.controls?.panelsToDisplay,
     panelLayout: state.controls?.panelLayout,
@@ -39,11 +41,6 @@ const DatasetPage = () => {
   const inGrid = () => {
     return props.panelLayout === 'grid';
   };
-
-  // const shouldShowMeasurementsLegend = () => {
-  //   const showingTree = props.panelsToDisplay?.includes('tree');
-  //   return !showingTree || inGrid();
-  // };
 
   const shouldMapBeInGrid = () => {
     const evenNumberOfGridPanels = numberOfGridPanels(props.panelsToDisplay ?? []) % 2 === 0;
@@ -69,30 +66,32 @@ const DatasetPage = () => {
   );
 
   return (
-    <LayoutComponent>
-      <MainContainer>
-        <SideBar width={sidebarWidth} height={availableHeight} />
-        <PanelsContainer width={availableWidth} height={availableHeight} left={props.sidebarOpen ? sidebarWidth : 0}>
-          {props.panelsToDisplay?.includes('tree') ? (
-            <TreeSection width={inGrid() ? grid.width : full.width} height={inGrid() ? grid.height : full.height} />
-          ) : null}
-          {props.panelsToDisplay?.includes('map') ? (
-            <MapSection
-              width={shouldMapBeInGrid() ? grid.width : full.width}
-              height={shouldMapBeInGrid() ? grid.height : full.height}
-              justGotNewDatasetRenderNewMap={false}
-              legend={shouldShowMapLegend()}
-            />
-          ) : null}
-          {props.panelsToDisplay?.includes('entropy') ? (
-            <Suspense fallback={null}>
-              <EntropySection width={chartEntropy.width} height={chartEntropy.height} />
-            </Suspense>
-          ) : null}
-        </PanelsContainer>
-      </MainContainer>
+    <LayoutComponent index={3}>
+      {!loading && (
+        <MainContainer>
+          <SideBar width={sidebarWidth} height={availableHeight} />
+          <PanelsContainer width={availableWidth} height={availableHeight} left={props.sidebarOpen ? sidebarWidth : 0}>
+            {props.panelsToDisplay?.includes('tree') ? (
+              <TreeSection width={inGrid() ? grid.width : full.width} height={inGrid() ? grid.height : full.height} />
+            ) : null}
+            {props.panelsToDisplay?.includes('map') ? (
+              <MapSection
+                width={shouldMapBeInGrid() ? grid.width : full.width}
+                height={shouldMapBeInGrid() ? grid.height : full.height}
+                justGotNewDatasetRenderNewMap={false}
+                legend={shouldShowMapLegend()}
+              />
+            ) : null}
+            {props.panelsToDisplay?.includes('entropy') ? (
+              <Suspense fallback={null}>
+                <EntropySection width={chartEntropy.width} height={chartEntropy.height} />
+              </Suspense>
+            ) : null}
+          </PanelsContainer>
+        </MainContainer>
+      )}
     </LayoutComponent>
   );
 };
 
-export default DatasetPage;
+export default MainPage;

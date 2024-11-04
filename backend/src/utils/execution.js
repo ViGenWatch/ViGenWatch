@@ -2,6 +2,7 @@ const { mkdir } = require("fs/promises");
 const fs = require("fs");
 const path = require("path");
 const CustomError = require("../entity/customError");
+const glob = require("glob-promise");
 
 const formatWorkspaceName = (executionNumber) => {
   return `execution_${executionNumber}`;
@@ -42,4 +43,21 @@ const createOutputExecution = async (executionPath, configPath) => {
   }
 };
 
-module.exports = { formatWorkspaceName, createOutputExecution };
+const getAuspiceOutputJson = async (executionPath, res) => {
+  const auspicePath = path.join(executionPath, "auspice");
+  const pattern = path.join(auspicePath, "**");
+  const files = await glob(pattern, { cwd: auspicePath, nodir: true });
+  const virusName = path.basename(files[0]);
+  const dataPath = path.resolve(__dirname, `${auspicePath}/${virusName}`);
+  console.log(dataPath);
+  const readStream = fs.createReadStream(dataPath);
+  readStream.on("open", () => {
+    res.set("Content-Type", "application/json");
+    readStream.pipe(res);
+  });
+  readStream.on("error", (err) => {
+    throw new CustomError({ message: err.message }, 404);
+  });
+};
+
+module.exports = { formatWorkspaceName, createOutputExecution, getAuspiceOutputJson };

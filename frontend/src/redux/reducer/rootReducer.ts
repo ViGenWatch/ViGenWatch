@@ -13,6 +13,7 @@ import notifications from '@khaitd0340/auspice/src/reducers/notifications';
 import narrative from '@khaitd0340/auspice/src/reducers/narrative';
 import treeToo from '@khaitd0340/auspice/src/reducers/treeToo';
 import measurements from '@khaitd0340/auspice/src/reducers/measurements';
+import executionReducer from './executionReducer';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -30,7 +31,8 @@ const rootReducer = combineReducers({
   treeToo,
   // general: auspiceGeneralReducer,
   // query: auspiceQueryReducer,
-  measurements
+  measurements,
+  execution: executionReducer
 });
 
 export default rootReducer;

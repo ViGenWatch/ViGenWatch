@@ -13,7 +13,6 @@ import useReferences from '../../hook/useReferences';
 import ItemReferenceSelected from './itemReferenceSelected';
 import FadeLoader from 'react-spinners/FadeLoader';
 import RunButton from '../../components/runButton';
-import { width } from '@khaitd0340/auspice/src/util/globals';
 
 const cx = classNames.bind(style);
 
@@ -47,7 +46,7 @@ const HomePage = () => {
 
   return (
     <div style={{ position: 'relative' }}>
-      <LayoutComponent>
+      <LayoutComponent index={1}>
         <div className={cx('section-start')}>
           <LogoText style={{ fontSize: '6rem', fontWeight: '300' }} />
           <span className={cx('subtitle')}>Clade assignment, mutation calling, and sequence quality checks</span>
@@ -151,7 +150,6 @@ const HomePage = () => {
                 </button>
 
                 <div className={cx('suggest-btn-group')}>
-                  <span>{width}</span>
                   <RunButton inputDataState={inputDataState} referencesState={referencesState} authState={authState} />
                 </div>
               </div>

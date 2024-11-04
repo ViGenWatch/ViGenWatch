@@ -17,7 +17,7 @@ const ReferencePage = () => {
   const inputDataState = useSelector((state) => state.inputData);
   const navigate = useNavigate();
   return (
-    <LayoutComponent>
+    <LayoutComponent index={2}>
       <div className={cx('section-reference')}>
         <div className={cx('section-reference-group')}>
           <div className={cx('section-reference-group__container')}>
