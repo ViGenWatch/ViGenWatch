@@ -45,7 +45,7 @@ const uploadFileInput = async (req, res) => {
               augurVariable.augur_script_path
             );
             if (result) {
-              await execution.getAuspiceOutputJson(executionPath, res);
+              return res.status(200).json({ message: "Create Execution Successfull" });
             }
             console.log("successfull");
           }

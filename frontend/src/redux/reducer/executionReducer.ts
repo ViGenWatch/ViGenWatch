@@ -34,7 +34,7 @@ export const executionSlice = createSlice({
 
     getExecutionsSuccess: (state, action: PayloadAction<Execution[]>) => {
       state.executions = action.payload;
-      state.executionSelected = action.payload.length > 0 ? action.payload[0] : null;
+      state.executionSelected = action.payload.length > 0 ? action.payload[action.payload.length - 1] : null;
       state.loading = false;
       state.error = null;
     },

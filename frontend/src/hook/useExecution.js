@@ -10,6 +10,7 @@ const useExecution = () => {
   const dispatch = useDispatch();
   const executionsState = useSelector((state) => state.execution);
   const authState = useSelector((state) => state.auth);
+
   useEffect(() => {
     setLoading(true);
     if (!executionsState.executionSelected) {

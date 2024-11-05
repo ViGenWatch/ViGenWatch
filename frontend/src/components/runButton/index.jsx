@@ -4,18 +4,10 @@ import classNames from 'classnames/bind';
 const cx = classNames.bind(style);
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { createAuspiceState } from '../../actions/auspice/createAuspiceState';
-import { auspiceStartClean } from '../../actions/auspice/auspice.actions';
-// import { setDataStart } from '../../actions/tree';
-// import { createStateFromQueryOrJSONs } from '@khaitd0340/auspice/src/actions/recomputeReduxState';
-// import * as types from '@khaitd0340/auspice/src/actions/types';
-// import { dispatchCleanStart } from '@khaitd0340/auspice/src/actions/loadData';
 
 const RunButton = (props) => {
   const { inputDataState, referencesState, authState } = props;
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const handleUpload = async () => {
     if (inputDataState.inputFilesData.length === 0 || inputDataState.indexReference === null) {
       alert('Please select a file first.');
@@ -36,24 +28,9 @@ const RunButton = (props) => {
         method: 'POST',
         body: formData
       });
-
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder('utf-8');
-      let result = '';
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        result += decoder.decode(value, { stream: true });
-      }
-
-      const json = JSON.parse(result);
-      const auspiceState = createAuspiceState(json, dispatch);
-      dispatch(auspiceStartClean(auspiceState));
       navigate('/main');
     } catch (error) {
       console.error('Error uploading files:', error);
