@@ -11,6 +11,7 @@ import MapSection from '../../components/map/Map';
 import { Suspense } from 'react';
 import EntropySection from '../../components/entropy/EntropySection';
 import useExecution from '../../hook/useExecution';
+import { LOADING } from '../../components/loading';
 
 const MainContainer = styled.div`
     position: 'relative';
@@ -67,7 +68,7 @@ const MainPage = () => {
 
   return (
     <LayoutComponent index={3}>
-      {!loading && (
+      {!loading ? (
         <MainContainer>
           <SideBar width={sidebarWidth} height={availableHeight} />
           <PanelsContainer width={availableWidth} height={availableHeight} left={props.sidebarOpen ? sidebarWidth : 0}>
@@ -89,6 +90,8 @@ const MainPage = () => {
             ) : null}
           </PanelsContainer>
         </MainContainer>
+      ) : (
+        <LOADING />
       )}
     </LayoutComponent>
   );

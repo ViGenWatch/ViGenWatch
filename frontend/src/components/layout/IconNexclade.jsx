@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const IconNextcalde = () => (
+const IconNextcalde = ({ width = '100px', height = '100px' }) => (
   <svg
     xmlns='http://www.w3.org/2000/svg'
-    style={{ width: '35px', height: '35px' }}
+    style={{ width: width, height: height }}
     viewBox='0 0 68.146 68.234'
     className='custom-svg'
   >
@@ -203,5 +204,10 @@ const IconNextcalde = () => (
     </g>
   </svg>
 );
+
+IconNextcalde.propTypes = {
+  width: PropTypes.string,
+  height: PropTypes.string
+};
 
 export default IconNextcalde;

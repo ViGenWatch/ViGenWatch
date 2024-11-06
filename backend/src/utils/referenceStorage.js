@@ -10,7 +10,6 @@ const referencePath = (folerName) => {
 const referenceStorage = multer.diskStorage({
   destination: async function (req, file, cb) {
     const { folderName } = req.body;
-    console.log(req.body);
     const _referencePath = referencePath(folderName);
     req.body.referencePath = _referencePath;
     if (!fs.existsSync(_referencePath)) {

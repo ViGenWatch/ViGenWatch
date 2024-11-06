@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import style from './reference.module.scss';
 import classNames from 'classnames/bind';
 import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
+
 const cx = classNames.bind(style);
 
-const AddReference = () => {
+const CreateReference = (props) => {
   const [clickChange, setClickChange] = useState(1);
   const authState = useSelector((state) => state.auth);
   const { user } = authState;
@@ -129,6 +131,7 @@ const AddReference = () => {
   };
 
   const handleCreateNewReference = async () => {
+    props.handleLoading(true);
     const formData = new FormData();
     Object.entries(formDataState).forEach(([key, value]) => {
       formData.append(key, value);
@@ -145,6 +148,11 @@ const AddReference = () => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
+      props.closeModal();
+      props.getNewState();
+      setTimeout(() => {
+        props.handleLoading(false);
+      }, 750);
     } catch (error) {
       console.error('Error uploading files:', error);
     }
@@ -283,4 +291,10 @@ const AddReference = () => {
   );
 };
 
-export default AddReference;
+CreateReference.propTypes = {
+  getNewState: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  handleLoading: PropTypes.func.isRequired
+};
+
+export default CreateReference;

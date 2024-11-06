@@ -8,7 +8,7 @@ import { Actions } from '../../redux/reducer/inputDataReducer';
 const cx = classNames.bind(style);
 
 const ItemReference = (props) => {
-  const { referenceName, author, definition, version, index } = props;
+  const { referenceName, author, definition, version, index, status } = props;
   const inputDataState = useSelector((state) => state.inputData);
 
   const dispatch = useDispatch();
@@ -31,7 +31,9 @@ const ItemReference = (props) => {
       </div>
       <div className={cx('infor-reference-group')}>
         <span className={cx('infor-reference-group__name')}>{referenceName}</span>
-        <div className={cx('infor-reference-group__icon')}>Official</div>
+        <div style={{ background: !status && 'rgb(230, 112, 48)' }} className={cx('infor-reference-group__icon')}>
+          {status ? 'Official' : 'Private'}
+        </div>
         <span className={cx('infor-reference-group__definition', 'infor-text')}>{`Definition: ${definition}`}</span>
         <span className={cx('infor-reference-group__author', 'infor-text')}>{`Author: ${author}`}</span>
         <span className={cx('infor-reference-group__version', 'infor-text')}>{`Version: ${version}`}</span>
@@ -45,7 +47,8 @@ ItemReference.propTypes = {
   author: PropTypes.string.isRequired,
   definition: PropTypes.string.isRequired,
   version: PropTypes.string.isRequired,
-  index: PropTypes.number
+  index: PropTypes.number,
+  status: PropTypes.boolean
 };
 
 export default ItemReference;

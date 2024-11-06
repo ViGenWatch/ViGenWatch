@@ -2,13 +2,15 @@ const express = require("express");
 const referenceController = require("../controllers/referenceController");
 const referenceStorage = require("../utils/referenceStorage");
 const process = require("process");
+const checkInput = require("../middlewares/validate");
 
 let referenceRoutes = express.Router();
 
-referenceRoutes.get("/getlist", referenceController.getListReferencesController);
+referenceRoutes.get("/getlist/:userId", referenceController.getListReferencesController);
 referenceRoutes.post(
   "/create-reference",
   referenceStorage.uploadReferenceFile.array("files", process.env.REFERENCE_FILE_INPUT_NUMBER || 5),
+  checkInput.validateReferenceInput(),
   referenceController.uploadReferenceFileController
 );
 

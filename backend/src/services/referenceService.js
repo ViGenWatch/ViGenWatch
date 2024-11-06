@@ -1,13 +1,13 @@
 const db = require("../models/index");
 const CustomError = require("../entity/customError");
-const { where } = require("sequelize");
+const { where, Op } = require("sequelize");
 
-const getListReferences = async () => {
+const getListReferences = async (userId) => {
   try {
     const references = await db.Reference.findAll({
-      attributes: ["id", "referencePath", "referenceName", "definition", "author", "version"],
+      attributes: ["id", "referencePath", "referenceName", "definition", "author", "version", "status", "userId"],
       where: {
-        status: true
+        [Op.or]: [{ status: 1 }, { userId: userId }]
       }
     });
     return references;

@@ -1,11 +1,12 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import HomePage from './pages/start';
-import MainPage from './pages/Main';
+import MainPage from './pages/main';
 import LoginPage from './pages/login';
 import useAuth from './hook/useAuth';
 import SignUp from './pages/signup';
 import ReferencePage from './pages/reference';
+import EditPage from './pages/edit';
 
 const App = () => {
   const { authState, refreshToken, dataSaveSession } = useAuth();
@@ -24,6 +25,7 @@ const App = () => {
         <Route path='/start' element={<HomePage />} />
         <Route path='/reference' element={<ReferencePage />} />
         <Route path='/main' element={<MainPage />} />
+        <Route path='/edit' element={<EditPage />} />
         <Route path='/*' element={<Navigate to='/start' />} />
       </Routes>
     );

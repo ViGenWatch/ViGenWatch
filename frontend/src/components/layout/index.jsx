@@ -10,11 +10,15 @@ import LogoText from '../logo-text';
 const cx = classNames.bind(style);
 
 const LayoutComponent = ({ children, index }) => {
+  const props = {
+    width: '35px',
+    height: '35px'
+  };
   return (
     <div className={cx('section-layout')}>
       <div className={cx('section-layout__navbar')}>
         <div className={cx('icon-group')}>
-          <IconNextcalde />
+          <IconNextcalde {...props} />
           <LogoText style={{ fontSize: '20px', fontWeight: '400' }} />
         </div>
 
@@ -55,8 +59,14 @@ const LayoutComponent = ({ children, index }) => {
             </NavLink>
           </div>
           <RiArrowRightSFill fontSize={'25px'} />
-          <div className={cx('button-nav-group__btn')}>
-            <NavLink className={cx('navlink')} to='/start'>
+          <div
+            className={cx('button-nav-group__btn')}
+            style={{
+              background: index === 4 && '#2296f3',
+              fontWeight: index === 4 && '500'
+            }}
+          >
+            <NavLink style={{ color: index === 4 && '#ffffff' }} className={cx('navlink')} to='/edit'>
               Edit
             </NavLink>
           </div>

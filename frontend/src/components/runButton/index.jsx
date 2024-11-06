@@ -6,13 +6,14 @@ import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 
 const RunButton = (props) => {
-  const { inputDataState, referencesState, authState } = props;
+  const { inputDataState, referencesState, authState, handleLoading } = props;
   const navigate = useNavigate();
   const handleUpload = async () => {
     if (inputDataState.inputFilesData.length === 0 || inputDataState.indexReference === null) {
       alert('Please select a file first.');
       return;
     }
+    handleLoading(true);
 
     const formData = new FormData();
     formData.append('userId', authState.user.id);
@@ -31,8 +32,10 @@ const RunButton = (props) => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
+      handleLoading(false);
       navigate('/main');
     } catch (error) {
+      handleLoading(false);
       console.error('Error uploading files:', error);
     }
   };
@@ -47,7 +50,8 @@ const RunButton = (props) => {
 RunButton.propTypes = {
   inputDataState: PropTypes.object.isRequired,
   referencesState: PropTypes.object.isRequired,
-  authState: PropTypes.object.isRequired
+  authState: PropTypes.object.isRequired,
+  handleLoading: PropTypes.func.isRequired
 };
 
 export default RunButton;

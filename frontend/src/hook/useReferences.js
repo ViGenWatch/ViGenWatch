@@ -5,14 +5,20 @@ import { Actions } from '../redux/reducer/referencesReducer';
 const useReferences = () => {
   const dispatch = useDispatch();
   const referencesState = useSelector((state) => state.references);
+  const authState = useSelector((state) => state.auth);
+  const inputDataState = useSelector((state) => state.inputData);
 
   useEffect(() => {
     if (!referencesState.references) {
-      dispatch(Actions.getReferencesRequest());
+      getReferences(authState.user.id);
     }
   }, []);
 
-  return { referencesState };
+  const getReferences = (data) => {
+    dispatch(Actions.getReferencesRequest(data));
+  };
+
+  return { referencesState, getReferences, authState, inputDataState };
 };
 
 export default useReferences;

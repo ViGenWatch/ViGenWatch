@@ -23,8 +23,19 @@ const validateSignIn = () => {
   ];
 };
 
+const validateReferenceInput = () => {
+  return [
+    check("folderName").notEmpty().withMessage("Folder Name Is Require"),
+    check("referenceName").notEmpty().withMessage("Reference Name Is Require"),
+    check("definition").notEmpty().withMessage("Definition Is Require"),
+    check("referencePath").notEmpty().withMessage("Reference Path Is Require"),
+    check("author").notEmpty().withMessage("Author Is Require"),
+    check("userId").notEmpty().withMessage("UserId Is Require")
+  ];
+};
+
 const validateGetAccountByToken = () => {
   return [check("refreshToken").notEmpty().withMessage("refreshToken is required")];
 };
 
-module.exports = { validateRegisterUser, validateSignIn, validateGetAccountByToken };
+module.exports = { validateRegisterUser, validateSignIn, validateGetAccountByToken, validateReferenceInput };
