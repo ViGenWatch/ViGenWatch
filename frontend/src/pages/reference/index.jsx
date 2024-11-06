@@ -107,7 +107,7 @@ const ReferencePage = () => {
                         }
                         return true;
                       })
-                      .map((reference, index) => <ItemReference key={reference.id} {...reference} index={index} />)}
+                      .map((reference) => <ItemReference key={reference.id} {...reference} />)}
                 </div>
               </div>
             </div>

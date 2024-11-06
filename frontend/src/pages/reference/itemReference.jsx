@@ -8,7 +8,7 @@ import { Actions } from '../../redux/reducer/inputDataReducer';
 const cx = classNames.bind(style);
 
 const ItemReference = (props) => {
-  const { referenceName, author, definition, version, index, status } = props;
+  const { id, referenceName, author, definition, version, status } = props;
   const inputDataState = useSelector((state) => state.inputData);
 
   const dispatch = useDispatch();
@@ -17,11 +17,11 @@ const ItemReference = (props) => {
       role='button'
       style={{
         background:
-          inputDataState.indexReference !== null && inputDataState.indexReference === index
+          inputDataState.selectedReferenceId !== null && inputDataState.selectedReferenceId === id
             ? 'rgb(49, 158, 244)'
-            : 'white'
+            : '#ffffff'
       }}
-      onClick={() => dispatch(Actions.setIndexReference(index))}
+      onClick={() => dispatch(Actions.setIndexReference(id))}
       className={cx('item-reference-container')}
     >
       <div className={cx('icon-reference-group')}>
@@ -47,7 +47,7 @@ ItemReference.propTypes = {
   author: PropTypes.string.isRequired,
   definition: PropTypes.string.isRequired,
   version: PropTypes.string.isRequired,
-  index: PropTypes.number,
+  id: PropTypes.number.isRequired,
   status: PropTypes.boolean
 };
 

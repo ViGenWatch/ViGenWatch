@@ -149,7 +149,7 @@ const CreateReference = (props) => {
         throw new Error('Network response was not ok');
       }
       props.closeModal();
-      props.getNewState();
+      props.getNewState(user.id);
       setTimeout(() => {
         props.handleLoading(false);
       }, 750);

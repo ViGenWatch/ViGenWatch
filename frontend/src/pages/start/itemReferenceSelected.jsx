@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 const cx = classNames.bind(style);
 
 const ItemReferenceSelected = (props) => {
-  const { referenceName, author, definition, version } = props;
+  const { referenceName, author, definition, version, status } = props;
   return (
     <div className={cx('item-reference-container')}>
       <div className={cx('icon-reference-group')}>
@@ -16,7 +16,9 @@ const ItemReferenceSelected = (props) => {
       </div>
       <div className={cx('infor-reference-group')}>
         <span className={cx('infor-reference-group__name')}>{referenceName}</span>
-        <div className={cx('infor-reference-group__icon')}>Official</div>
+        <div style={{ background: !status && 'rgb(230, 112, 48)' }} className={cx('infor-reference-group__icon')}>
+          {status ? 'Official' : 'Private'}
+        </div>
         <span className={cx('infor-reference-group__definition', 'infor-text')}>{`Definition: ${definition}`}</span>
         <span className={cx('infor-reference-group__author', 'infor-text')}>{`Author: ${author}`}</span>
         <span className={cx('infor-reference-group__version', 'infor-text')}>{`Version: ${version}`}</span>
@@ -29,7 +31,8 @@ ItemReferenceSelected.propTypes = {
   referenceName: PropTypes.string.isRequired,
   author: PropTypes.string.isRequired,
   definition: PropTypes.string.isRequired,
-  version: PropTypes.string.isRequired
+  version: PropTypes.string.isRequired,
+  status: PropTypes.boolean
 };
 
 export default ItemReferenceSelected;

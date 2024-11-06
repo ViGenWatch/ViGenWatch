@@ -18,8 +18,12 @@ const RunButton = (props) => {
     const formData = new FormData();
     formData.append('userId', authState.user.id);
     formData.append('userName', authState.user.userName);
-    formData.append('referenceId', referencesState.references[inputDataState.indexReference].id);
-    formData.append('referencePath', referencesState.references[inputDataState.indexReference].referencePath);
+    formData.append('referenceId', inputDataState.selectedReferenceId);
+    formData.append(
+      'referencePath',
+      referencesState.references.filter((reference) => reference.id === inputDataState.selectedReferenceId)[0]
+        .referencePath
+    );
     inputDataState.inputFilesData.forEach((file) => {
       formData.append('files', file);
     });

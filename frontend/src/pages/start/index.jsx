@@ -144,12 +144,12 @@ const HomePage = () => {
 
                   <button
                     className={cx(
-                      inputDataState.indexReference !== null
+                      inputDataState.selectedReferenceId !== null
                         ? 'change-reference-group-active'
                         : 'change-reference-group'
                     )}
                     onClick={() => {
-                      if (inputDataState.indexReference !== null) {
+                      if (inputDataState.selectedReferenceId !== null) {
                         navigate('/reference');
                       }
                     }}
@@ -167,12 +167,16 @@ const HomePage = () => {
                   </div>
                 </div>
 
-                {inputDataState.indexReference !== null ? (
+                {inputDataState.selectedReferenceId !== null ? (
                   referencesState.references &&
                   referencesState.references.length > 0 &&
-                  inputDataState.indexReference !== null && (
+                  inputDataState.selectedReferenceId !== null && (
                     <div className={cx('input-group__dataset-input')}>
-                      <ItemReferenceSelected {...referencesState.references[inputDataState.indexReference]} />
+                      <ItemReferenceSelected
+                        {...referencesState.references.find(
+                          (element) => element.id === inputDataState.selectedReferenceId
+                        )}
+                      />
                     </div>
                   )
                 ) : (

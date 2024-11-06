@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initInputData = {
   inputFilesData: [],
-  indexReference: null
+  selectedReferenceId: null
 };
 
 const inputDataSlice = createSlice({
@@ -28,7 +28,7 @@ const inputDataSlice = createSlice({
     setIndexReference: (state, action) => {
       return {
         ...state,
-        indexReference: action.payload
+        selectedReferenceId: action.payload
       };
     },
 
