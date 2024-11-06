@@ -15,7 +15,6 @@ const uploadFileInput = async (req, res) => {
     }
     const { workspaceName, executionPath, userId, executionName, executionNumber, referenceId, referencePath } =
       req.body;
-    console.log(req.body);
     const configPath = path.resolve(__dirname, referencePath);
     const uploadPath = path.resolve(__dirname, "../../upload");
     const result = await execution.createOutputExecution(executionPath, configPath);

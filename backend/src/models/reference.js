@@ -18,7 +18,11 @@ module.exports = (sequelize, DataTypes) => {
       referenceName: DataTypes.STRING,
       definition: DataTypes.STRING,
       author: DataTypes.STRING,
-      version: DataTypes.STRING
+      version: DataTypes.STRING,
+      userId: DataTypes.INTEGER,
+      link: DataTypes.STRING,
+      status: DataTypes.BOOLEAN,
+      require: DataTypes.BOOLEAN
     },
     {
       sequelize,

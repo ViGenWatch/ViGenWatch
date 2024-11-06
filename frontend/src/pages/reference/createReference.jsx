@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
 import style from './reference.module.scss';
 import classNames from 'classnames/bind';
+import { useSelector } from 'react-redux';
 const cx = classNames.bind(style);
 
 const AddReference = () => {
   const [clickChange, setClickChange] = useState(1);
-  const [formData, setFormData] = useState({
+  const authState = useSelector((state) => state.auth);
+  const { user } = authState;
+  const [formDataState, setFormData] = useState({
     folderName: '',
     referenceName: '',
     definition: '',
     author: '',
     version: '',
-    link: ''
+    link: '',
+    status: false,
+    require: false
   });
 
   const [files, setFile] = useState([
@@ -118,21 +123,40 @@ const AddReference = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
-      ...formData,
+      ...formDataState,
       [name]: value
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Submitted Data:', formData);
+  const handleCreateNewReference = async () => {
+    const formData = new FormData();
+    Object.entries(formDataState).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    formData.append('userId', user.id);
+    files.forEach((file) => {
+      formData.append('files', file.value);
+    });
+    try {
+      const response = await fetch('http://localhost:5050/api/reference/create-reference/', {
+        method: 'POST',
+        body: formData
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+    } catch (error) {
+      console.error('Error uploading files:', error);
+    }
   };
 
   return (
     <div className={cx('add-reference-group')}>
       <div className={cx('add-reference-group__header-group')}>
         <span className={cx('header-title')}>Create Reference Folder</span>
-        <button className={cx('create-new-config')}>Create Reference Folder</button>
+        <button className={cx('create-new-config')} onClick={handleCreateNewReference}>
+          Create Reference Folder
+        </button>
       </div>
       <div className={cx('add-reference-group__btn-change')}>
         <button
@@ -150,14 +174,14 @@ const AddReference = () => {
       </div>
       <div className={cx('form-reference-infor')}>
         {clickChange === 1 ? (
-          <form onSubmit={handleSubmit} className={cx('form-container')}>
+          <form className={cx('form-container')}>
             <div className={cx('form-group')}>
               <label htmlFor='referenceName'>Folder Name</label>
               <input
                 type='text'
                 id='folderName'
                 name='folderName'
-                value={formData.folderName}
+                value={formDataState.folderName}
                 onChange={handleChange}
               />
             </div>
@@ -167,7 +191,7 @@ const AddReference = () => {
                 type='text'
                 id='referenceName'
                 name='referenceName'
-                value={formData.referenceName}
+                value={formDataState.referenceName}
                 onChange={handleChange}
               />
             </div>
@@ -178,37 +202,37 @@ const AddReference = () => {
                 type='text'
                 id='definition'
                 name='definition'
-                value={formData.definition}
+                value={formDataState.definition}
                 onChange={handleChange}
               />
             </div>
 
             <div className={cx('form-group')}>
               <label htmlFor='author'>Author</label>
-              <input type='text' id='author' name='author' value={formData.author} onChange={handleChange} />
+              <input type='text' id='author' name='author' value={formDataState.author} onChange={handleChange} />
             </div>
 
             <div className={cx('form-group')}>
               <label htmlFor='version'>Version</label>
-              <input type='text' id='version' name='version' value={formData.version} onChange={handleChange} />
+              <input type='text' id='version' name='version' value={formDataState.version} onChange={handleChange} />
             </div>
 
             <div className={cx('form-group')}>
               <label htmlFor='link'>Link Paper</label>
-              <input type='text' id='link' name='link' value={formData.link} onChange={handleChange} />
+              <input type='text' id='link' name='link' value={formDataState.link} onChange={handleChange} />
             </div>
 
             <div className={cx('form-group')}>
-              <label htmlFor='status'>Status</label>
+              <label htmlFor='require'>Status</label>
               <select
                 className={cx('select')}
-                id='status'
-                name='status'
-                value={formData.status}
+                id='require'
+                name='require'
+                value={formDataState.require}
                 onChange={handleChange}
               >
-                <option value='public'>Public</option>
-                <option value='private'>Private</option>
+                <option value={true}>Public</option>
+                <option value={false}>Private</option>
               </select>
             </div>
           </form>

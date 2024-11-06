@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import RunButton from '../../components/runButton';
 import { useSelector } from 'react-redux';
 import useReferences from '../../hook/useReferences';
-import AddReference from './addReference';
+import AddReference from './createReference';
 
 const cx = classNames.bind(style);
 

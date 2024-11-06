@@ -21,4 +21,34 @@ const getListReferencesController = async (req, res) => {
   }
 };
 
-module.exports = { getListReferencesController };
+const uploadReferenceFileController = async (req, res) => {
+  try {
+    const { folderName, referenceName, definition, author, version, link, status, referencePath, userId, require } =
+      req.body;
+    const newReference = referenceService.createReference({
+      folderName,
+      referenceName,
+      definition,
+      author,
+      version,
+      link,
+      status,
+      referencePath,
+      userId,
+      require
+    });
+    if (newReference) {
+      return res.status(200).json({ message: "create new reference successfull" });
+    } else {
+      throw new CustomError({ message: error.message }, 400);
+    }
+  } catch (error) {
+    if (error instanceof CustomError) {
+      process.env.NODE_ENV == "development" ? console.log(error) : null;
+      return res.status(error.statusCode).json({ message: error.message });
+    }
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = { getListReferencesController, uploadReferenceFileController };
