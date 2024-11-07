@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import LayoutComponent from '../../components/layout';
+import LayoutComponent from '../../components/Layout';
 import style from './start.module.scss';
 import classNames from 'classnames/bind';
-import LogoText from '../../components/logo-text';
+import LogoText from '../../components/Logo-Text';
 import { IoMdArrowDropdown } from 'react-icons/io';
 import { CiFileOn } from 'react-icons/ci';
 import { RiDeleteBin6Line } from 'react-icons/ri';
@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Actions } from '../../redux/reducer/inputDataReducer';
 import useReferences from '../../hook/useReferences';
 import ItemReferenceSelected from './itemReferenceSelected';
-import RunButton from '../../components/runButton';
+import RunButton from '../../components/RunButton';
 import { LOADING } from '../../components/loading';
 
 const cx = classNames.bind(style);

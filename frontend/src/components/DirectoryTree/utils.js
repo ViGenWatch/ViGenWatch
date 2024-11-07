@@ -211,7 +211,7 @@ export const getEvent = (eventName, path, ...params) => ({
   params
 });
 
-export const initializeTreeState = (data, initCheckedStatus = 'unchecked', initOpenStatus = 'open') => {
+export const initializeTreeState = (data, initCheckedStatus = 'unchecked', initOpenStatus = 'closed') => {
   let initState = initStateWithUniqIds(data);
 
   switch (initCheckedStatus) {
@@ -233,7 +233,11 @@ export const initializeTreeState = (data, initCheckedStatus = 'unchecked', initO
       break;
 
     case 'closed':
-      initState = setAllOpenStatus(initState, false);
+      initState = {
+        ...initState,
+        isOpen: true,
+        children: initState.children.map((child) => setAllOpenStatus(child, false))
+      };
       break;
 
     default:

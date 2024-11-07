@@ -7,6 +7,7 @@ import useAuth from './hook/useAuth';
 import SignUp from './pages/signup';
 import ReferencePage from './pages/reference';
 import EditPage from './pages/edit';
+import ExportPage from './pages/export';
 
 const App = () => {
   const { authState, refreshToken, dataSaveSession } = useAuth();
@@ -26,6 +27,7 @@ const App = () => {
         <Route path='/reference' element={<ReferencePage />} />
         <Route path='/main' element={<MainPage />} />
         <Route path='/edit' element={<EditPage />} />
+        <Route path='/export' element={<ExportPage />} />
         <Route path='/*' element={<Navigate to='/start' />} />
       </Routes>
     );

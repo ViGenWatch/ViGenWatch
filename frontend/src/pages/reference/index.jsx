@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import LayoutComponent from '../../components/layout';
+import LayoutComponent from '../../components/Layout';
 import style from './reference.module.scss';
 import classNames from 'classnames/bind';
 import { IoIosArrowBack, IoIosArrowDown, IoIosSearch } from 'react-icons/io';
 import ItemReference from './itemReference';
 import { useNavigate } from 'react-router-dom';
-import RunButton from '../../components/runButton';
+import RunButton from '../../components/RunButton';
 import useReferences from '../../hook/useReferences';
 import CreateReference from './createReference';
 import { LOADING } from '../../components/loading';

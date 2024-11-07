@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import IconNextcalde from '../layout/IconNexclade';
+import IconNextcalde from '../Layout/IconNexclade';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 

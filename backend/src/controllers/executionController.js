@@ -39,4 +39,17 @@ const getOutputJsonController = async (req, res) => {
   }
 };
 
-module.exports = { getListExecutionController, getOutputJsonController };
+const getContentFileController = async (req, res) => {
+  try {
+    const filePath = decodeURIComponent(req.query.path);
+    await executionHelper.getContentFile(filePath, res);
+  } catch (error) {
+    if (error instanceof CustomError) {
+      process.env.NODE_ENV == "development" ? console.log(error) : null;
+      return res.status(error.statusCode).json({ message: error.message });
+    }
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = { getListExecutionController, getOutputJsonController, getContentFileController };

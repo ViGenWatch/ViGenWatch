@@ -12,30 +12,22 @@ const createOutputExecution = async (executionPath, configPath) => {
   try {
     const configExecutionPath = path.join(executionPath, "config");
     await mkdir(configExecutionPath, { recursive: true });
-    const files = await new Promise((resolve, reject) => {
-      fs.readdir(configPath, (err, files) => {
-        if (err) {
-          return reject(new CustomError(err.message, 400));
-        }
-        resolve(files);
-      });
-    });
+
+    const files = await fs.promises.readdir(configPath);
 
     await Promise.all(
-      files.map((file) => {
+      files.map(async (file) => {
         const sourcePath = path.join(configPath, file);
         const targetPath = path.join(configExecutionPath, file);
-        return new Promise((resolve, reject) => {
-          fs.copyFile(sourcePath, targetPath, (err) => {
-            if (err) {
-              return reject(new CustomError(err.message, 400));
-            }
-            console.log(`Symlink created successfully for ${file}`);
-            resolve();
-          });
-        });
+        try {
+          await fs.promises.copyFile(sourcePath, targetPath);
+          console.log(`Symlink created successfully for ${file}`);
+        } catch (err) {
+          throw new CustomError(err.message, 400);
+        }
       })
     );
+
     return true;
   } catch (error) {
     console.error(error);
@@ -44,20 +36,48 @@ const createOutputExecution = async (executionPath, configPath) => {
 };
 
 const getAuspiceOutputJson = async (executionPath, res) => {
-  const auspicePath = path.join(executionPath, "auspice");
-  const pattern = path.join(auspicePath, "**");
-  const files = await glob(pattern, { cwd: auspicePath, nodir: true });
-  const virusName = path.basename(files[0]);
-  const dataPath = path.resolve(__dirname, `${auspicePath}/${virusName}`);
-  console.log(dataPath);
-  const readStream = fs.createReadStream(dataPath);
-  readStream.on("open", () => {
-    res.set("Content-Type", "application/json");
-    readStream.pipe(res);
-  });
-  readStream.on("error", (err) => {
-    throw new CustomError({ message: err.message }, 404);
-  });
+  try {
+    const auspicePath = path.join(executionPath, "auspice");
+    const pattern = path.join(auspicePath, "**");
+    const files = await glob(pattern, { cwd: auspicePath, nodir: true });
+    if (files.length === 0) {
+      throw new CustomError("No Auspice output found", 404);
+    }
+    const virusName = path.basename(files[0]);
+    const dataPath = path.resolve(__dirname, `${auspicePath}/${virusName}`);
+    res.setHeader("Content-Type", "application/json");
+    fs.createReadStream(dataPath).pipe(res);
+  } catch (err) {
+    throw new CustomError(err.message, err.status || 500);
+  }
 };
 
-module.exports = { formatWorkspaceName, createOutputExecution, getAuspiceOutputJson };
+const getContentFile = async (filePath, res) => {
+  try {
+    const _uploadPath = path.resolve(__dirname, "../../upload/");
+    const fullFilePath = path.join(_uploadPath, filePath);
+
+    if (!fs.existsSync(fullFilePath)) {
+      res.status(404).send("File not found");
+      return;
+    }
+
+    res.setHeader("Content-Type", "text/plain");
+    const fileStream = fs.createReadStream(fullFilePath);
+    fileStream.pipe(res);
+
+    fileStream.on("error", (err) => {
+      console.error("Error reading file:", err);
+      res.status(500).send("Error reading file");
+    });
+
+    fileStream.on("end", () => {
+      res.end();
+    });
+  } catch (err) {
+    console.error("Error getting content file:", err);
+    res.status(500).send("Error getting content file");
+  }
+};
+
+module.exports = { formatWorkspaceName, createOutputExecution, getAuspiceOutputJson, getContentFile };

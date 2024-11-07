@@ -1,5 +1,5 @@
 import React from 'react';
-import LayoutComponent from '../../components/layout';
+import LayoutComponent from '../../components/Layout';
 import { LOADING } from '../../components/loading';
 
 const EditPage = () => {

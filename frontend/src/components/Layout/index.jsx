@@ -1,11 +1,11 @@
 import React from 'react';
-import style from './layout.module.scss';
+import style from './Layout.module.scss';
 import classNames from 'classnames/bind';
 import PropTypes from 'prop-types';
 import IconNextcalde from './IconNexclade';
 import { NavLink } from 'react-router-dom';
 import { RiArrowRightSFill } from 'react-icons/ri';
-import LogoText from '../logo-text';
+import LogoText from '../Logo-Text';
 
 const cx = classNames.bind(style);
 
@@ -71,8 +71,14 @@ const LayoutComponent = ({ children, index }) => {
             </NavLink>
           </div>
           <RiArrowRightSFill fontSize={'25px'} />
-          <div className={cx('button-nav-group__btn')}>
-            <NavLink className={cx('navlink')} to='/start'>
+          <div
+            className={cx('button-nav-group__btn')}
+            style={{
+              background: index === 5 && '#2296f3',
+              fontWeight: index === 5 && '500'
+            }}
+          >
+            <NavLink style={{ color: index === 5 && '#ffffff' }} className={cx('navlink')} to='/export'>
               Export
             </NavLink>
           </div>

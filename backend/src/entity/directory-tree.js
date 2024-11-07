@@ -1,11 +1,21 @@
 const glob = require("glob-promise");
 const path = require("path");
 const CustomError = require("./customError");
+const storage = require("../utils/storage");
 
 class DirectoryTree {
   constructor(path, name) {
     this.path = path;
     this.name = name;
+  }
+
+  updatePath(obj) {
+    const _uploadPath = storage.uploadPath();
+    obj.path = obj.path.replace(_uploadPath, "");
+
+    if (obj.children) {
+      obj.children.forEach((child) => this.updatePath(child));
+    }
   }
 
   async loadDirectoryTree() {
@@ -64,7 +74,8 @@ class DirectoryTree {
         });
       });
 
-      this.currentDirectory = directory;
+      this.updatePath(directory);
+
       return directory;
     } catch (err) {
       console.error(err.message);

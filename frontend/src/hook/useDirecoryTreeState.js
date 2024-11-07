@@ -9,7 +9,7 @@ import {
   getEvent,
   initializeTreeState,
   findTargetPathByProp
-} from '../components/directoryTree/utils';
+} from '../components/DirectoryTree/utils';
 
 const useTreeState = ({ data, onChange, options = {}, customReducers = {} }) => {
   const [treeState, setTreeState] = useState(null);

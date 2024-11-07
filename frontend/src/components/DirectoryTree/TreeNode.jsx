@@ -8,8 +8,8 @@ import { IoMdArrowDropdown, IoMdArrowDropright } from 'react-icons/io';
 
 const cx = classNames.bind(style);
 
-const TreeNode = ({ path, name, isOpen, children }) => {
-  const { handleToggle } = useContext(ConfigContext);
+const TreeNode = ({ path, name, isOpen, children, ...restData }) => {
+  const { handleToggle, onNameClick } = useContext(ConfigContext);
 
   const isFolder = !!children;
 
@@ -36,6 +36,16 @@ const TreeNode = ({ path, name, isOpen, children }) => {
     );
   };
 
+  const handleNameClick = () => {
+    const handleOpen = (isOpen) => {
+      isOpen ? closeFolder() : openFolder();
+    };
+    if (onNameClick && typeof onNameClick === 'function') {
+      const params = { path: restData['id'], type: restData['type'], isOpen };
+      onNameClick(handleOpen, params);
+    }
+  };
+
   return (
     <>
       <div className={cx('tree-node')}>
@@ -43,7 +53,9 @@ const TreeNode = ({ path, name, isOpen, children }) => {
           <TypeIcon className={cx(TypeIconType)} />
         </div>
 
-        <span className={cx('nameContainer')}>{name}</span>
+        <span role='button' className={cx('nameContainer')} onClick={handleNameClick}>
+          {name}
+        </span>
         {isFolder && (
           <div className={cx('arrowIconContainer')}>
             <ArrowIcon />

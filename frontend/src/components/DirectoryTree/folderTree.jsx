@@ -1,5 +1,5 @@
 import React from 'react';
-import TreeNode from './treeNode';
+import TreeNode from './TreeNode';
 import useTreeState from '../../hook/useDirecoryTreeState';
 import { ConfigContext } from './context';
 import PropTypes from 'prop-types';
@@ -13,7 +13,8 @@ const FolderTree = ({
   iconComponents = {},
   onChange = console.log('abc'),
   initCheckedStatus = 'unchecked',
-  initOpenStatus = 'open'
+  initOpenStatus = 'closed',
+  onNameClick = null
 }) => {
   const options = {
     initCheckedStatus,
@@ -25,7 +26,8 @@ const FolderTree = ({
   if (!treeState) return null;
   const configs = {
     iconComponents,
-    handleToggle: toggleOpen
+    handleToggle: toggleOpen,
+    onNameClick
   };
 
   return (
@@ -42,6 +44,7 @@ FolderTree.propTypes = {
   onChange: PropTypes.func,
   initCheckedStatus: PropTypes.string,
   initOpenStatus: PropTypes.string,
+  onNameClick: PropTypes.func,
 
   iconComponents: PropTypes.shape({
     FileIcon: PropTypes.func,

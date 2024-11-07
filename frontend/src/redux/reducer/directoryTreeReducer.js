@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { convertDirectoryToNodeData } from '../../components/directoryTree/convert-directory-to-node-data';
+import { convertDirectoryToNodeData } from '../../components/DirectoryTree/convert-directory-to-node-data';
 const initDirectoryTreeState = {
   nodeData: null,
   loading: false,

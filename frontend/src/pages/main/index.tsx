@@ -1,15 +1,15 @@
 import styled from 'styled-components';
-import LayoutComponent from '../../components/layout';
+import LayoutComponent from '../../components/Layout';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import SideBar from './SideBar';
 import { numberOfGridPanels } from '@khaitd0340/auspice/src/actions/panelDisplay';
 import { calcPanelDims, calcStyles } from '@khaitd0340/auspice/src/components/main/utils';
 import { PanelsContainer } from '@khaitd0340/auspice/src/components/main/styles';
-import TreeSection from '../../components/tree/Tree';
-import MapSection from '../../components/map/Map';
+import TreeSection from '../../components/Tree/Tree';
+import MapSection from '../../components/Map/Map';
 import { Suspense } from 'react';
-import EntropySection from '../../components/entropy/EntropySection';
+import EntropySection from '../../components/Entropy/EntropySection';
 import useExecution from '../../hook/useExecution';
 import { LOADING } from '../../components/loading';
 

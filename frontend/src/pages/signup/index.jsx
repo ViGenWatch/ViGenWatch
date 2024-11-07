@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import style from './signup.module.scss';
-import LogoText from '../../components/logo-text';
+import LogoText from '../../components/Logo-Text';
 import { MdEmail } from 'react-icons/md';
 import { TbShieldLockFilled } from 'react-icons/tb';
 import { FaEyeSlash } from 'react-icons/fa';
