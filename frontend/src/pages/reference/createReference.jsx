@@ -3,6 +3,7 @@ import style from './reference.module.scss';
 import classNames from 'classnames/bind';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+import { MdOutlineArrowBackIos } from 'react-icons/md';
 
 const cx = classNames.bind(style);
 
@@ -149,7 +150,7 @@ const CreateReference = (props) => {
         throw new Error('Network response was not ok');
       }
       props.closeModal();
-      props.getNewState(user.id);
+      props.getNewState();
       setTimeout(() => {
         props.handleLoading(false);
       }, 750);
@@ -161,7 +162,10 @@ const CreateReference = (props) => {
   return (
     <div className={cx('add-reference-group')}>
       <div className={cx('add-reference-group__header-group')}>
-        <span className={cx('header-title')}>Create Reference Folder</span>
+        <span className={cx('header-title')}>
+          <MdOutlineArrowBackIos role='button' onClick={props.closeModal} className={cx('button-arrow')} />
+          <span>Create Reference Folder</span>
+        </span>
         <button className={cx('create-new-config')} onClick={handleCreateNewReference}>
           Create Reference Folder
         </button>

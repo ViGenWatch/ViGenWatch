@@ -5,11 +5,10 @@ import { downloadFile, getContentFile } from '../service/directoryTree';
 const useDirectoryTree = () => {
   const dispatch = useDispatch();
   const directoryTreeState = useSelector((state) => state.directoryTree);
-  const authState = useSelector((state) => state.auth);
   const [contentFile, setContentFile] = useState(null);
 
   useEffect(() => {
-    dispatch(Actions.getNodeDataRequest(authState.user.userName));
+    dispatch(Actions.getNodeDataRequest());
   }, []);
 
   const onNameClick = async (defaultOnClick, params, setNodeSelected) => {

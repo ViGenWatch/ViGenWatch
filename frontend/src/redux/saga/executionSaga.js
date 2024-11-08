@@ -2,9 +2,9 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import { Actions } from '../reducer/executionReducer';
 import { getListExecutions } from '../../service/execution';
 
-function* fetchListExecutions(action) {
+function* fetchListExecutions() {
   try {
-    const apiResponse = yield call(getListExecutions, action.payload);
+    const apiResponse = yield call(getListExecutions);
     if (apiResponse.status === 200) {
       const executions = [];
       Object.entries(apiResponse.data).forEach(([, execution]) => {

@@ -5,7 +5,7 @@ const { exec } = require("child_process");
 
 const getListReferencesController = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const userId = req.user.id;
     const references = await referenceService.getListReferences(userId);
     if (!references) {
       throw new CustomError("Get Reference Not Found", 500);

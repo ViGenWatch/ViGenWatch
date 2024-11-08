@@ -11,7 +11,6 @@ interface SidebarProps {
 
 const SideBar: React.FC<SidebarProps> = ({ width, height }) => {
   const sidebarOpen = useSelector((state: RootState) => state.controls?.sidebarOpen);
-  console.log(sidebarTheme);
   return (
     <ThemeProvider theme={sidebarTheme}>
       <SidebarContainer left={sidebarOpen ? 0 : -1 * width} width={width} height={height} theme={sidebarTheme}>

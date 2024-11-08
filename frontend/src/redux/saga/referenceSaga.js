@@ -1,9 +1,9 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { Actions } from '../reducer/referencesReducer';
 import { getListReferens } from '../../service/reference';
-function* getListReferencesSaga(action) {
+function* getListReferencesSaga() {
   try {
-    const response = yield call(getListReferens, action.payload);
+    const response = yield call(getListReferens);
     if (response.status == 200) {
       yield put(Actions.getReferencesSuccess(response.data));
     } else {

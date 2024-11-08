@@ -26,3 +26,14 @@ export const getUserAccount = async (data) => {
     return { success: 0, error: error.message };
   }
 };
+
+export const logoutFunc = async () => {
+  try {
+    sessionStorage.clear();
+    localStorage.clear();
+    const response = await axios.get('/api/auth/logout');
+    return response;
+  } catch (error) {
+    return { success: 0, error: error.message };
+  }
+};

@@ -43,7 +43,10 @@ const ReferencePage = () => {
   return (
     <LayoutComponent index={2}>
       {!loading ? (
-        <div style={{ justifyContent: !openCreateReferecenceForm && 'start' }} className={cx('section-page-reference')}>
+        <div
+          style={{ justifyContent: !openCreateReferecenceForm && 'start' }}
+          className={cx('section-page-reference', openCreateReferecenceForm && 'shifted')}
+        >
           <div style={{ justifyContent: !openCreateReferecenceForm && 'start' }} className={cx('section-reference')}>
             <div style={{ marginLeft: !openCreateReferecenceForm && '15vw' }} className={cx('section-reference-group')}>
               <div className={cx('section-reference-group__container')}>

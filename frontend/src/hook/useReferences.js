@@ -10,12 +10,12 @@ const useReferences = () => {
 
   useEffect(() => {
     if (!referencesState.references) {
-      getReferences(authState.user.id);
+      getReferences();
     }
   }, []);
 
-  const getReferences = (data) => {
-    dispatch(Actions.getReferencesRequest(data));
+  const getReferences = () => {
+    dispatch(Actions.getReferencesRequest());
   };
 
   return { referencesState, getReferences, authState, inputDataState };

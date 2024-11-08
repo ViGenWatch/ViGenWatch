@@ -2,10 +2,10 @@ import { getFirstLoadDirTreeService } from '../../service/directoryTree';
 import { Actions } from '../reducer/directoryTreeReducer';
 import { call, put, takeLatest, delay } from 'redux-saga/effects';
 
-function* getFirstLoadDirTreeSaga(action) {
+function* getFirstLoadDirTreeSaga() {
   try {
     delay(1000);
-    const response = yield call(getFirstLoadDirTreeService, action.payload);
+    const response = yield call(getFirstLoadDirTreeService);
     if (response.status == 200) {
       yield put(Actions.getNodeDataSuccess(response.data));
     } else {

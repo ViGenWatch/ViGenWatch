@@ -5,7 +5,8 @@ const workspace = require("../utils/workspace");
 
 const getDirectoryTree = async (req, res) => {
   try {
-    const { userName } = req.params;
+    const user = req.user;
+    const { userName } = user;
     const workspaceName = workspace.formatWorkspaceName(userName);
     const directoryPath = storage.uploadPath(workspaceName);
     let directotyTree = new DirectoryTree(directoryPath, workspaceName);

@@ -1,7 +1,7 @@
 import axios from './axios';
-export const getFirstLoadDirTreeService = async (userName) => {
+export const getFirstLoadDirTreeService = async () => {
   try {
-    const response = await axios.get(`/api/directory/tree/${userName}`);
+    const response = await axios.get(`/api/directory/tree`);
     return response;
   } catch (error) {
     return error.message;
@@ -55,9 +55,6 @@ export const downloadFile = async (filePath) => {
         Authorization: `Bearer ${token}`
       }
     });
-
-    console.log(response);
-
     if (!response.ok) {
       throw new Error(`Network response was not ok: ${response.statusText}`);
     }
@@ -65,13 +62,13 @@ export const downloadFile = async (filePath) => {
     const contentDisposition = response.headers.get('content-disposition');
     let filename = 'downloaded-file';
 
-    console.log(contentDisposition);
-
     if (contentDisposition) {
       const filenameMatch = contentDisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
       if (filenameMatch && filenameMatch[1]) {
         filename = decodeURIComponent(filenameMatch[1].replace(/['"]/g, ''));
       }
+    } else {
+      filename = filePath.match(/[^/]+$/)[0];
     }
 
     const blob = await response.blob();

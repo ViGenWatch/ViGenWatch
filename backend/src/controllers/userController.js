@@ -7,6 +7,7 @@ const authMethods = require("../utils/authMethods");
 const randToken = require("rand-token");
 const workspace = require("../utils/workspace");
 const workspaceService = require("../services/workspaceService");
+const db = require("../models/index");
 const createUserController = async (req, res) => {
   try {
     const errors = validationResult(req);
@@ -55,6 +56,7 @@ const userLoginController = async (req, res) => {
     const accessTokenLife = process.env.ACCESS_TOKEN_LIFE || jwtVariable.accessTokenLife;
     const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || jwtVariable.accessTokenSecret;
     const dataForAccessToken = {
+      email: user.email,
       username: user.userName,
       id: user.id
     };
@@ -69,6 +71,13 @@ const userLoginController = async (req, res) => {
     } else {
       newRefreshToken = user.refreshToken;
     }
+    const options = {
+      maxAge: 5 * 1000 * 3600,
+      expires: new Date(Date.now() + 5 * 1000 * 3600),
+      httpOnly: true,
+      secure: true
+    };
+    res.cookie("SessionID", accessToken, options);
     return res.status(200).json({
       message: "LoginSuccess",
       data: {
@@ -100,6 +109,7 @@ const getAccountController = async (req, res) => {
     const accessTokenLife = process.env.ACCESS_TOKEN_LIFE || jwtVariable.accessTokenLife;
     const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || jwtVariable.accessTokenSecret;
     const dataForAccessToken = {
+      email: user.email,
       username: user.userName,
       id: user.id
     };
@@ -128,4 +138,23 @@ const getAccountController = async (req, res) => {
   }
 };
 
-module.exports = { createUserController, userLoginController, getAccountController };
+const userLogout = async (req, res) => {
+  const user = req.user;
+  const accessToken = req.accessToken;
+  try {
+    const newBlacklist = await db.Blacklist.create({
+      userId: user.id,
+      token: accessToken
+    });
+    if (newBlacklist) {
+      return res.status(200).json({ message: "You are logged out!" });
+    }
+  } catch (error) {
+    if (error instanceof CustomError) {
+      process.env.NODE_ENV == "development" ? console.log(error) : null;
+      return res.status(error.statusCode).json({ message: error.message });
+    }
+    return res.status(500).json({ message: error.message });
+  }
+};
+module.exports = { createUserController, userLoginController, getAccountController, userLogout };

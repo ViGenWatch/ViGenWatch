@@ -8,15 +8,20 @@ export interface ResponseType {
 
 const instance = axios.create({
   baseURL: process.env.BACKEND_URL,
-  timeout: 10000
+  timeout: 10000,
+  headers: {
+    common: {
+      Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
+    }
+  }
 });
 
 instance.interceptors.request.use(
   (config) => {
     const tokenString = sessionStorage.getItem('accessToken');
-    const token = tokenString ? JSON.parse(tokenString) : null;
-    if (token) {
-      config.headers.Authorization = 'Bearer ' + token;
+    if (tokenString) {
+      config.headers = config.headers ?? {};
+      config.headers['Authorization'] = `Bearer ${tokenString}`;
     }
     return config;
   },

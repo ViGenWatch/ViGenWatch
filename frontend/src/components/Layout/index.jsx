@@ -6,14 +6,24 @@ import IconNextcalde from './IconNexclade';
 import { NavLink } from 'react-router-dom';
 import { RiArrowRightSFill } from 'react-icons/ri';
 import LogoText from '../Logo-Text';
+import { logoutFunc } from '../../service/auth';
+import { useDispatch } from 'react-redux';
+import { Actions } from '../../redux/reducer/authReducer';
 
 const cx = classNames.bind(style);
 
 const LayoutComponent = ({ children, index }) => {
+  const dispatch = useDispatch();
   const props = {
     width: '35px',
     height: '35px'
   };
+
+  const handleLogout = async () => {
+    await logoutFunc();
+    dispatch(Actions.logout());
+  };
+
   return (
     <div className={cx('section-layout')}>
       <div className={cx('section-layout__navbar')}>
@@ -80,6 +90,12 @@ const LayoutComponent = ({ children, index }) => {
           >
             <NavLink style={{ color: index === 5 && '#ffffff' }} className={cx('navlink')} to='/export'>
               Export
+            </NavLink>
+          </div>
+          <RiArrowRightSFill fontSize={'25px'} />
+          <div className={cx('button-nav-group__btn')}>
+            <NavLink onClick={handleLogout} className={cx('navlink')} to=''>
+              Logout
             </NavLink>
           </div>
         </div>

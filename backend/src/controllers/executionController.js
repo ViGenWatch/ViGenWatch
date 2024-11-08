@@ -5,7 +5,9 @@ const process = require("process");
 
 const getListExecutionController = async (req, res) => {
   try {
-    const executions = await executionService.getListExecutions(req.params.userId);
+    const user = req.user;
+    const userId = user.id;
+    const executions = await executionService.getListExecutions(userId);
     if (executions) {
       return res.status(200).json({
         message: "Get list execution successfull",
