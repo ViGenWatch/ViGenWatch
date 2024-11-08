@@ -3,6 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const CustomError = require("../entity/customError");
 const glob = require("glob-promise");
+const mime = require("mime-types");
 
 const formatWorkspaceName = (executionNumber) => {
   return `execution_${executionNumber}`;
@@ -80,4 +81,43 @@ const getContentFile = async (filePath, res) => {
   }
 };
 
-module.exports = { formatWorkspaceName, createOutputExecution, getAuspiceOutputJson, getContentFile };
+const onDownloadFile = async (filePath, res) => {
+  try {
+    const _uploadPath = path.resolve(__dirname, "../../upload/");
+    const fullFilePath = path.join(_uploadPath, filePath);
+
+    if (!fs.existsSync(fullFilePath)) {
+      return res.status(404).send({ message: "File not found" });
+    }
+
+    const stats = await fs.promises.stat(fullFilePath);
+    const fileName = path.basename(fullFilePath);
+    const mimeType = mime.lookup(fullFilePath) || "application/octet-stream";
+
+    res.setHeader("Content-Type", mimeType);
+    res.setHeader("Content-Length", stats.size);
+    res.setHeader("Content-Disposition", `attachment; filename="${fileName}"`);
+
+    const fileStream = fs.createReadStream(fullFilePath);
+
+    fileStream.on("error", (error) => {
+      console.error("Error reading file:", error);
+      return res.status(500).send({ message: "Error reading file" });
+    });
+
+    fileStream.pipe(res);
+
+    fileStream.on("end", () => {
+      res.end();
+    });
+
+    res.on("close", () => {
+      fileStream.destroy();
+    });
+  } catch (error) {
+    console.error("Error downloading file:", error);
+    return res.status(500).send({ message: error.message });
+  }
+};
+
+module.exports = { formatWorkspaceName, createOutputExecution, getAuspiceOutputJson, getContentFile, onDownloadFile };

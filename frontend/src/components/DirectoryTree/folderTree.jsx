@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import TreeNode from './TreeNode';
 import useTreeState from '../../hook/useDirecoryTreeState';
 import { ConfigContext } from './context';
@@ -11,7 +11,7 @@ const cx = classNames.bind(style);
 const FolderTree = ({
   data,
   iconComponents = {},
-  onChange = console.log('abc'),
+  onChange = console.log(''),
   initCheckedStatus = 'unchecked',
   initOpenStatus = 'closed',
   onNameClick = null
@@ -22,12 +22,15 @@ const FolderTree = ({
   };
   const { treeState, reducers } = useTreeState({ data, options, onChange });
   const { toggleOpen } = reducers;
+  const [nodeSelected, setNodeSelected] = useState('');
 
   if (!treeState) return null;
   const configs = {
     iconComponents,
+    nodeSelected,
     handleToggle: toggleOpen,
-    onNameClick
+    onNameClick,
+    setNodeSelected
   };
 
   return (

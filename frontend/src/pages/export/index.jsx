@@ -4,18 +4,29 @@ import style from './export.module.scss';
 import classNames from 'classnames/bind';
 import DirectoryTree from '../../components/DirectoryTree';
 import useDirectoryTree from '../../hook/useDirectoryTree';
+import { FiDownload } from 'react-icons/fi';
 
 const cx = classNames.bind(style);
+
 const ExportPage = () => {
-  const { directoryTreeState, onNameClick, contentFile } = useDirectoryTree();
+  const { directoryTreeState, onNameClick, contentFile, onDownloadFile } = useDirectoryTree();
   return (
     <LayoutComponent index={5}>
       <div className={cx('section-page-export')}>
         <div className={cx('section-export')}>
+          <div className={cx('header-title')}>
+            <span>Read And Download Files</span>
+          </div>
           <div className={cx('export-container')}>
             <DirectoryTree directoryTreeState={directoryTreeState} onNameClick={onNameClick} />
             <div className={cx('content-container')}>
-              <pre>{contentFile}</pre>
+              <div className={cx('content-container__header')}>
+                <span>{contentFile ? contentFile.path : 'Please select a file in the sidebar column'}</span>
+                <FiDownload id='link-download' className={cx('icon-download')} onClick={onDownloadFile} />
+              </div>
+              <div className={cx('content-container__content')}>
+                <pre>{contentFile && contentFile.content}</pre>
+              </div>
             </div>
           </div>
         </div>
