@@ -7,6 +7,7 @@ const { exec } = require("child_process");
 const sshConnection = require("../entity/sshConnect");
 const fs = require("fs");
 const augurVariable = require("../utils/augur");
+const refernceFileService = require("../services/referenceFileService");
 
 const uploadFileInput = async (req, res) => {
   try {
@@ -36,11 +37,26 @@ const uploadFileInput = async (req, res) => {
             executionPath: executionPath
           });
           if (newExecution) {
+            const refrenceFile = await refernceFileService.getReferenceFileByReferenceId(referenceId);
+            const referenceFileProperties = {
+              auspiceConfig: refrenceFile.auspiceConfig,
+              colors: refrenceFile.colors,
+              droppedTrains: refrenceFile.droppedTrains,
+              latLongs: refrenceFile.latLongs,
+              virusOutgroup: refrenceFile.virusOutgroup
+            };
+            const commandParams = Object.entries(referenceFileProperties)
+              .filter(([key, value]) => value != null)
+              .map(([key, value]) => {
+                return `--${key}="${value}"`;
+              })
+              .join(" ");
             if (!sshConnection.isConnected) {
               await sshConnection.connect();
             }
+
             const result = await sshConnection.executeInline(
-              `${augurVariable.augur_run} ${augurVariable.augur_data_path}${workspaceName}/${executionName}`,
+              `${augurVariable.augur_run} ${augurVariable.augur_data_path}${workspaceName}/${executionName} ${commandParams}`,
               augurVariable.augur_script_path
             );
             if (result) {

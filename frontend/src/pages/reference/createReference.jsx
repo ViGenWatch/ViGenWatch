@@ -139,7 +139,10 @@ const CreateReference = (props) => {
     });
     formData.append('userId', user.id);
     files.forEach((file) => {
-      formData.append('files', file.value);
+      file.value && formData.append(file.key, file.value.name);
+    });
+    files.forEach((file) => {
+      file.value && formData.append('files', file.value);
     });
     try {
       const response = await fetch('http://localhost:5050/api/reference/create-reference/', {

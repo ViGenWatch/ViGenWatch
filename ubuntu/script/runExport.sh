@@ -5,6 +5,9 @@ function run_export {
     local metadata=$2
     local output_dir=$3
     local config_dir=$4
+    local colors=$5
+    local latLongs=$6
+    local auspiceConfig=$7
 
     augur export v2 \
       --tree "$tree" \
@@ -13,8 +16,8 @@ function run_export {
                   "$output_dir/traits.json" \
                   "$output_dir/nt_muts.json" \
                   "$output_dir/aa_muts.json" \
-      --colors "$config_dir/colors.tsv" \
-      --lat-longs "$config_dir/lat_longs.tsv" \
-      --auspice-config "$config_dir/auspice_config.json" \
-      --output "$output_dir/auspice/zika.json"
+      ${colors:+--colors "$config_dir/$colors"} \
+      ${latLongs:+--lat-longs "$config_dir/$latLongs"} \
+      --auspice-config "$config_dir/$auspiceConfig" \
+      --output "$output_dir/auspice/virus.json"
 }

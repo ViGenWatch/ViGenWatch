@@ -1,5 +1,6 @@
 const CustomError = require("../entity/customError");
 const referenceService = require("../services/referenceService");
+const referenceFileService = require("../services/referenceFileService");
 const process = require("process");
 const { exec } = require("child_process");
 
@@ -27,6 +28,8 @@ const uploadReferenceFileController = async (req, res) => {
   try {
     const { folderName, referenceName, definition, author, version, link, status, referencePath, userId, require } =
       req.body;
+
+    const { auspiceConfig, colors, droppedTrains, latLongs, virusOutgroup } = req.body;
     exec(
       `chown -R ${process.env.UID}:${process.env.UID} ${referencePath} && chmod -R 775 ${referencePath}`,
       async (error, stdout, stderr) => {
@@ -36,7 +39,7 @@ const uploadReferenceFileController = async (req, res) => {
         if (stderr) {
           throw new CustomError({ message: error.message }, 400);
         }
-        const newReference = referenceService.createReference({
+        const newReference = await referenceService.createReference({
           folderName,
           referenceName,
           definition,
@@ -48,7 +51,16 @@ const uploadReferenceFileController = async (req, res) => {
           userId,
           require
         });
-        if (newReference) {
+
+        const newReferenceFile = await referenceFileService.createReferenceFile({
+          auspiceConfig,
+          colors,
+          droppedTrains,
+          latLongs,
+          virusOutgroup,
+          referenceId: newReference.id
+        });
+        if (newReference && newReferenceFile) {
           return res.status(200).json({ message: "create new reference successfull" });
         } else {
           throw new CustomError({ message: error.message }, 400);
