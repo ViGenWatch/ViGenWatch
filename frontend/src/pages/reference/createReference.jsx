@@ -42,6 +42,12 @@ const CreateReference = (props) => {
       value: null
     },
     {
+      label: 'Include Trains file.tsv(txt)',
+      key: 'includeTrains',
+      isDragging: false,
+      value: null
+    },
+    {
       label: 'Lat Longs file.tsv(txt)',
       key: 'latLongs',
       isDragging: false,

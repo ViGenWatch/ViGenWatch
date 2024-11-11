@@ -42,6 +42,7 @@ const uploadFileInput = async (req, res) => {
               auspiceConfig: refrenceFile.auspiceConfig,
               colors: refrenceFile.colors,
               droppedTrains: refrenceFile.droppedTrains,
+              includeTrains: refrenceFile.includeTrains,
               latLongs: refrenceFile.latLongs,
               virusOutgroup: refrenceFile.virusOutgroup
             };

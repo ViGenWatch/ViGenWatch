@@ -28,6 +28,9 @@ while [ $i -ge 0 ]; do
         --droppedTrains=*)
             droppedTrains="${BASH_ARGV[$i]#*=}"
             ;;
+        --includeTrains=*)
+            includeTrains="${BASH_ARGV[$i]#*=}"
+            ;;
         --latLongs=*)
             latLongs="${BASH_ARGV[$i]#*=}"
             ;;
@@ -40,14 +43,16 @@ done
 
 DIRECTORY_PATH=$1
 
+
 SEQUENCES="$DIRECTORY_PATH/sequences.fasta"
 METADATA="$DIRECTORY_PATH/metadata.tsv"
 CONFIG_DIR="$DIRECTORY_PATH/config"
 
 mkdir -p "$DIRECTORY_PATH/auspice"
+mkdir -p "$DIRECTORY_PATH/result"
 
 run_index "$SEQUENCES" "$DIRECTORY_PATH"
-run_filter "$SEQUENCES" "$DIRECTORY_PATH/sequence_index.tsv" "$METADATA" "$CONFIG_DIR/$droppedTrains" "$DIRECTORY_PATH"
+run_filter "$SEQUENCES" "$DIRECTORY_PATH/sequence_index.tsv" "$METADATA" "$CONFIG_DIR" "$droppedTrains" "$includeTrains" "$DIRECTORY_PATH"
 run_align "$DIRECTORY_PATH/filtered.fasta" "$CONFIG_DIR/$virusOutgroup" "$DIRECTORY_PATH"
 run_tree "$DIRECTORY_PATH/aligned.fasta" "$DIRECTORY_PATH"
 run_refine "$DIRECTORY_PATH/tree_raw.nwk" "$DIRECTORY_PATH/aligned.fasta" "$METADATA" "$DIRECTORY_PATH"

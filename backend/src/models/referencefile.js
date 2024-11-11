@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class ReferenceFile extends Model {
     /**
@@ -13,16 +11,20 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  ReferenceFile.init({
-    auspiceConfig: DataTypes.STRING,
-    colors: DataTypes.STRING,
-    droppedTrains: DataTypes.STRING,
-    latLongs: DataTypes.STRING,
-    virusOutgroup: DataTypes.STRING,
-    referenceId: DataTypes.NUMBER
-  }, {
-    sequelize,
-    modelName: 'ReferenceFile',
-  });
+  ReferenceFile.init(
+    {
+      auspiceConfig: DataTypes.STRING,
+      colors: DataTypes.STRING,
+      droppedTrains: DataTypes.STRING,
+      includeTrains: DataTypes.STRING,
+      latLongs: DataTypes.STRING,
+      virusOutgroup: DataTypes.STRING,
+      referenceId: DataTypes.NUMBER
+    },
+    {
+      sequelize,
+      modelName: "ReferenceFile"
+    }
+  );
   return ReferenceFile;
 };

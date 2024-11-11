@@ -8,6 +8,7 @@ const createReferenceFile = async (data) => {
       auspiceConfig: data.auspiceConfig,
       colors: data.colors,
       droppedTrains: data.droppedTrains,
+      includeTrains: data.includeTrains,
       latLongs: data.latLongs,
       virusOutgroup: data.virusOutgroup,
       referenceId: data.referenceId
