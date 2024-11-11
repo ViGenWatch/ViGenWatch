@@ -9,6 +9,7 @@ import RunButton from '../../components/RunButton';
 import useReferences from '../../hook/useReferences';
 import CreateReference from './createReference';
 import { LOADING } from '../../components/loading';
+import ReferenceInfor from './referenceInfor';
 
 const cx = classNames.bind(style);
 
@@ -44,11 +45,20 @@ const ReferencePage = () => {
     <LayoutComponent index={2}>
       {!loading ? (
         <div
-          style={{ justifyContent: !openCreateReferecenceForm && 'start' }}
-          className={cx('section-page-reference', openCreateReferecenceForm && 'shifted')}
+          style={{ justifyContent: !openCreateReferecenceForm && !inputDataState.selectedReferenceId && 'start' }}
+          className={cx(
+            'section-page-reference',
+            (openCreateReferecenceForm || inputDataState.selectedReferenceId) && 'shifted'
+          )}
         >
-          <div style={{ justifyContent: !openCreateReferecenceForm && 'start' }} className={cx('section-reference')}>
-            <div style={{ marginLeft: !openCreateReferecenceForm && '15vw' }} className={cx('section-reference-group')}>
+          <div
+            style={{ justifyContent: (!openCreateReferecenceForm || !inputDataState.selectedReferenceId) && 'start' }}
+            className={cx('section-reference')}
+          >
+            <div
+              style={{ marginLeft: !openCreateReferecenceForm && !inputDataState.selectedReferenceId && '15vw' }}
+              className={cx('section-reference-group')}
+            >
               <div className={cx('section-reference-group__container')}>
                 <div className={cx('section-reference-group__container-header')}>
                   <button
@@ -118,6 +128,8 @@ const ReferencePage = () => {
             {openCreateReferecenceForm && (
               <CreateReference getNewState={getReferences} closeModal={handleStateOpen} handleLoading={handleLoading} />
             )}
+
+            {!openCreateReferecenceForm && inputDataState.selectedReferenceId && <ReferenceInfor />}
           </div>
         </div>
       ) : (

@@ -12,10 +12,10 @@ function run_export {
     augur export v2 \
       --tree "$tree" \
       --metadata "$metadata" \
-      --node-data "$output_dir/branch_lengths.json" \
-                  "$output_dir/traits.json" \
-                  "$output_dir/nt_muts.json" \
-                  "$output_dir/aa_muts.json" \
+      --node-data "$output_dir/result/branch_lengths.json" \
+                  "$output_dir/result/traits.json" \
+                  "$output_dir/result/nt_muts.json" \
+                  "$output_dir/result/aa_muts.json" \
       ${colors:+--colors "$config_dir/$colors"} \
       ${latLongs:+--lat-longs "$config_dir/$latLongs"} \
       --auspice-config "$config_dir/$auspiceConfig" \
