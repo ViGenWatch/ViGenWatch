@@ -5,7 +5,6 @@ import classNames from 'classnames/bind';
 import { IoIosArrowBack, IoIosArrowDown, IoIosSearch } from 'react-icons/io';
 import ItemReference from './itemReference';
 import { useNavigate } from 'react-router-dom';
-import RunButton from '../../components/RunButton';
 import useReferences from '../../hook/useReferences';
 import CreateReference from './createReference';
 import { LOADING } from '../../components/loading';
@@ -99,12 +98,6 @@ const ReferencePage = () => {
                           Create Reference Folder
                         </button>
                       )}
-                      <RunButton
-                        inputDataState={inputDataState}
-                        referencesState={referencesState}
-                        authState={authState}
-                        handleLoading={handleLoading}
-                      />
                     </div>
                   </div>
                 </div>
@@ -129,7 +122,14 @@ const ReferencePage = () => {
               <CreateReference getNewState={getReferences} closeModal={handleStateOpen} handleLoading={handleLoading} />
             )}
 
-            {!openCreateReferecenceForm && inputDataState.selectedReferenceId && <ReferenceInfor />}
+            {!openCreateReferecenceForm && inputDataState.selectedReferenceId && (
+              <ReferenceInfor
+                inputDataState={inputDataState}
+                referencesState={referencesState}
+                authState={authState}
+                handleLoading={handleLoading}
+              />
+            )}
           </div>
         </div>
       ) : (

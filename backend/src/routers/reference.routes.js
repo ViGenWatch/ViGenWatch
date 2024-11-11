@@ -15,4 +15,7 @@ referenceRoutes.post(
   referenceController.uploadReferenceFileController
 );
 
+referenceRoutes.get("/content-file/", authMiddleware, referenceController.getContentFileReference);
+referenceRoutes.get("/download-file/", authMiddleware, referenceController.onDownloadFileReference);
+
 module.exports = referenceRoutes;

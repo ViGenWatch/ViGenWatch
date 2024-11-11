@@ -2,6 +2,8 @@ const CustomError = require("../entity/customError");
 const executionService = require("../services/executionService");
 const executionHelper = require("../utils/execution");
 const process = require("process");
+const storage = require("../utils/storage");
+const path = require("path");
 
 const getListExecutionController = async (req, res) => {
   try {
@@ -44,7 +46,9 @@ const getOutputJsonController = async (req, res) => {
 const getContentFileController = async (req, res) => {
   try {
     const filePath = decodeURIComponent(req.query.path);
-    await executionHelper.getContentFile(filePath, res);
+    const _uploadPath = storage.uploadPath();
+    const fullFilePath = path.join(_uploadPath, filePath);
+    await executionHelper.getContentFile(fullFilePath, res);
   } catch (error) {
     if (error instanceof CustomError) {
       process.env.NODE_ENV == "development" ? console.log(error) : null;
@@ -57,7 +61,9 @@ const getContentFileController = async (req, res) => {
 const downloadFileController = async (req, res) => {
   try {
     const filePath = decodeURIComponent(req.query.filePath);
-    await executionHelper.onDownloadFile(filePath, res);
+    const _uploadPath = storage.uploadPath();
+    const fullFilePath = path.join(_uploadPath, filePath);
+    await executionHelper.onDownloadFile(fullFilePath, res);
   } catch (error) {
     if (error instanceof CustomError) {
       process.env.NODE_ENV == "development" ? console.log(error) : null;

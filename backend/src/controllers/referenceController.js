@@ -3,6 +3,8 @@ const referenceService = require("../services/referenceService");
 const referenceFileService = require("../services/referenceFileService");
 const process = require("process");
 const { exec } = require("child_process");
+const path = require("path");
+const executionHelper = require("../utils/execution");
 
 const getListReferencesController = async (req, res) => {
   try {
@@ -76,4 +78,41 @@ const uploadReferenceFileController = async (req, res) => {
   }
 };
 
-module.exports = { getListReferencesController, uploadReferenceFileController };
+const getContentFileReference = async (req, res) => {
+  try {
+    const referenceId = req.query.referenceId;
+    const fileName = req.query.fileName;
+    const reference = await referenceService.getReferenceById(referenceId);
+    const filePath = path.join(reference.referencePath, fileName);
+    await executionHelper.getContentFile(filePath, res);
+  } catch (error) {
+    if (error instanceof CustomError) {
+      process.env.NODE_ENV == "development" ? console.log(error) : null;
+      return res.status(error.statusCode).json({ message: error.message });
+    }
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+const onDownloadFileReference = async (req, res) => {
+  try {
+    const referenceId = req.query.referenceId;
+    const fileName = req.query.fileName;
+    const reference = await referenceService.getReferenceById(referenceId);
+    const filePath = path.join(reference.referencePath, fileName);
+    await executionHelper.onDownloadFile(filePath, res);
+  } catch (error) {
+    if (error instanceof CustomError) {
+      process.env.NODE_ENV == "development" ? console.log(error) : null;
+      return res.status(error.statusCode).json({ message: error.message });
+    }
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = {
+  getListReferencesController,
+  uploadReferenceFileController,
+  getContentFileReference,
+  onDownloadFileReference
+};

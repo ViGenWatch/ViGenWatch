@@ -37,14 +37,14 @@ const uploadFileInput = async (req, res) => {
             executionPath: executionPath
           });
           if (newExecution) {
-            const refrenceFile = await refernceFileService.getReferenceFileByReferenceId(referenceId);
+            const referenceFile = await refernceFileService.getReferenceFileByReferenceId(referenceId);
             const referenceFileProperties = {
-              auspiceConfig: refrenceFile.auspiceConfig,
-              colors: refrenceFile.colors,
-              droppedTrains: refrenceFile.droppedTrains,
-              includeTrains: refrenceFile.includeTrains,
-              latLongs: refrenceFile.latLongs,
-              virusOutgroup: refrenceFile.virusOutgroup
+              auspiceConfig: referenceFile.auspiceConfig,
+              colors: referenceFile.colors,
+              droppedTrains: referenceFile.droppedTrains,
+              includeTrains: referenceFile.includeTrains,
+              latLongs: referenceFile.latLongs,
+              virusOutgroup: referenceFile.virusOutgroup
             };
             const commandParams = Object.entries(referenceFileProperties)
               .filter(([key, value]) => value != null)

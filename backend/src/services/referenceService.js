@@ -8,7 +8,15 @@ const getListReferences = async (userId) => {
       attributes: ["id", "referencePath", "referenceName", "definition", "author", "version", "status", "userId"],
       where: {
         [Op.or]: [{ status: 1 }, { userId: userId }]
-      }
+      },
+      include: [
+        {
+          model: db.ReferenceFile,
+          as: "referenceFile",
+          attributes: ["auspiceConfig", "colors", "droppedTrains", "includeTrains", "latLongs", "virusOutgroup"],
+          required: false
+        }
+      ]
     });
     return references;
   } catch (error) {
@@ -37,4 +45,18 @@ const createReference = async (data) => {
   }
 };
 
-module.exports = { getListReferences, createReference };
+const getReferenceById = async (referenceId) => {
+  try {
+    const reference = await db.Reference.findOne({
+      where: {
+        id: referenceId
+      }
+    });
+
+    return reference;
+  } catch (error) {
+    throw new CustomError(error.message, 400);
+  }
+};
+
+module.exports = { getListReferences, createReference, getReferenceById };

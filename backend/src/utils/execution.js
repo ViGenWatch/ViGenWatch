@@ -55,16 +55,13 @@ const getAuspiceOutputJson = async (executionPath, res) => {
 
 const getContentFile = async (filePath, res) => {
   try {
-    const _uploadPath = path.resolve(__dirname, "../../upload/");
-    const fullFilePath = path.join(_uploadPath, filePath);
-
-    if (!fs.existsSync(fullFilePath)) {
+    if (!fs.existsSync(filePath)) {
       res.status(404).send("File not found");
       return;
     }
 
     res.setHeader("Content-Type", "text/plain");
-    const fileStream = fs.createReadStream(fullFilePath);
+    const fileStream = fs.createReadStream(filePath);
     fileStream.pipe(res);
 
     fileStream.on("error", (err) => {
@@ -81,11 +78,8 @@ const getContentFile = async (filePath, res) => {
   }
 };
 
-const onDownloadFile = async (filePath, res) => {
+const onDownloadFile = async (fullFilePath, res) => {
   try {
-    const _uploadPath = path.resolve(__dirname, "../../upload/");
-    const fullFilePath = path.join(_uploadPath, filePath);
-
     if (!fs.existsSync(fullFilePath)) {
       return res.status(404).send({ message: "File not found" });
     }

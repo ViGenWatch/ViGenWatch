@@ -562,7 +562,7 @@
 
     &__header-group {
       width: 100%;
-      padding: 15px 0;
+      padding: 13px 0;
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -585,7 +585,6 @@
     &__item {
       width: 100%;
       .item-reference-container {
-        margin-top: 5px;
         width: 95.5%;
         padding: 15px;
         border: 1px solid rgba(204, 204, 204, 0.6);
@@ -688,22 +687,22 @@
     }
 
     &__content {
-      margin-top: 10px;
+      margin-top: 5px;
       width: 100%;
       height: 100%;
       display: flex;
       flex-direction: column;
       justify-content: start;
       align-items: start;
+      border: 1px solid rgb(204, 204, 204);
+      border-radius: 5px;
+      overflow-y: auto;
+      overflow-x: hidden;
 
       .infor-content-container {
         width: 95.5%;
         height: 100%;
-        border: 1px solid rgb(204, 204, 204);
-        border-top-right-radius: 5px;
-        border-bottom-left-radius: 5px;
-        border-bottom-right-radius: 5px;
-        padding: 15px 15px;
+        padding: 0 15px 15px 15px;
 
         .reference-information-content {
           width: 100%;
@@ -712,65 +711,83 @@
           flex-direction: column;
           justify-content: start;
           align-items: start;
+          position: relative;
 
           .header-group {
-            width: 100%;
+            width: 34vw;
+            position: fixed;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
-            .filter-group {
-              width: 200px;
+            background: #ffffff;
+            .filter-container {
+              height: 60px;
               display: flex;
-              position: relative;
-              flex-direction: row;
               align-items: center;
-              justify-content: space-between;
-              height: 40px;
-              background: #ffffff;
-              box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-              border: 1px solid #dee2e6;
-              border-radius: 6px;
-              padding: 0 10px;
-              gap: 8px;
-              cursor: pointer;
-              box-sizing: border-box;
-
-              .text-filter {
-                margin-left: 5px;
-                color: #495057;
-                font-size: 15px;
-              }
-
-              .bar-options {
-                position: absolute;
-                top: 44px;
-                right: 0;
+              .filter-group {
                 width: 200px;
-                cursor: pointer;
-                background: #ffffff;
-                z-index: 10;
-                border-radius: 6px;
-                box-shadow: 0 1px 16px rgba(5, 5, 5, 0.06);
-                overflow: hidden;
                 display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-                justify-content: flex-start;
-                padding: 10px 0;
+                position: relative;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                height: 40px;
+                background: #ffffff;
+                box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+                border: 1px solid #dee2e6;
+                border-radius: 6px;
+                padding: 0 10px;
+                gap: 8px;
+                cursor: pointer;
+                box-sizing: border-box;
 
-                span {
-                  padding: 0 20px;
-                  line-height: 40px;
-                  width: 100%;
-                  font-size: 15px;
+                .text-filter {
+                  margin-left: 5px;
                   color: #495057;
+                  font-size: 15px;
+                }
 
-                  &:hover {
-                    background: #eef2f5;
+                .bar-options {
+                  position: absolute;
+                  top: 44px;
+                  right: 0;
+                  width: 200px;
+                  cursor: pointer;
+                  background: #ffffff;
+                  z-index: 10;
+                  border-radius: 6px;
+                  box-shadow: 0 1px 16px rgba(5, 5, 5, 0.06);
+                  overflow: hidden;
+                  display: flex;
+                  flex-direction: column;
+                  align-items: flex-start;
+                  justify-content: flex-start;
+                  padding: 10px 0;
+
+                  span {
+                    padding: 0 20px;
+                    line-height: 40px;
+                    width: 100%;
+                    font-size: 15px;
+                    color: #495057;
+
+                    &:hover {
+                      background: #eef2f5;
+                    }
                   }
                 }
               }
+            }
+          }
+
+          .content-file {
+            margin-top: 50px;
+            pre {
+              white-space: pre-wrap;
+              font-family: monospace;
+              word-wrap: break-word;
+              height: 90%;
             }
           }
         }
