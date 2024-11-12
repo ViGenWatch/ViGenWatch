@@ -32,6 +32,37 @@ const referencesSlice = createSlice({
         loading: false,
         error: action.payload.error
       };
+    },
+
+    updateRequireStatusRequest: (state) => {
+      return {
+        ...state,
+        loading: 'true',
+        error: null
+      };
+    },
+
+    updateRequireStatusSuccess: (state, action) => {
+      const referenceId = action.payload.referenceId;
+      const status = action.payload.status;
+      const prevReferences = state.references;
+      if (status) {
+        return {
+          ...state,
+          loading: false,
+          references: prevReferences.map((reference) =>
+            reference.id === referenceId ? { ...reference, require: status } : reference
+          )
+        };
+      } else {
+        return {
+          ...state,
+          loading: false,
+          references: prevReferences.map((reference) =>
+            reference.id === referenceId ? { ...reference, status: status } : reference
+          )
+        };
+      }
     }
   }
 });

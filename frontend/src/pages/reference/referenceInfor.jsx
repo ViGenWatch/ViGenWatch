@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import style from './reference.module.scss';
 import classNames from 'classnames/bind';
-import { FiEdit } from 'react-icons/fi';
 import { IoIosArrowDown } from 'react-icons/io';
 import { MdOutlineFileDownload } from 'react-icons/md';
 import PropTypes from 'prop-types';
@@ -11,7 +10,7 @@ import { downloadFile, getReferenceContentFile } from '../../service/reference';
 const cx = classNames.bind(style);
 
 const ReferenceInfor = (props) => {
-  const { inputDataState, referencesState, authState, handleLoading } = props;
+  const { inputDataState, referencesState, authState, handleLoading, updateRequireStatus } = props;
   const selectReference = referencesState.references.filter(
     (reference) => reference.id === inputDataState.selectedReferenceId
   )[0];
@@ -71,12 +70,31 @@ const ReferenceInfor = (props) => {
           </div>
           <div className={cx('infor-reference-group')}>
             <div className={cx('infor-reference-group__btn-edit')}>
-              <FiEdit style={{ fontSize: '20px', color: 'rgb(33, 150, 243)', fontWeight: '400' }} />
-              <span>Edit</span>
+              {selectReference.userId === authState.user.id &&
+                (selectReference.status ? (
+                  <button
+                    className={cx('make-private', 'btn-edit-status')}
+                    onClick={() => updateRequireStatus(selectReference.id, 0)}
+                  >
+                    Make Private
+                  </button>
+                ) : selectReference.require ? (
+                  <button className={cx('pending', 'btn-edit-status')}>Pending</button>
+                ) : (
+                  <button
+                    className={cx('request-public', 'btn-edit-status')}
+                    onClick={() => updateRequireStatus(selectReference.id, 1)}
+                  >
+                    Request Public
+                  </button>
+                ))}
             </div>
             <span className={cx('infor-reference-group__name')}>{selectReference.referenceName}</span>
-            <div style={{ background: !status && 'rgb(230, 112, 48)' }} className={cx('infor-reference-group__icon')}>
-              {status ? 'Official' : 'Private'}
+            <div
+              style={{ background: !selectReference.status && 'rgb(230, 112, 48)' }}
+              className={cx('infor-reference-group__icon')}
+            >
+              {selectReference.status ? 'Community' : 'Private'}
             </div>
             <span
               className={cx('infor-reference-group__definition', 'infor-text')}
@@ -129,7 +147,8 @@ ReferenceInfor.propTypes = {
   inputDataState: PropTypes.object.isRequired,
   referencesState: PropTypes.object.isRequired,
   authState: PropTypes.object.isRequired,
-  handleLoading: PropTypes.func.isRequired
+  handleLoading: PropTypes.func.isRequired,
+  updateRequireStatus: PropTypes.func.isRequired
 };
 
 export default ReferenceInfor;

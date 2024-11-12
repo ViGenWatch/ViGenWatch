@@ -18,7 +18,11 @@ const useReferences = () => {
     dispatch(Actions.getReferencesRequest());
   };
 
-  return { referencesState, getReferences, authState, inputDataState };
+  const updateRequireStatus = (referenceId, status) => {
+    dispatch(Actions.updateRequireStatusRequest({ referenceId, status }));
+  };
+
+  return { referencesState, getReferences, authState, inputDataState, updateRequireStatus };
 };
 
 export default useReferences;

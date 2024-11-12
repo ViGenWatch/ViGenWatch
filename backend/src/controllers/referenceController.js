@@ -110,9 +110,27 @@ const onDownloadFileReference = async (req, res) => {
   }
 };
 
+const updateReferenceControllder = async (req, res) => {
+  try {
+    const referenceId = req.params.referenceId;
+    const data = req.body;
+    const newReference = await referenceService.updateReferenceById(referenceId, data);
+    if (newReference) {
+      res.status(200).json({ message: "update successfull" });
+    }
+  } catch (error) {
+    if (error instanceof CustomError) {
+      process.env.NODE_ENV == "development" ? console.log(error) : null;
+      return res.status(error.statusCode).json({ message: error.message });
+    }
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   getListReferencesController,
   uploadReferenceFileController,
   getContentFileReference,
-  onDownloadFileReference
+  onDownloadFileReference,
+  updateReferenceControllder
 };

@@ -17,5 +17,6 @@ referenceRoutes.post(
 
 referenceRoutes.get("/content-file/", authMiddleware, referenceController.getContentFileReference);
 referenceRoutes.get("/download-file/", authMiddleware, referenceController.onDownloadFileReference);
+referenceRoutes.put("/update/:referenceId", authMiddleware, referenceController.updateReferenceControllder);
 
 module.exports = referenceRoutes;

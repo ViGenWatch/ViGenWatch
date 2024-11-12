@@ -17,7 +17,7 @@ const ItemReferenceSelected = (props) => {
       <div className={cx('infor-reference-group')}>
         <span className={cx('infor-reference-group__name')}>{referenceName}</span>
         <div style={{ background: !status && 'rgb(230, 112, 48)' }} className={cx('infor-reference-group__icon')}>
-          {status ? 'Official' : 'Private'}
+          {status ? 'Community' : 'Private'}
         </div>
         <span className={cx('infor-reference-group__definition', 'infor-text')}>{`Definition: ${definition}`}</span>
         <span className={cx('infor-reference-group__author', 'infor-text')}>{`Author: ${author}`}</span>

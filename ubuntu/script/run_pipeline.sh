@@ -4,7 +4,7 @@ source ./runIndexSequences.sh
 source ./runFilterSequences.sh
 source ./runAlignSequences.sh
 source ./runConstructPhylogeny.sh
-source ./runRefindTree.sh
+source ./runRefineTree.sh
 source ./runAncestralTraits.sh
 source ./runAncestralSequences.sh
 source ./runAAMutations.sh

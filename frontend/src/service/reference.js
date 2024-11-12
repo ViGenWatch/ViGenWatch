@@ -92,3 +92,14 @@ export const downloadFile = async (referenceId, _fileName) => {
     return error.message;
   }
 };
+
+export const updateReferenceService = async (params) => {
+  try {
+    const { referenceId, status } = params;
+    let data = status ? { require: true } : { status: false };
+    const response = await axios.put(`/api/reference/update/${referenceId}`, data);
+    return response;
+  } catch (error) {
+    return error.message;
+  }
+};

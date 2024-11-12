@@ -14,7 +14,7 @@ const cx = classNames.bind(style);
 
 const ReferencePage = () => {
   const [openCreateReferecenceForm, setOpenCreateModal] = useState(false);
-  const { referencesState, getReferences, authState, inputDataState } = useReferences();
+  const { referencesState, getReferences, authState, inputDataState, updateRequireStatus } = useReferences();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
@@ -128,6 +128,7 @@ const ReferencePage = () => {
                 referencesState={referencesState}
                 authState={authState}
                 handleLoading={handleLoading}
+                updateRequireStatus={updateRequireStatus}
               />
             )}
           </div>

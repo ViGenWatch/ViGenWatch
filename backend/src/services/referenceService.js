@@ -5,7 +5,17 @@ const { where, Op } = require("sequelize");
 const getListReferences = async (userId) => {
   try {
     const references = await db.Reference.findAll({
-      attributes: ["id", "referencePath", "referenceName", "definition", "author", "version", "status", "userId"],
+      attributes: [
+        "id",
+        "referencePath",
+        "referenceName",
+        "definition",
+        "author",
+        "version",
+        "status",
+        "userId",
+        "require"
+      ],
       where: {
         [Op.or]: [{ status: 1 }, { userId: userId }]
       },
@@ -59,4 +69,15 @@ const getReferenceById = async (referenceId) => {
   }
 };
 
-module.exports = { getListReferences, createReference, getReferenceById };
+const updateReferenceById = async (referenceId, data) => {
+  try {
+    const newReference = db.Reference.update(data, {
+      where: { id: referenceId }
+    });
+    return newReference;
+  } catch (error) {
+    throw new CustomError(error.message, 400);
+  }
+};
+
+module.exports = { getListReferences, createReference, getReferenceById, updateReferenceById };

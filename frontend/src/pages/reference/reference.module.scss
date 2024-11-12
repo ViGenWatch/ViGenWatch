@@ -175,7 +175,6 @@
             border-radius: 4px;
             padding: 4px 15px;
             cursor: pointer;
-            margin-right: 15px;
           }
 
           .btn-run {
@@ -642,9 +641,27 @@
             gap: 8px;
             cursor: pointer;
 
-            span {
-              font-size: 15px;
-              color: rgb(33, 150, 243);
+            .make-private {
+              background: #e67030;
+            }
+
+            .pending {
+              background: #ffca28;
+            }
+
+            .request-public {
+              background: rgb(33, 150, 243);
+            }
+
+            .btn-edit-status {
+              width: 110px;
+              height: 35px;
+              border-radius: 5px;
+              border: none;
+              cursor: pointer;
+              color: #ffffff;
+              font-size: 14px;
+              font-weight: 500;
             }
           }
 
@@ -714,7 +731,7 @@
           position: relative;
 
           .header-group {
-            width: 34vw;
+            width: 34%;
             position: fixed;
             display: flex;
             flex-direction: row;
