@@ -11,7 +11,7 @@ declare module '@khaitd0340/auspice/src/components/map/map' {
     legend?: boolean;
     branchLengthsToDisplay?: string;
     absoluteDateMin?: Date;
-    absoluteDateMax?: string;
+    absoluteDateMax?: Date;
     treeVersion?: number;
     treeLoaded?: boolean;
     nodes?: AuspiceTreeNode[];

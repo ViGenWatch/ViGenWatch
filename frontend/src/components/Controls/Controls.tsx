@@ -10,6 +10,7 @@ import ChooseBranchLabelSection from './ChooseBranchLabel';
 import ChooseTipLabelSection from './ChooseTipLabel';
 import GeoSolutionSection from './GeoSolution';
 import ChooseDataset from './ChooseDataset';
+import DateRangeAnimate from './DateRangeAnimate';
 
 export interface PropsTypeControls {
   state: RootState;
@@ -27,6 +28,7 @@ const Controls = () => {
   return (
     <ControlsContainer>
       <ChooseDataset />
+      <DateRangeAnimate {...props} />
       <ColorBySection {...props} />
       <FilterDataSection {...props} />
       <span style={{ paddingTop: '10px' }} />

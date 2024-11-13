@@ -72,18 +72,6 @@ const LayoutComponent = ({ children, index }) => {
           <div
             className={cx('button-nav-group__btn')}
             style={{
-              background: index === 4 && '#2296f3',
-              fontWeight: index === 4 && '500'
-            }}
-          >
-            <NavLink style={{ color: index === 4 && '#ffffff' }} className={cx('navlink')} to='/edit'>
-              Edit
-            </NavLink>
-          </div>
-          <RiArrowRightSFill fontSize={'25px'} />
-          <div
-            className={cx('button-nav-group__btn')}
-            style={{
               background: index === 5 && '#2296f3',
               fontWeight: index === 5 && '500'
             }}

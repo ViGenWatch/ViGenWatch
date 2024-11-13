@@ -71,11 +71,11 @@ declare module 'auspice' {
     focus?: boolean;
     dateMin?: Date;
     dateMinNumeric?: number;
-    dateMax?: string;
+    dateMax?: Date;
     dateMaxNumeric?: number;
     absoluteDateMin?: Date;
     absoluteDateMinNumeric?: number;
-    absoluteDateMax?: string;
+    absoluteDateMax?: Date;
     absoluteDateMaxNumeric?: number;
     colorBy?: string;
     colorByConfidence?: boolean;

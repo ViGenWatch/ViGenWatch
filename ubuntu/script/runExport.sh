@@ -19,5 +19,5 @@ function run_export {
       ${colors:+--colors "$config_dir/$colors"} \
       ${latLongs:+--lat-longs "$config_dir/$latLongs"} \
       --auspice-config "$config_dir/$auspiceConfig" \
-      --output "$output_dir/auspice/virus.json"
+      --output "$output_dir/auspice/virus.json" 
 }

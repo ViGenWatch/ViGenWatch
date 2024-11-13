@@ -8,15 +8,16 @@ declare module '@khaitd0340/auspice/src/components/controls/date-range-inputs' {
     branchLengthsToDisplay?: string;
     dateMin?: Date;
     dateMinNumeric?: number;
-    dateMax?: string;
+    dateMax?: Date;
     dateMaxNumeric?: number;
     absoluteDateMin?: Date;
     absoluteDateMinNumeric?: number;
-    absoluteDateMax?: string;
+    absoluteDateMax?: Date;
     absoluteDateMaxNumeric?: number;
     dispatch: Dispatch;
   }
 
   const DateRangeInputs: FC<DateRangeInputProps>;
+  export const DateRangeInfo: FC;
   export default DateRangeInputs;
 }

@@ -9,6 +9,6 @@ function run_traits {
       --tree "$tree" \
       --metadata "$metadata" \
       --output-node-data "$output_dir/traits.json" \
-      --columns region country \
+      --columns region country division \
       --confidence
 }

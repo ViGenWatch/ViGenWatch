@@ -12,6 +12,8 @@ import { Suspense } from 'react';
 import EntropySection from '../../components/Entropy/EntropySection';
 import useExecution from '../../hook/useExecution';
 import { LOADING } from '../../components/loading';
+import InforSection from '../../components/Infor/Infor';
+import { calcUsableWidth } from '@khaitd0340/auspice/src/util/computeResponsive';
 
 const MainContainer = styled.div`
     position: 'relative';
@@ -21,6 +23,7 @@ const MainContainer = styled.div`
     flex-direction: 'row',
     justify-content: 'start',
     align-items: 'start',
+    // overflow-y: 'scroll'
   `;
 
 const MainPage = () => {
@@ -72,6 +75,9 @@ const MainPage = () => {
         <MainContainer>
           <SideBar width={sidebarWidth} height={availableHeight} />
           <PanelsContainer width={availableWidth} height={availableHeight} left={props.sidebarOpen ? sidebarWidth : 0}>
+            {props.displayNarrative || props.showOnlyPanels ? null : (
+              <InforSection width={calcUsableWidth(availableWidth, 1)} />
+            )}
             {props.panelsToDisplay?.includes('tree') ? (
               <TreeSection width={inGrid() ? grid.width : full.width} height={inGrid() ? grid.height : full.height} />
             ) : null}
