@@ -2,6 +2,7 @@ const db = require("../models/index");
 const CustomError = require("../entity/customError");
 const { where, Op } = require("sequelize");
 
+//role user 0x01
 const getListReferences = async (userId) => {
   try {
     const references = await db.Reference.findAll({
@@ -23,7 +24,7 @@ const getListReferences = async (userId) => {
         {
           model: db.ReferenceFile,
           as: "referenceFile",
-          attributes: ["auspiceConfig", "colors", "droppedTrains", "includeTrains", "latLongs", "virusOutgroup"],
+          attributes: ["auspiceConfig", "virusOutgroup", "colors", "droppedTrains", "includeTrains", "latLongs"],
           required: false
         }
       ]
@@ -80,4 +81,56 @@ const updateReferenceById = async (referenceId, data) => {
   }
 };
 
-module.exports = { getListReferences, createReference, getReferenceById, updateReferenceById };
+//role user 0x02
+const getListReferencesRoleAuthority = async () => {
+  try {
+    const references = await db.Reference.findAll({
+      attributes: [
+        "id",
+        "referencePath",
+        "referenceName",
+        "definition",
+        "author",
+        "version",
+        "status",
+        "userId",
+        "require"
+      ],
+      where: {
+        [Op.or]: [
+          { "$user.role$": "0x02" },
+          {
+            [Op.and]: [
+              { "$user.role$": "0x01" },
+              {
+                [Op.or]: [{ status: 1 }, { require: 1, status: 0 }]
+              }
+            ]
+          }
+        ]
+      },
+      include: [
+        {
+          association: "referenceFile",
+          attributes: ["auspiceConfig", "virusOutgroup", "colors", "droppedTrains", "includeTrains", "latLongs"],
+          required: false
+        },
+        {
+          association: "user",
+          attributes: ["role"]
+        }
+      ]
+    });
+    return references;
+  } catch (error) {
+    throw new CustomError(error.message, 500);
+  }
+};
+
+module.exports = {
+  getListReferences,
+  createReference,
+  getReferenceById,
+  updateReferenceById,
+  getListReferencesRoleAuthority
+};

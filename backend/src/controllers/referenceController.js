@@ -6,6 +6,7 @@ const { exec } = require("child_process");
 const path = require("path");
 const executionHelper = require("../utils/execution");
 
+//role user 0x01
 const getListReferencesController = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -127,10 +128,32 @@ const updateReferenceControllder = async (req, res) => {
   }
 };
 
+//role user 0x02
+
+const getListReferencesRoleAuthorityController = async (req, res) => {
+  try {
+    const references = await referenceService.getListReferencesRoleAuthority();
+    if (!references) {
+      throw new CustomError("Get Reference Not Found", 500);
+    }
+    return res.status(200).json({
+      message: "get list references successfull",
+      data: references
+    });
+  } catch (error) {
+    if (error instanceof CustomError) {
+      process.env.NODE_ENV == "development" ? console.log(error) : null;
+      return res.status(error.statusCode).json({ message: error.message });
+    }
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   getListReferencesController,
   uploadReferenceFileController,
   getContentFileReference,
   onDownloadFileReference,
-  updateReferenceControllder
+  updateReferenceControllder,
+  getListReferencesRoleAuthorityController
 };

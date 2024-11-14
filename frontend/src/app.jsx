@@ -7,6 +7,7 @@ import useAuth from './hook/useAuth';
 import SignUp from './pages/signup';
 import ReferencePage from './pages/reference';
 import ExportPage from './pages/export';
+import AuthorityReference from './pages/authority/authority-reference';
 
 const App = () => {
   const { authState, refreshToken, dataSaveSession } = useAuth();
@@ -20,15 +21,30 @@ const App = () => {
       </Routes>
     );
   } else if (authState.user) {
-    content = (
-      <Routes>
-        <Route path='/start' element={<HomePage />} />
-        <Route path='/reference' element={<ReferencePage />} />
-        <Route path='/main' element={<MainPage />} />
-        <Route path='/export' element={<ExportPage />} />
-        <Route path='/*' element={<Navigate to='/start' />} />
-      </Routes>
-    );
+    switch (authState.user.role) {
+      case '0x01':
+        content = (
+          <Routes>
+            <Route path='/start' element={<HomePage />} />
+            <Route path='/reference' element={<ReferencePage />} />
+            <Route path='/main' element={<MainPage />} />
+            <Route path='/export' element={<ExportPage />} />
+            <Route path='/*' element={<Navigate to='/start' />} />
+          </Routes>
+        );
+        break;
+      case '0x02':
+        content = (
+          <Routes>
+            <Route path='/authority/start' element={<HomePage />} />
+            <Route path='/authority/reference' element={<AuthorityReference />} />
+            <Route path='/authority/main' element={<MainPage />} />
+            <Route path='/authority/export' element={<ExportPage />} />
+            <Route path='/*' element={<Navigate to='/authority/start' />} />
+          </Routes>
+        );
+        break;
+    }
   }
   return <BrowserRouter>{content}</BrowserRouter>;
 };

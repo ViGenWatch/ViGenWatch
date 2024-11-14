@@ -30,6 +30,12 @@ const CreateReference = (props) => {
       value: null
     },
     {
+      label: 'Virus Outgroup file.gb',
+      key: 'virusOutgroup',
+      isDragging: false,
+      value: null
+    },
+    {
       label: 'Colors file.tsv(txt)',
       key: 'colors',
       isDragging: false,
@@ -50,12 +56,6 @@ const CreateReference = (props) => {
     {
       label: 'Lat Longs file.tsv(txt)',
       key: 'latLongs',
-      isDragging: false,
-      value: null
-    },
-    {
-      label: 'Virus Outgroup file.gb',
-      key: 'virusOutgroup',
       isDragging: false,
       value: null
     }

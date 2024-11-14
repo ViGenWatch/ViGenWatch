@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import LayoutComponent from '../../components/Layout';
 import style from './reference.module.scss';
 import classNames from 'classnames/bind';
-import { IoIosArrowBack, IoIosArrowDown, IoIosSearch } from 'react-icons/io';
+import { IoIosArrowBack, IoIosSearch } from 'react-icons/io';
 import ItemReference from './itemReference';
 import { useNavigate } from 'react-router-dom';
 import useReferences from '../../hook/useReferences';
 import CreateReference from './createReference';
 import { LOADING } from '../../components/loading';
 import ReferenceInfor from './referenceInfor';
+import FilterGroup from '../../components/FilterGroup';
 
 const cx = classNames.bind(style);
 
@@ -22,14 +23,14 @@ const ReferencePage = () => {
     value: 'All',
     key: 0
   });
-  const filters = ['All', 'Your References', "System's References"];
-  const [openFilter, setOpenFilter] = useState(false);
+  const filters = [
+    { value: 'All', key: 0 },
+    { value: 'Your References', key: 1 },
+    { value: "System's References", key: 2 }
+  ];
 
-  const handleClickFiler = (index) => {
-    setOptionFilter({
-      value: filters[index],
-      key: index
-    });
+  const handleClickFilter = (index) => {
+    setOptionFilter(filters[index]);
   };
 
   const handleStateOpen = () => {
@@ -79,18 +80,11 @@ const ReferencePage = () => {
                   </div>
 
                   <div className={cx('btn-run-group')}>
-                    <div role='button' className={cx('filter-group')} onClick={() => setOpenFilter(!openFilter)}>
-                      <span className={cx('text-filter')}>{optionFilter.value}</span>
-                      <IoIosArrowDown />
-
-                      <div className={cx('bar-options')} style={{ display: openFilter ? 'flex' : 'none' }}>
-                        {filters.map((filter, index) => (
-                          <span role='button' key={index} onClick={() => handleClickFiler(index)}>
-                            {filter}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
+                    <FilterGroup
+                      referenceFilterArray={filters}
+                      handleClickFilter={handleClickFilter}
+                      optionFilter={optionFilter}
+                    />
 
                     <div>
                       {!openCreateReferecenceForm && (

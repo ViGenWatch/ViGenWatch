@@ -86,6 +86,7 @@ const userLoginController = async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         id: user.id,
+        role: user.role,
         accessToken,
         newRefreshToken
       }
@@ -126,6 +127,7 @@ const getAccountController = async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         id: user.id,
+        role: user.role,
         accessToken
       }
     });

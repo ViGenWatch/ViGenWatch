@@ -1,0 +1,54 @@
+.infor-reference-group__content {
+  margin-top: 5px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  border: 1px solid rgb(204, 204, 204);
+  border-radius: 5px;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  .infor-content-container {
+    width: 95.5%;
+    height: 100%;
+    padding: 0 15px 15px 15px;
+
+    .reference-information-content {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      align-items: start;
+      position: relative;
+
+      .header-group {
+        width: 34%;
+        position: fixed;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        background: #ffffff;
+        .filter-container {
+          height: 60px;
+          display: flex;
+          align-items: center;
+        }
+      }
+
+      .content-file {
+        margin-top: 50px;
+        pre {
+          white-space: pre-wrap;
+          font-family: monospace;
+          word-wrap: break-word;
+          height: 90%;
+        }
+      }
+    }
+  }
+}

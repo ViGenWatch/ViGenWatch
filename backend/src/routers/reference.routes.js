@@ -4,9 +4,11 @@ const referenceStorage = require("../utils/referenceStorage");
 const process = require("process");
 const checkInput = require("../middlewares/validate");
 const authMiddleware = require("../middlewares/authMiddleware");
+const verifyRole = require("../middlewares/verifyRole");
 
 let referenceRoutes = express.Router();
 
+//role user 0x01
 referenceRoutes.get("/getlist", authMiddleware, referenceController.getListReferencesController);
 referenceRoutes.post(
   "/create-reference",
@@ -15,8 +17,16 @@ referenceRoutes.post(
   referenceController.uploadReferenceFileController
 );
 
+//role user 0x02
+referenceRoutes.get("/0x02/getlist", authMiddleware, referenceController.getListReferencesRoleAuthorityController);
+
+//role user 0x01 0x02
 referenceRoutes.get("/content-file/", authMiddleware, referenceController.getContentFileReference);
 referenceRoutes.get("/download-file/", authMiddleware, referenceController.onDownloadFileReference);
-referenceRoutes.put("/update/:referenceId", authMiddleware, referenceController.updateReferenceControllder);
-
+referenceRoutes.put(
+  "/update/:referenceId",
+  authMiddleware,
+  verifyRole.VerifyRoleAuthority,
+  referenceController.updateReferenceControllder
+);
 module.exports = referenceRoutes;

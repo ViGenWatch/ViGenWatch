@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import style from './reference.module.scss';
 import classNames from 'classnames/bind';
-import { IoIosArrowDown } from 'react-icons/io';
-import { MdOutlineFileDownload } from 'react-icons/md';
 import PropTypes from 'prop-types';
 import RunButton from '../../components/RunButton';
 import { downloadFile, getReferenceContentFile } from '../../service/reference';
+import ReadFile from '../../components/ReadFile';
 
 const cx = classNames.bind(style);
 
@@ -20,10 +19,9 @@ const ReferenceInfor = (props) => {
     .map(([key, value]) => ({ key, value }));
 
   const [optionFilter, setOptionFilter] = useState(referenceFileArray[0]);
-  const [openFilter, setOpenFilter] = useState(false);
   const [contentFile, setContentFile] = useState(null);
 
-  const handleClickFiler = (index) => {
+  const handleClickFilter = (index) => {
     setOptionFilter(referenceFileArray[index]);
   };
   useEffect(() => {
@@ -109,36 +107,13 @@ const ReferenceInfor = (props) => {
         </div>
       </div>
 
-      <div className={cx('infor-reference-group__content')}>
-        <div className={cx('infor-content-container')}>
-          <div className={cx('reference-information-content')}>
-            <div className={cx('header-group')}>
-              <div className={cx('filter-container')}>
-                <div role='button' className={cx('filter-group')} onClick={() => setOpenFilter(!openFilter)}>
-                  <span className={cx('text-filter')}>{optionFilter.value}</span>
-                  <IoIosArrowDown />
-
-                  <div className={cx('bar-options')} style={{ display: openFilter ? 'flex' : 'none' }}>
-                    {referenceFileArray.map((filter, index) => (
-                      <span role='button' key={index} onClick={() => handleClickFiler(index)}>
-                        {filter.value}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <MdOutlineFileDownload
-                style={{ fontSize: '25px', color: 'rgb(33,150,243)', cursor: 'pointer' }}
-                onClick={onDownloadFile}
-              />
-            </div>
-            <div className={cx('content-file')}>
-              <pre>{contentFile}</pre>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ReadFile
+        referenceFilterArray={referenceFileArray}
+        handleClickFilter={handleClickFilter}
+        optionFilter={optionFilter}
+        contentFile={contentFile}
+        onDownloadFile={onDownloadFile}
+      />
     </div>
   );
 };
