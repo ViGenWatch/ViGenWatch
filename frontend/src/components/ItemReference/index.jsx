@@ -1,5 +1,5 @@
 import React from 'react';
-import style from './reference.module.scss';
+import style from './ItemReference.module.scss';
 import classNames from 'classnames/bind';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,7 +8,7 @@ import { Actions } from '../../redux/reducer/inputDataReducer';
 const cx = classNames.bind(style);
 
 const ItemReference = (props) => {
-  const { id, referenceName, author, definition, version, status } = props;
+  const { id, referenceName, author, definition, version, status, require } = props;
   const inputDataState = useSelector((state) => state.inputData);
 
   const dispatch = useDispatch();
@@ -31,8 +31,11 @@ const ItemReference = (props) => {
       </div>
       <div className={cx('infor-reference-group')}>
         <span className={cx('infor-reference-group__name')}>{referenceName}</span>
-        <div style={{ background: !status && 'rgb(230, 112, 48)' }} className={cx('infor-reference-group__icon')}>
-          {status ? 'Community' : 'Private'}
+        <div
+          style={{ background: !status && (require ? '#ffca28' : '#e67030') }}
+          className={cx('infor-reference-group__icon')}
+        >
+          {status ? 'Community' : require ? 'Pending' : 'Private'}
         </div>
         <span className={cx('infor-reference-group__definition', 'infor-text')}>{`Definition: ${definition}`}</span>
         <span className={cx('infor-reference-group__author', 'infor-text')}>{`Author: ${author}`}</span>
@@ -48,7 +51,8 @@ ItemReference.propTypes = {
   definition: PropTypes.string.isRequired,
   version: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
-  status: PropTypes.boolean
+  status: PropTypes.boolean,
+  require: PropTypes.boolean
 };
 
 export default ItemReference;

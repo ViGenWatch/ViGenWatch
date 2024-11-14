@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import style from './reference.module.scss';
+import style from './CreateReference.module.scss';
 import classNames from 'classnames/bind';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -248,8 +248,8 @@ const CreateReference = (props) => {
               <select
                 className={cx('select')}
                 id='require'
-                name='require'
-                value={formDataState.require}
+                name={authState.user.role === '0x01' ? 'require' : 'status'}
+                value={authState.user.role === '0x01' ? formDataState.require : formDataState.status}
                 onChange={handleChange}
               >
                 <option value={true}>Public</option>

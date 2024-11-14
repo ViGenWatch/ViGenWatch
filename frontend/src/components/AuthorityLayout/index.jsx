@@ -40,7 +40,7 @@ const AuthorityLayout = ({ children, index }) => {
               fontWeight: index === 1 && '500'
             }}
           >
-            <NavLink style={{ color: index === 1 && '#ffffff' }} className={cx('navlink')} to='/authority/start'>
+            <NavLink style={{ color: index === 1 && '#ffffff' }} className={cx('navlink')} to='/start'>
               Start
             </NavLink>
           </div>
@@ -52,7 +52,7 @@ const AuthorityLayout = ({ children, index }) => {
               fontWeight: index === 2 && '500'
             }}
           >
-            <NavLink style={{ color: index === 2 && '#ffffff' }} className={cx('navlink')} to='/authority/reference'>
+            <NavLink style={{ color: index === 2 && '#ffffff' }} className={cx('navlink')} to='/reference'>
               Reference
             </NavLink>
           </div>
@@ -64,7 +64,7 @@ const AuthorityLayout = ({ children, index }) => {
               fontWeight: index === 3 && '500'
             }}
           >
-            <NavLink style={{ color: index === 3 && '#ffffff' }} className={cx('navlink')} to='/authority/main'>
+            <NavLink style={{ color: index === 3 && '#ffffff' }} className={cx('navlink')} to='/main'>
               Main
             </NavLink>
           </div>
@@ -76,7 +76,7 @@ const AuthorityLayout = ({ children, index }) => {
               fontWeight: index === 5 && '500'
             }}
           >
-            <NavLink style={{ color: index === 5 && '#ffffff' }} className={cx('navlink')} to='/authority/export'>
+            <NavLink style={{ color: index === 5 && '#ffffff' }} className={cx('navlink')} to='/export'>
               Export
             </NavLink>
           </div>

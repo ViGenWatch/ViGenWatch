@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import style from './reference.module.scss';
+import style from './authorityReferences.module.scss';
 import classNames from 'classnames/bind';
 import PropTypes from 'prop-types';
-import RunButton from '../../components/RunButton';
-import { downloadFile, getReferenceContentFile } from '../../service/reference';
-import ReadFile from '../../components/ReadFile';
+import RunButton from '../../../components/RunButton';
+import ReadFile from '../../../components/ReadFile';
+import { downloadFile, getReferenceContentFile } from '../../../service/reference';
 
 const cx = classNames.bind(style);
 
@@ -68,31 +68,43 @@ const ReferenceInfor = (props) => {
           </div>
           <div className={cx('infor-reference-group')}>
             <div className={cx('infor-reference-group__btn-edit')}>
-              {selectReference.userId === authState.user.id &&
-                (selectReference.status ? (
-                  <button
-                    className={cx('make-private', 'btn-edit-status')}
-                    onClick={() => updateRequireStatus(selectReference.id, 0)}
-                  >
-                    Make Private
-                  </button>
-                ) : selectReference.require ? (
-                  <button className={cx('pending', 'btn-edit-status')}>Pending</button>
-                ) : (
+              {selectReference.status ? (
+                <button
+                  className={cx('make-private', 'btn-edit-status')}
+                  onClick={() => updateRequireStatus(selectReference.id, 0)}
+                >
+                  Make Private
+                </button>
+              ) : selectReference.user.role === authState.user.role ? (
+                <button
+                  className={cx('request-public', 'btn-edit-status')}
+                  onClick={() => updateRequireStatus(selectReference.id, 1)}
+                >
+                  Make Public
+                </button>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
                   <button
                     className={cx('request-public', 'btn-edit-status')}
                     onClick={() => updateRequireStatus(selectReference.id, 1)}
                   >
-                    Request Public
+                    Approve
                   </button>
-                ))}
+                  <button
+                    className={cx('close', 'btn-edit-status')}
+                    onClick={() => updateRequireStatus(selectReference.id, 1)}
+                  >
+                    Close
+                  </button>
+                </div>
+              )}
             </div>
             <span className={cx('infor-reference-group__name')}>{selectReference.referenceName}</span>
             <div
-              style={{ background: !selectReference.status && 'rgb(230, 112, 48)' }}
+              style={{ background: !selectReference.status && (selectReference.require ? '#ffca28' : '#e67030') }}
               className={cx('infor-reference-group__icon')}
             >
-              {selectReference.status ? 'Community' : 'Private'}
+              {selectReference.status ? 'Community' : selectReference.require ? 'Pending' : 'Private'}
             </div>
             <span
               className={cx('infor-reference-group__definition', 'infor-text')}

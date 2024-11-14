@@ -3,13 +3,13 @@ import LayoutComponent from '../../components/Layout';
 import style from './reference.module.scss';
 import classNames from 'classnames/bind';
 import { IoIosArrowBack, IoIosSearch } from 'react-icons/io';
-import ItemReference from './itemReference';
 import { useNavigate } from 'react-router-dom';
 import useReferences from '../../hook/useReferences';
-import CreateReference from './createReference';
 import { LOADING } from '../../components/loading';
-import ReferenceInfor from './referenceInfor';
+import ReferenceInfor from './ReferenceInfor';
 import FilterGroup from '../../components/FilterGroup';
+import ItemReference from '../../components/ItemReference';
+import CreateReference from '../../components/CreateReference';
 
 const cx = classNames.bind(style);
 

@@ -18,15 +18,15 @@ referenceRoutes.post(
 );
 
 //role user 0x02
-referenceRoutes.get("/0x02/getlist", authMiddleware, referenceController.getListReferencesRoleAuthorityController);
+referenceRoutes.get(
+  "/0x02/getlist",
+  authMiddleware,
+  verifyRole.VerifyRoleAuthority,
+  referenceController.getListReferencesRoleAuthorityController
+);
 
 //role user 0x01 0x02
 referenceRoutes.get("/content-file/", authMiddleware, referenceController.getContentFileReference);
 referenceRoutes.get("/download-file/", authMiddleware, referenceController.onDownloadFileReference);
-referenceRoutes.put(
-  "/update/:referenceId",
-  authMiddleware,
-  verifyRole.VerifyRoleAuthority,
-  referenceController.updateReferenceControllder
-);
+referenceRoutes.put("/update/:referenceId", authMiddleware, referenceController.updateReferenceControllder);
 module.exports = referenceRoutes;

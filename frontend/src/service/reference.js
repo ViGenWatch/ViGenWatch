@@ -1,8 +1,19 @@
 import axios from './axios';
 
+//role user 0x01
 export const getListReferens = async () => {
   try {
     const response = await axios.get(`/api/reference/getlist/`);
+    return response;
+  } catch (error) {
+    return error.message;
+  }
+};
+
+//role user 0x02
+export const getListReferensRoleAuthority = async () => {
+  try {
+    const response = await axios.get(`/api/reference/0x02/getlist/`);
     return response;
   } catch (error) {
     return error.message;

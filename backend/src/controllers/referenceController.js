@@ -129,7 +129,6 @@ const updateReferenceControllder = async (req, res) => {
 };
 
 //role user 0x02
-
 const getListReferencesRoleAuthorityController = async (req, res) => {
   try {
     const references = await referenceService.getListReferencesRoleAuthority();

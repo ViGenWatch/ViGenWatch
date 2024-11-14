@@ -36,11 +36,11 @@ const App = () => {
       case '0x02':
         content = (
           <Routes>
-            <Route path='/authority/start' element={<HomePage />} />
-            <Route path='/authority/reference' element={<AuthorityReference />} />
-            <Route path='/authority/main' element={<MainPage />} />
-            <Route path='/authority/export' element={<ExportPage />} />
-            <Route path='/*' element={<Navigate to='/authority/start' />} />
+            <Route path='/start' element={<HomePage />} />
+            <Route path='/reference' element={<AuthorityReference />} />
+            <Route path='/main' element={<MainPage />} />
+            <Route path='/export' element={<ExportPage />} />
+            <Route path='/*' element={<Navigate to='/start' />} />
           </Routes>
         );
         break;

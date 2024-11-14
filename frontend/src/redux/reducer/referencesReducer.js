@@ -63,6 +63,14 @@ const referencesSlice = createSlice({
           )
         };
       }
+    },
+
+    getReferencesRequestRoleAuthority: (state) => {
+      return {
+        ...state,
+        loading: 'true',
+        error: null
+      };
     }
   }
 });
