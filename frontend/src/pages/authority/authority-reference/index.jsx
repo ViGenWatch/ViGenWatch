@@ -16,7 +16,7 @@ const cx = classNames.bind(style);
 
 const AuthorityReference = () => {
   const [openCreateReferecenceForm, setOpenCreateModal] = useState(false);
-  const { referencesState, authState, getReferences, inputDataState } = useReferencesAuthority();
+  const { referencesState, authState, getReferences, inputDataState, updateRequireStatus } = useReferencesAuthority();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const handleLoading = (isLoading) => {
@@ -174,6 +174,8 @@ const AuthorityReference = () => {
                 referencesState={referencesState}
                 authState={authState}
                 handleLoading={handleLoading}
+                updateRequireStatus={updateRequireStatus}
+                getNewState={getReferences}
               />
             )}
           </div>

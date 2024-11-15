@@ -1,5 +1,5 @@
 import React from 'react';
-import style from './start.module.scss';
+import style from './Start.module.scss';
 import classNames from 'classnames/bind';
 import PropTypes from 'prop-types';
 
@@ -16,8 +16,11 @@ const ItemReferenceSelected = (props) => {
       </div>
       <div className={cx('infor-reference-group')}>
         <span className={cx('infor-reference-group__name')}>{referenceName}</span>
-        <div style={{ background: !status && 'rgb(230, 112, 48)' }} className={cx('infor-reference-group__icon')}>
-          {status ? 'Community' : 'Private'}
+        <div
+          style={{ background: !status && (require ? '#ffca28' : '#e67030') }}
+          className={cx('infor-reference-group__icon')}
+        >
+          {status ? 'Community' : require ? 'Pending' : 'Private'}
         </div>
         <span className={cx('infor-reference-group__definition', 'infor-text')}>{`Definition: ${definition}`}</span>
         <span className={cx('infor-reference-group__author', 'infor-text')}>{`Author: ${author}`}</span>

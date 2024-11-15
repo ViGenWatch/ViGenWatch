@@ -9,7 +9,12 @@ const verifyRole = require("../middlewares/verifyRole");
 let referenceRoutes = express.Router();
 
 //role user 0x01
-referenceRoutes.get("/getlist", authMiddleware, referenceController.getListReferencesController);
+referenceRoutes.get(
+  "/getlist",
+  authMiddleware,
+  verifyRole.VerifyRoleUser,
+  referenceController.getListReferencesController
+);
 referenceRoutes.post(
   "/create-reference",
   referenceStorage.uploadReferenceFile.array("files", process.env.REFERENCE_FILE_INPUT_NUMBER || 5),
@@ -23,6 +28,13 @@ referenceRoutes.get(
   authMiddleware,
   verifyRole.VerifyRoleAuthority,
   referenceController.getListReferencesRoleAuthorityController
+);
+
+referenceRoutes.put(
+  "/0x02/update/:referenceId",
+  authMiddleware,
+  verifyRole.VerifyRoleAuthority,
+  referenceController.updateReferenceControllder
 );
 
 //role user 0x01 0x02

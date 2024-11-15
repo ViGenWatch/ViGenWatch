@@ -22,10 +22,13 @@ const getListReferences = async (userId) => {
       },
       include: [
         {
-          model: db.ReferenceFile,
-          as: "referenceFile",
+          association: "referenceFile",
           attributes: ["auspiceConfig", "virusOutgroup", "colors", "droppedTrains", "includeTrains", "latLongs"],
           required: false
+        },
+        {
+          association: "user",
+          attributes: ["role"]
         }
       ]
     });

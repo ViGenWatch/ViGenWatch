@@ -29,7 +29,7 @@ const authMiddleware = async (req, res, next) => {
     req.accessToken = accessTokenFromHeader;
     return next();
   } catch (error) {
-    res.status(500).json({
+    res.status(401).json({
       status: "error",
       message: error.message
     });

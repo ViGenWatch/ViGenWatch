@@ -32,6 +32,13 @@ const inputDataSlice = createSlice({
       };
     },
 
+    removeSelectReference: (state) => {
+      return {
+        ...state,
+        selectedReferenceId: null
+      };
+    },
+
     resetInputFilesData: () => {
       return initInputData;
     }

@@ -29,9 +29,10 @@ export const getUserAccount = async (data) => {
 
 export const logoutFunc = async () => {
   try {
+    const response = await axios.get('/api/auth/logout');
+    window.location.reload();
     sessionStorage.clear();
     localStorage.clear();
-    const response = await axios.get('/api/auth/logout');
     return response;
   } catch (error) {
     return { success: 0, error: error.message };

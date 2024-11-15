@@ -8,6 +8,7 @@ import SignUp from './pages/signup';
 import ReferencePage from './pages/reference';
 import ExportPage from './pages/export';
 import AuthorityReference from './pages/authority/authority-reference';
+import AuthorityStart from './pages/authority/authority-start';
 
 const App = () => {
   const { authState, refreshToken, dataSaveSession } = useAuth();
@@ -21,6 +22,7 @@ const App = () => {
       </Routes>
     );
   } else if (authState.user) {
+    console.log(authState.user);
     switch (authState.user.role) {
       case '0x01':
         content = (
@@ -36,7 +38,7 @@ const App = () => {
       case '0x02':
         content = (
           <Routes>
-            <Route path='/start' element={<HomePage />} />
+            <Route path='/start' element={<AuthorityStart />} />
             <Route path='/reference' element={<AuthorityReference />} />
             <Route path='/main' element={<MainPage />} />
             <Route path='/export' element={<ExportPage />} />

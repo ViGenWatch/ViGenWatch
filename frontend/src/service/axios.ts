@@ -42,7 +42,6 @@ instance.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === 401) {
       sessionStorage.clear();
-      localStorage.clear();
     }
     if (error.response?.data) return Promise.reject(error.response.data);
     else return Promise.reject(error);

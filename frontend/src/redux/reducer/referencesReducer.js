@@ -34,6 +34,8 @@ const referencesSlice = createSlice({
       };
     },
 
+    //role user 0x01
+
     updateRequireStatusRequest: (state) => {
       return {
         ...state,
@@ -44,14 +46,14 @@ const referencesSlice = createSlice({
 
     updateRequireStatusSuccess: (state, action) => {
       const referenceId = action.payload.referenceId;
-      const status = action.payload.status;
+      const nextStatus = action.payload.status;
       const prevReferences = state.references;
-      if (status) {
+      if (nextStatus) {
         return {
           ...state,
           loading: false,
           references: prevReferences.map((reference) =>
-            reference.id === referenceId ? { ...reference, require: status } : reference
+            reference.id === referenceId ? { ...reference, require: nextStatus } : reference
           )
         };
       } else {
@@ -59,10 +61,32 @@ const referencesSlice = createSlice({
           ...state,
           loading: false,
           references: prevReferences.map((reference) =>
-            reference.id === referenceId ? { ...reference, status: status } : reference
+            reference.id === referenceId ? { ...reference, status: nextStatus } : reference
           )
         };
       }
+    },
+
+    //role user 0x02
+
+    updateStatusRequestRoleAuthority: (state) => {
+      return {
+        ...state,
+        loading: 'true',
+        error: null
+      };
+    },
+
+    updateStatusRoleAuthoritySuccess: (state, action) => {
+      const { referenceId, status: nextStatus } = action.payload;
+      const prevReferences = state.references;
+      return {
+        ...state,
+        loading: false,
+        references: prevReferences.map((reference) =>
+          reference.id === referenceId ? { ...reference, status: nextStatus, require: 0 } : reference
+        )
+      };
     },
 
     getReferencesRequestRoleAuthority: (state) => {

@@ -4,12 +4,15 @@ import classNames from 'classnames/bind';
 import PropTypes from 'prop-types';
 import RunButton from '../../../components/RunButton';
 import ReadFile from '../../../components/ReadFile';
-import { downloadFile, getReferenceContentFile } from '../../../service/reference';
+import { downloadFile, getReferenceContentFile, updateReferenceServiceRoleAuthority } from '../../../service/reference';
+import { useDispatch } from 'react-redux';
+import { Actions } from '../../../redux/reducer/inputDataReducer';
 
 const cx = classNames.bind(style);
 
 const ReferenceInfor = (props) => {
-  const { inputDataState, referencesState, authState, handleLoading, updateRequireStatus } = props;
+  const dispatch = useDispatch();
+  const { inputDataState, referencesState, authState, handleLoading, updateRequireStatus, getNewState } = props;
   const selectReference = referencesState.references.filter(
     (reference) => reference.id === inputDataState.selectedReferenceId
   )[0];
@@ -46,6 +49,17 @@ const ReferenceInfor = (props) => {
     }
   };
 
+  const onCloseReference = async () => {
+    handleLoading(true);
+    const referenceId = selectReference.id;
+    dispatch(Actions.removeSelectReference());
+    await updateReferenceServiceRoleAuthority({ referenceId, status: 0 });
+    await getNewState();
+    setTimeout(() => {
+      props.handleLoading(false);
+    }, 750);
+  };
+
   return (
     <div className={cx('infor-reference-group')}>
       <div className={cx('infor-reference-group__header-group')}>
@@ -70,10 +84,17 @@ const ReferenceInfor = (props) => {
             <div className={cx('infor-reference-group__btn-edit')}>
               {selectReference.status ? (
                 <button
-                  className={cx('make-private', 'btn-edit-status')}
-                  onClick={() => updateRequireStatus(selectReference.id, 0)}
+                  className={cx(
+                    'btn-edit-status',
+                    selectReference.user.role === authState.user.role ? 'make-private' : 'close'
+                  )}
+                  onClick={
+                    selectReference.user.role === authState.user.role
+                      ? () => updateRequireStatus(selectReference.id, 0)
+                      : onCloseReference
+                  }
                 >
-                  Make Private
+                  {selectReference.user.role === authState.user.role ? 'Make Private' : 'Close'}
                 </button>
               ) : selectReference.user.role === authState.user.role ? (
                 <button
@@ -90,10 +111,7 @@ const ReferenceInfor = (props) => {
                   >
                     Approve
                   </button>
-                  <button
-                    className={cx('close', 'btn-edit-status')}
-                    onClick={() => updateRequireStatus(selectReference.id, 1)}
-                  >
+                  <button className={cx('close', 'btn-edit-status')} onClick={onCloseReference}>
                     Close
                   </button>
                 </div>
@@ -135,7 +153,8 @@ ReferenceInfor.propTypes = {
   referencesState: PropTypes.object.isRequired,
   authState: PropTypes.object.isRequired,
   handleLoading: PropTypes.func.isRequired,
-  updateRequireStatus: PropTypes.func.isRequired
+  updateRequireStatus: PropTypes.func.isRequired,
+  getNewState: PropTypes.func.isRequired
 };
 
 export default ReferenceInfor;

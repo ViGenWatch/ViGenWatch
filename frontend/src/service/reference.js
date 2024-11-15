@@ -10,6 +10,17 @@ export const getListReferens = async () => {
   }
 };
 
+export const updateReferenceService = async (params) => {
+  try {
+    const { referenceId, status } = params;
+    let data = status ? { require: true } : { status: false };
+    const response = await axios.put(`/api/reference/update/${referenceId}`, data);
+    return response;
+  } catch (error) {
+    return error.message;
+  }
+};
+
 //role user 0x02
 export const getListReferensRoleAuthority = async () => {
   try {
@@ -19,6 +30,19 @@ export const getListReferensRoleAuthority = async () => {
     return error.message;
   }
 };
+
+export const updateReferenceServiceRoleAuthority = async (params) => {
+  try {
+    const { referenceId, status } = params;
+    let data = { require: 0, status };
+    const response = await axios.put(`/api/reference/0x02/update/${referenceId}`, data);
+    return response;
+  } catch (error) {
+    return error.message;
+  }
+};
+
+///////////////////////////////////////////
 
 export const getReferenceContentFile = async (referenceId, fileName) => {
   try {
@@ -100,17 +124,6 @@ export const downloadFile = async (referenceId, _fileName) => {
     return true;
   } catch (error) {
     console.error('Error downloading file:', error);
-    return error.message;
-  }
-};
-
-export const updateReferenceService = async (params) => {
-  try {
-    const { referenceId, status } = params;
-    let data = status ? { require: true } : { status: false };
-    const response = await axios.put(`/api/reference/update/${referenceId}`, data);
-    return response;
-  } catch (error) {
     return error.message;
   }
 };

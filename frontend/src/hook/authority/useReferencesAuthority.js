@@ -18,7 +18,11 @@ const useReferencesAuthority = () => {
     dispatch(Actions.getReferencesRequestRoleAuthority());
   };
 
-  return { referencesState, getReferences, authState, inputDataState };
+  const updateRequireStatus = (referenceId, status) => {
+    dispatch(Actions.updateStatusRequestRoleAuthority({ referenceId, status }));
+  };
+
+  return { referencesState, getReferences, authState, inputDataState, updateRequireStatus };
 };
 
 export default useReferencesAuthority;
