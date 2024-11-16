@@ -1,6 +1,6 @@
 const db = require("../models/index");
 const CustomError = require("../entity/customError");
-const { where } = require("sequelize");
+const { where, Op } = require("sequelize");
 
 const createPasswordReset = async (data) => {
   try {
@@ -16,4 +16,19 @@ const createPasswordReset = async (data) => {
   }
 };
 
-module.exports = { createPasswordReset };
+const checkTokenDuration = async (token) => {
+  try {
+    const resetRecord = await db.PasswordReset.findOne({
+      where: {
+        token,
+        expiresAt: { [Op.gt]: new Date() },
+        used: false
+      }
+    });
+    return resetRecord;
+  } catch (error) {
+    throw new CustomError(error.message, 400);
+  }
+};
+
+module.exports = { createPasswordReset, checkTokenDuration };

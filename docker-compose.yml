@@ -15,6 +15,12 @@ services:
       mysql-db:
         condition: service_healthy
     working_dir: /nextclade/backend/
+    environment:
+      - MAIL_SERVICE=${MAIL_SERVICE}
+      - MAIL_HOST=${MAIL_HOST}
+      - MAIL_PORT=${MAIL_PORT}
+      - MAIL_USER=${MAIL_USER}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
     ports:
       - '5050:5050'
     networks:

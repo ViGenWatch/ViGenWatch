@@ -10,5 +10,7 @@ userRoutes.post("/login", checkInput.validateSignIn(), userController.userLoginC
 userRoutes.post("/account", checkInput.validateGetAccountByToken(), userController.getAccountController);
 userRoutes.post("/forgot-password", userController.sendEmailForgot);
 userRoutes.get("/logout", authMiddleware, userController.userLogout);
+userRoutes.get("/reset-password/:token", userController.checkTokenResetPassword);
+userRoutes.put("/update-password", userController.resetPassword);
 
 module.exports = userRoutes;

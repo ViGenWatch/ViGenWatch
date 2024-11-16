@@ -184,12 +184,15 @@ const sendEmailForgot = async (req, res) => {
     if (!newPasswordReset) {
       throw new CustomError("Password Reset Not Found", 400);
     }
-    const htmlContent = htmlEmailToResetPassword.generateResetPasswordEmail(user.userName, "nextstrain.org");
+    const htmlContent = htmlEmailToResetPassword.generateResetPasswordEmail(
+      user.userName,
+      `${process.env.FRONTEND_URL}/reset-password/${token}`
+    );
     const mailOptions = {
       ...sendEmailService.mailOptionsTemplate,
       to: [user.email],
-      subject: "NextPhylo Reset Password",
-      html: ""
+      subject: "Reset Your NextPhylo Password",
+      html: htmlContent
     };
 
     sendEmailService.sendEmail(mailOptions);
@@ -205,4 +208,56 @@ const sendEmailForgot = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-module.exports = { createUserController, userLoginController, getAccountController, userLogout, sendEmailForgot };
+
+const checkTokenResetPassword = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const resetRecord = await passwordResetService.checkTokenDuration(token);
+    if (!resetRecord) {
+      throw new CustomError("Invalid token or token has expired.", 400);
+    }
+    return res.status(200).json({ message: "Token is valid.", data: { userId: resetRecord.userId } });
+  } catch (error) {
+    if (error instanceof CustomError) {
+      process.env.NODE_ENV == "development" ? console.log(error) : null;
+      return res.status(error.statusCode).json({ message: error.message });
+    }
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    let errorsInfor = "";
+    if (!errors.isEmpty) {
+      errors.array().forEach((e) => {
+        errorsInfor += e.param + " " + e.msg + "\n";
+      });
+      throw new CustomError("Validate Error", 400);
+    }
+    const { userId, newPassword, confirmPassword } = req.body;
+    if (newPassword !== confirmPassword) {
+      throw new CustomError("Passwords do not match");
+    }
+    const userUpdate = await userServices.updateUserById(userId, { password: newPassword });
+    if (userUpdate) {
+      res.status(200).json({ message: "update successfull" });
+    }
+  } catch (error) {
+    if (error instanceof CustomError) {
+      process.env.NODE_ENV == "development" ? console.log(error) : null;
+      return res.status(error.statusCode).json({ message: error.message });
+    }
+    return res.status(500).json({ message: error.message });
+  }
+};
+module.exports = {
+  createUserController,
+  userLoginController,
+  getAccountController,
+  userLogout,
+  sendEmailForgot,
+  checkTokenResetPassword,
+  resetPassword
+};

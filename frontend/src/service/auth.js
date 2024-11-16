@@ -47,3 +47,21 @@ export const forgotPasswordService = async (data) => {
     return { success: 0, error: error.message };
   }
 };
+
+export const checkTokenResetPasswordService = async (token) => {
+  try {
+    const response = await axios.get(`/api/auth/reset-password/${token}`);
+    return response;
+  } catch (error) {
+    return { success: 0, error: error.message };
+  }
+};
+
+export const resetPasswordService = async (data) => {
+  try {
+    const response = await axios.put(`/api/auth/update-password`, data);
+    return response;
+  } catch (error) {
+    return { success: 0, error: error.message };
+  }
+};

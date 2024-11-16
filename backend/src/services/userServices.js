@@ -68,4 +68,23 @@ const updateUserByEmail = async (email, data) => {
     throw new CustomError(error.message, 400);
   }
 };
-module.exports = { getUserAccount, createUser, getUserAccountByEmail, updateUserByEmail, getUserAccountByToken };
+
+const updateUserById = async (userId, data) => {
+  try {
+    const userUpdate = db.User.update(data, {
+      where: { id: userId }
+    });
+    return userUpdate;
+  } catch (error) {
+    throw new CustomError(error.message, 400);
+  }
+};
+
+module.exports = {
+  getUserAccount,
+  createUser,
+  getUserAccountByEmail,
+  updateUserByEmail,
+  getUserAccountByToken,
+  updateUserById
+};

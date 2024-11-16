@@ -38,4 +38,20 @@ const validateGetAccountByToken = () => {
   return [check("refreshToken").notEmpty().withMessage("refreshToken is required")];
 };
 
-module.exports = { validateRegisterUser, validateSignIn, validateGetAccountByToken, validateReferenceInput };
+const validateResetPassword = () => {
+  return [
+    check("newPassword").notEmpty().isLength({ min: 8 }).withMessage("Password must be at least 8 characters long"),
+    check("confirmPassword")
+      .notEmpty()
+      .isLength({ min: 8 })
+      .withMessage("Confirm password must be at least 8 characters long")
+  ];
+};
+
+module.exports = {
+  validateRegisterUser,
+  validateSignIn,
+  validateGetAccountByToken,
+  validateReferenceInput,
+  validateResetPassword
+};

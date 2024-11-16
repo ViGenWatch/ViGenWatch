@@ -1,17 +1,17 @@
 const nodemailer = require("nodemailer");
-const process = require("process");
 
 const transporter = nodemailer.createTransport({
   service: process.env.MAIL_SERVICE,
   host: process.env.MAIL_HOST,
   port: Number(process.env.MAIL_PORT),
+  debug: true,
   secure: false,
   auth: {
     user: process.env.MAIL_USER,
     pass: process.env.MAIL_PASSWORD
   },
   tls: {
-    rejectUnauthorized: true
+    rejectUnauthorized: false
   }
 });
 
@@ -27,11 +27,11 @@ const sendEmail = (mailOptions) => {
 
 const mailOptionsTemplate = {
   from: {
-    name: "Smart Education",
+    name: "NextPhylo Support",
     address: process.env.MAIL_USER
   },
   to: [""],
-  subject: "Email from Smart Education",
+  subject: "Email from NextPhylo",
   html: "",
   attachments: []
 };

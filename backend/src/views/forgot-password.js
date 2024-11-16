@@ -24,8 +24,8 @@ const generateResetPasswordEmail = (userName, resetLink) => `
       display: inline-block;
       margin: 20px 0;
       padding: 10px 20px;
-      color: #fff;
-      background-color: #007bff;
+      color: #ffffff !important;
+      background-color: rgb(33,150,243);
       text-decoration: none;
       border-radius: 5px;
       font-size: 16px;
@@ -58,7 +58,7 @@ const generateResetPasswordEmail = (userName, resetLink) => `
       If you did not request a password reset, you can safely ignore this email.
     </p>
     <p>Thanks,</p>
-    <p>The NextPhylo Team</p>
+    <p>The NextPhylo Website</p>
     <div class="footer">
       <p>© 2024 NextPhylo. All rights reserved.</p>
     </div>
