@@ -9,6 +9,7 @@ import ReferencePage from './pages/reference';
 import ExportPage from './pages/export';
 import AuthorityReference from './pages/authority/authority-reference';
 import AuthorityStart from './pages/authority/authority-start';
+import ForgotPasswordPage from './pages/forgot-password';
 
 const App = () => {
   const { authState, refreshToken, dataSaveSession } = useAuth();
@@ -18,6 +19,7 @@ const App = () => {
       <Routes>
         <Route path='/login' element={<LoginPage />} />
         <Route path='/signup' element={<SignUp />} />
+        <Route path='/forgot' element={<ForgotPasswordPage />} />
         <Route path='/*' element={<Navigate to='/login' />} />
       </Routes>
     );

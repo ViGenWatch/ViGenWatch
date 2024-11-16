@@ -67,7 +67,9 @@ const LoginPage = () => {
               </div>
             </label>
             <div className={cx('forgot-password')}>
-              <span>Forgot Password ?</span>
+              <NavLink style={{ color: 'rgb(33, 150, 243) ' }} to={'/forgot'} className={cx('forgot-password__title')}>
+                Forgot Password ?
+              </NavLink>
             </div>
             <button type='submit' className={cx('submit-button')} onClick={handleSignIn}>
               Login

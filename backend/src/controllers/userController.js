@@ -8,6 +8,11 @@ const randToken = require("rand-token");
 const workspace = require("../utils/workspace");
 const workspaceService = require("../services/workspaceService");
 const db = require("../models/index");
+const { v4: uuidv4 } = require("uuid");
+const passwordResetService = require("../services/resetPasswordService");
+const htmlEmailToResetPassword = require("../views/forgot-password");
+const sendEmailService = require("../config/nodemailer");
+
 const createUserController = async (req, res) => {
   try {
     const errors = validationResult(req);
@@ -159,4 +164,45 @@ const userLogout = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-module.exports = { createUserController, userLoginController, getAccountController, userLogout };
+
+const sendEmailForgot = async (req, res) => {
+  try {
+    const email = req.body.email;
+    const user = await userServices.getUserAccountByEmail(email);
+    if (!user) {
+      throw new CustomError("User Not Found", 400);
+    }
+    const token = uuidv4();
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
+
+    const newPasswordReset = await passwordResetService.createPasswordReset({
+      userId: user.id,
+      token,
+      expiresAt,
+      used: false
+    });
+    if (!newPasswordReset) {
+      throw new CustomError("Password Reset Not Found", 400);
+    }
+    const htmlContent = htmlEmailToResetPassword.generateResetPasswordEmail(user.userName, "nextstrain.org");
+    const mailOptions = {
+      ...sendEmailService.mailOptionsTemplate,
+      to: [user.email],
+      subject: "NextPhylo Reset Password",
+      html: ""
+    };
+
+    sendEmailService.sendEmail(mailOptions);
+
+    return res.status(200).json({
+      message: "Reset token generated successfully."
+    });
+  } catch (error) {
+    if (error instanceof CustomError) {
+      process.env.NODE_ENV == "development" ? console.log(error) : null;
+      return res.status(error.statusCode).json({ message: error.message });
+    }
+    return res.status(500).json({ message: error.message });
+  }
+};
+module.exports = { createUserController, userLoginController, getAccountController, userLogout, sendEmailForgot };

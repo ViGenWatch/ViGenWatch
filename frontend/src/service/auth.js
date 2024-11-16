@@ -38,3 +38,12 @@ export const logoutFunc = async () => {
     return { success: 0, error: error.message };
   }
 };
+
+export const forgotPasswordService = async (data) => {
+  try {
+    const response = await axios.post('/api/auth/forgot-password', data);
+    return response;
+  } catch (error) {
+    return { success: 0, error: error.message };
+  }
+};
