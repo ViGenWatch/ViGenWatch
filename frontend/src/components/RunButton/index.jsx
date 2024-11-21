@@ -4,10 +4,13 @@ import classNames from 'classnames/bind';
 const cx = classNames.bind(style);
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+import { Actions } from '../../redux/reducer/executionReducer';
+import { useDispatch } from 'react-redux';
 
 const RunButton = (props) => {
   const { inputDataState, referencesState, authState, handleLoading } = props;
   const navigate = useNavigate();
+  const dispath = useDispatch();
   const handleUpload = async () => {
     if (inputDataState.inputFilesData.length === 0 || inputDataState.indexReference === null) {
       alert('Please select a file first.');
@@ -37,6 +40,7 @@ const RunButton = (props) => {
         throw new Error('Network response was not ok');
       }
       handleLoading(false);
+      dispath(Actions.setInitExecutionState());
       navigate('/main');
     } catch (error) {
       handleLoading(false);

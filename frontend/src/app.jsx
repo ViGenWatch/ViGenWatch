@@ -26,7 +26,6 @@ const App = () => {
       </Routes>
     );
   } else if (authState.user) {
-    console.log(authState.user);
     switch (authState.user.role) {
       case '0x01':
         content = (

@@ -228,6 +228,7 @@ const checkTokenResetPassword = async (req, res) => {
 
 const resetPassword = async (req, res) => {
   try {
+    const token = req.params.token;
     const errors = validationResult(req);
     let errorsInfor = "";
     if (!errors.isEmpty) {
@@ -242,7 +243,19 @@ const resetPassword = async (req, res) => {
     }
     const userUpdate = await userServices.updateUserById(userId, { password: newPassword });
     if (userUpdate) {
-      res.status(200).json({ message: "update successfull" });
+      const closeTokenResetPassword = await passwordResetService.closeToken(token);
+      if (closeTokenResetPassword) {
+        const htmlContent = htmlEmailToResetPassword.resetPasswordComplete(userUpdate.userName);
+        const mailOptions = {
+          ...sendEmailService.mailOptionsTemplate,
+          to: [userUpdate.email],
+          subject: "Your NextPhylo Password Has Been Changed",
+          html: htmlContent
+        };
+
+        sendEmailService.sendEmail(mailOptions);
+        res.status(200).json({ message: "update successfull" });
+      }
     }
   } catch (error) {
     if (error instanceof CustomError) {

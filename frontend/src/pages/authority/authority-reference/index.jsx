@@ -29,7 +29,7 @@ const AuthorityReference = () => {
   });
 
   const [optionStatusFilter, setOptionStatusFilter] = useState({
-    value: 'Community',
+    value: 'All',
     key: 0
   });
 
@@ -40,12 +40,14 @@ const AuthorityReference = () => {
       { value: "System's References", key: 2 }
     ],
     [
-      { value: 'Community', key: 0 },
-      { value: 'Pending', key: 1 }
+      { value: 'All', key: 0 },
+      { value: 'Community', key: 1 },
+      { value: 'Pending', key: 2 }
     ],
     [
-      { value: 'Community', key: 0 },
-      { value: 'Private', key: 1 }
+      { value: 'All', key: 0 },
+      { value: 'Community', key: 1 },
+      { value: 'Private', key: 2 }
     ]
   ];
 
@@ -146,18 +148,26 @@ const AuthorityReference = () => {
                     referencesState.references
                       .filter((reference) => {
                         if (optionRoleFilter.key === 1) {
-                          if (optionStatusFilter.key === 0) {
-                            return reference.status && reference.user.role !== authState.user.role;
+                          switch (optionStatusFilter.key) {
+                            case 0:
+                              return reference.user.role !== authState.user.role;
+                            case 1:
+                              return reference.status && reference.user.role !== authState.user.role;
+                            case 2:
+                              return (
+                                !reference.status && reference.require && reference.user.role !== authState.user.role
+                              );
                           }
-                          return !reference.status && reference.require && reference.user.role !== authState.user.role;
-                        }
-                        if (optionRoleFilter.key === 2) {
-                          if (optionStatusFilter.key === 0) {
-                            return reference.status && reference.user.role === authState.user.role;
+                        } else if (optionRoleFilter.key === 2) {
+                          switch (optionStatusFilter.key) {
+                            case 0:
+                              return reference.user.role === authState.user.role;
+                            case 1:
+                              return reference.status && reference.user.role === authState.user.role;
+                            case 2:
+                              return !reference.status && reference.user.role === authState.user.role;
                           }
-                          return !reference.status && reference.user.role === authState.user.role;
-                        }
-                        return true;
+                        } else return true;
                       })
                       .map((reference) => <ItemReference key={reference.id} {...reference} />)}
                 </div>

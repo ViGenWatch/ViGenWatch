@@ -31,4 +31,18 @@ const checkTokenDuration = async (token) => {
   }
 };
 
-module.exports = { createPasswordReset, checkTokenDuration };
+const closeToken = async (token) => {
+  try {
+    const updateUsed = await db.PasswordReset.update(
+      { used: 1 },
+      {
+        where: { token }
+      }
+    );
+    return updateUsed;
+  } catch (error) {
+    throw new CustomError(error.message, 400);
+  }
+};
+
+module.exports = { createPasswordReset, checkTokenDuration, closeToken };

@@ -55,6 +55,10 @@ export const executionSlice = createSlice({
         ...state,
         executionSelected: changeExecution[0]
       };
+    },
+
+    setInitExecutionState: () => {
+      return initialExecutions;
     }
   }
 });

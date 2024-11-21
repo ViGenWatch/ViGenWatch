@@ -1,6 +1,7 @@
 const db = require("../models/index");
 const CustomError = require("../entity/customError");
 const { where, Op } = require("sequelize");
+const Sequelize = require("sequelize");
 
 //role user 0x01
 const getListReferences = async (userId) => {
@@ -30,7 +31,8 @@ const getListReferences = async (userId) => {
           association: "user",
           attributes: ["role"]
         }
-      ]
+      ],
+      order: [["createdAt", "DESC"]]
     });
     return references;
   } catch (error) {
@@ -122,6 +124,10 @@ const getListReferencesRoleAuthority = async () => {
           association: "user",
           attributes: ["role"]
         }
+      ],
+      order: [
+        [Sequelize.literal("(CASE WHEN `require` = 1 AND `status` = 0 THEN 0 ELSE 1 END)")],
+        ["createdAt", "DESC"]
       ]
     });
     return references;

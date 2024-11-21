@@ -57,9 +57,9 @@ export const checkTokenResetPasswordService = async (token) => {
   }
 };
 
-export const resetPasswordService = async (data) => {
+export const resetPasswordService = async (data, token) => {
   try {
-    const response = await axios.put(`/api/auth/update-password`, data);
+    const response = await axios.put(`/api/auth/update-password/${token}`, data);
     return response;
   } catch (error) {
     return { success: 0, error: error.message };

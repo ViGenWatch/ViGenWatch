@@ -67,4 +67,63 @@ const generateResetPasswordEmail = (userName, resetLink) => `
 </html>
 `;
 
-module.exports = { generateResetPasswordEmail };
+const resetPasswordComplete = (userName) => `
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .footer {
+      font-size: 12px;
+      color: #777;
+      text-align: center;
+      margin-top: 20px;
+    }
+    a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h2>Password Changed Successfully</h2>
+    </div>
+    <p>Hi <strong>${userName}</strong>,</p>
+    <p>
+      You are receiving this because you (or someone else) have changed the password of your NextPhylo user account.
+    </p>
+    <p>
+      If this was you, you can safely ignore this email. If not, please reach out to us at 
+    </p>
+    <p>Thanks,</p>
+    <p>The NextPhylo Website</p>
+    <div class="footer">
+      <p>© 2024 NextPhylo. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+</html>
+`;
+
+module.exports = { generateResetPasswordEmail, resetPasswordComplete };

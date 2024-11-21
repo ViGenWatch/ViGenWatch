@@ -52,6 +52,7 @@ const NewPasswordPage = () => {
         setCheckToken(true);
       } else {
         setCheckToken(false);
+        navigate('/forgot');
       }
     };
     checkTokenApi();
@@ -60,8 +61,7 @@ const NewPasswordPage = () => {
   const handleResetPassword = async (e) => {
     setLoading(true);
     e.preventDefault();
-    console.log('abc');
-    const response = await resetPasswordService(inputData);
+    const response = await resetPasswordService(inputData, token);
     if (response.status === 200) {
       setLoading(false);
       navigate('/login');

@@ -71,10 +71,16 @@ const updateUserByEmail = async (email, data) => {
 
 const updateUserById = async (userId, data) => {
   try {
-    const userUpdate = db.User.update(data, {
+    const [affectedRows] = await db.User.update(data, {
       where: { id: userId }
     });
-    return userUpdate;
+    if (affectedRows === 0) {
+      throw new CustomError("User not found or no changes applied.", 404);
+    }
+    const updatedUser = await db.User.findOne({
+      where: { id: userId }
+    });
+    return updatedUser;
   } catch (error) {
     throw new CustomError(error.message, 400);
   }
