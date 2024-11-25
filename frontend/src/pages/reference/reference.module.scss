@@ -240,35 +240,50 @@
           align-items: start;
           gap: 0.25rem;
 
-          &__btn-edit {
+          &__btn {
             width: 100%;
             display: flex;
-            justify-content: end;
+            flex-direction: row;
+            justify-content: start;
             align-items: center;
-            gap: 8px;
-            cursor: pointer;
+            gap: 15px;
 
-            .make-private {
-              background: #e67030;
-            }
-
-            .pending {
-              background: #ffca28;
-            }
-
-            .request-public {
-              background: rgb(33, 150, 243);
-            }
-
-            .btn-edit-status {
-              height: 35px;
-              padding: 0 10px;
-              border-radius: 5px;
-              border: none;
+            .icon-delete {
+              font-size: 28px;
               cursor: pointer;
-              color: #ffffff;
-              font-size: 14px;
-              font-weight: 500;
+              color: rgb(33, 150, 243);
+            }
+
+            &-edit {
+              width: 100%;
+              display: flex;
+              justify-content: end;
+              align-items: center;
+              gap: 8px;
+              cursor: pointer;
+
+              .make-private {
+                background: #e67030;
+              }
+
+              .pending {
+                background: #ffca28;
+              }
+
+              .request-public {
+                background: rgb(33, 150, 243);
+              }
+
+              .btn-edit-status {
+                height: 35px;
+                padding: 0 10px;
+                border-radius: 5px;
+                border: none;
+                cursor: pointer;
+                color: #ffffff;
+                font-size: 14px;
+                font-weight: 500;
+              }
             }
           }
 

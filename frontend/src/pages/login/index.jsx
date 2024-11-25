@@ -47,10 +47,10 @@ const LoginPage = () => {
         <div className={cx('login-page')}>
           <LogoText style={{ fontSize: '60px', fontWeight: '300' }} />
           <span className={cx('login-page__subtitle')}>
-            Clade assignment, mutation calling, and sequence quality checks
+            Trực quan hóa kết quả phân tích dữ liệu gen di truyền của dịch bệnh
           </span>
           <div className={cx('login-page__container')}>
-            <span className={cx('title-login')}>Login</span>
+            <span className={cx('title-login')}>Đăng nhập</span>
             <label className={cx('form-input-group')}>
               <span className={cx('form-input-group__label')}>Email</span>
               <div className={cx('form-input-group__input')}>
@@ -59,25 +59,25 @@ const LoginPage = () => {
               </div>
             </label>
             <label className={cx('form-input-group')}>
-              <span className={cx('form-input-group__label')}>Password</span>
+              <span className={cx('form-input-group__label')}>Mật khẩu</span>
               <div className={cx('form-input-group__input')}>
                 <TbShieldLockFilled size={'22px'} color={'rgb(33, 150, 243)'} />
-                <input type='password' name='password' placeholder='Password' onChange={onChangeInput} />
+                <input type='password' name='password' placeholder='Mật khẩu' onChange={onChangeInput} />
                 <FaEyeSlash size={'22px'} color={'#bcc1c5'} cursor={'pointer'} />
               </div>
             </label>
             <div className={cx('forgot-password')}>
               <NavLink style={{ color: 'rgb(33, 150, 243) ' }} to={'/forgot'} className={cx('forgot-password__title')}>
-                Forgot Password ?
+                Quên mật khẩu ?
               </NavLink>
             </div>
             <button type='submit' className={cx('submit-button')} onClick={handleSignIn}>
-              Login
+              Đăng nhập
             </button>
             <div className={cx('bottom-title')}>
-              <span className={cx('title')}>Don&apos;t have an account? </span>
+              <span className={cx('title')}>Bạn đã có tài khoản </span>
               <NavLink to={'/signup'} className={cx('subtitle')}>
-                Create one
+                Tạo tài khoản
               </NavLink>
             </div>
           </div>

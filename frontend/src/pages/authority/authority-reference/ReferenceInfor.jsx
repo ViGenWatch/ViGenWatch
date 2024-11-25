@@ -7,12 +7,23 @@ import ReadFile from '../../../components/ReadFile';
 import { downloadFile, getReferenceContentFile, updateReferenceServiceRoleAuthority } from '../../../service/reference';
 import { useDispatch } from 'react-redux';
 import { Actions } from '../../../redux/reducer/inputDataReducer';
+import { useTranslation } from 'react-i18next';
+import { RiDeleteBin6Line } from 'react-icons/ri';
 
 const cx = classNames.bind(style);
 
 const ReferenceInfor = (props) => {
   const dispatch = useDispatch();
-  const { inputDataState, referencesState, authState, handleLoading, updateRequireStatus, getNewState } = props;
+  const { t } = useTranslation();
+  const {
+    inputDataState,
+    referencesState,
+    authState,
+    handleLoading,
+    updateRequireStatus,
+    getNewState,
+    deleteReference
+  } = props;
   const selectReference = referencesState.references.filter(
     (reference) => reference.id === inputDataState.selectedReferenceId
   )[0];
@@ -64,7 +75,7 @@ const ReferenceInfor = (props) => {
     <div className={cx('infor-reference-group')}>
       <div className={cx('infor-reference-group__header-group')}>
         <span className={cx('header-title')}>
-          <span>Select Reference</span>
+          <span>{t('reference:Select Reference')}</span>
         </span>
         <RunButton
           inputDataState={inputDataState}
@@ -81,40 +92,47 @@ const ReferenceInfor = (props) => {
             </div>
           </div>
           <div className={cx('infor-reference-group')}>
-            <div className={cx('infor-reference-group__btn-edit')}>
-              {selectReference.status ? (
-                <button
-                  className={cx(
-                    'btn-edit-status',
-                    selectReference.user.role === authState.user.role ? 'make-private' : 'close'
-                  )}
-                  onClick={
-                    selectReference.user.role === authState.user.role
-                      ? () => updateRequireStatus(selectReference.id, 0)
-                      : onCloseReference
-                  }
-                >
-                  {selectReference.user.role === authState.user.role ? 'Make Private' : 'Close'}
-                </button>
-              ) : selectReference.user.role === authState.user.role ? (
-                <button
-                  className={cx('request-public', 'btn-edit-status')}
-                  onClick={() => updateRequireStatus(selectReference.id, 1)}
-                >
-                  Make Public
-                </button>
-              ) : (
-                <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
+            <div className={cx('infor-reference-group__btn')}>
+              <div className={cx('infor-reference-group__btn-edit')}>
+                {selectReference.status ? (
+                  <button
+                    className={cx(
+                      'btn-edit-status',
+                      selectReference.user.role === authState.user.role ? 'make-private' : 'close'
+                    )}
+                    onClick={
+                      selectReference.user.role === authState.user.role
+                        ? () => updateRequireStatus(selectReference.id, 0)
+                        : onCloseReference
+                    }
+                  >
+                    {selectReference.user.role === authState.user.role
+                      ? t('reference:Make Private')
+                      : t('reference:Close')}
+                  </button>
+                ) : selectReference.user.role === authState.user.role ? (
                   <button
                     className={cx('request-public', 'btn-edit-status')}
                     onClick={() => updateRequireStatus(selectReference.id, 1)}
                   >
-                    Approve
+                    {t('reference:Make Public')}
                   </button>
-                  <button className={cx('close', 'btn-edit-status')} onClick={onCloseReference}>
-                    Close
-                  </button>
-                </div>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
+                    <button
+                      className={cx('request-public', 'btn-edit-status')}
+                      onClick={() => updateRequireStatus(selectReference.id, 1)}
+                    >
+                      {t('reference:Approve')}
+                    </button>
+                    <button className={cx('close', 'btn-edit-status')} onClick={onCloseReference}>
+                      {t('reference:Close')}
+                    </button>
+                  </div>
+                )}
+              </div>
+              {selectReference.user.role === authState.user.role && (
+                <RiDeleteBin6Line className={cx('icon-delete')} onClick={() => deleteReference(selectReference.id)} />
               )}
             </div>
             <span className={cx('infor-reference-group__name')}>{selectReference.referenceName}</span>
@@ -122,17 +140,21 @@ const ReferenceInfor = (props) => {
               style={{ background: !selectReference.status && (selectReference.require ? '#ffca28' : '#e67030') }}
               className={cx('infor-reference-group__icon')}
             >
-              {selectReference.status ? 'Community' : selectReference.require ? 'Pending' : 'Private'}
+              {selectReference.status
+                ? t('reference:Community')
+                : selectReference.require
+                  ? t('reference:Pending')
+                  : t('reference:Private')}
             </div>
             <span
               className={cx('infor-reference-group__definition', 'infor-text')}
-            >{`Definition: ${selectReference.definition}`}</span>
+            >{`${t('reference:Definition')}: ${selectReference.definition}`}</span>
             <span
               className={cx('infor-reference-group__author', 'infor-text')}
-            >{`Author: ${selectReference.author}`}</span>
+            >{`${t('reference:Author')}: ${selectReference.author}`}</span>
             <span
               className={cx('infor-reference-group__version', 'infor-text')}
-            >{`Version: ${selectReference.version}`}</span>
+            >{`${t('reference:Version')}: ${selectReference.version}`}</span>
           </div>
         </div>
       </div>
@@ -154,7 +176,8 @@ ReferenceInfor.propTypes = {
   authState: PropTypes.object.isRequired,
   handleLoading: PropTypes.func.isRequired,
   updateRequireStatus: PropTypes.func.isRequired,
-  getNewState: PropTypes.func.isRequired
+  getNewState: PropTypes.func.isRequired,
+  deleteReference: PropTypes.func.isRequired
 };
 
 export default ReferenceInfor;

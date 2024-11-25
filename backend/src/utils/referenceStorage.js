@@ -34,4 +34,18 @@ const uploadReferenceFile = multer({
   }
 });
 
-module.exports = { uploadReferenceFile, referencePath };
+const deleteFolderReference = (directoryPath) => {
+  if (fs.existsSync(directoryPath)) {
+    fs.readdirSync(directoryPath).forEach((file, index) => {
+      const curPath = path.join(directoryPath, file);
+      if (fs.lstatSync(curPath).isDirectory()) {
+        deleteFolderRecursive(curPath);
+      } else {
+        fs.unlinkSync(curPath);
+      }
+    });
+    fs.rmdirSync(directoryPath);
+  }
+};
+
+module.exports = { uploadReferenceFile, referencePath, deleteFolderReference };

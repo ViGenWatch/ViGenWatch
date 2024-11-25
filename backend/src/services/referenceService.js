@@ -3,6 +3,27 @@ const CustomError = require("../entity/customError");
 const { where, Op } = require("sequelize");
 const Sequelize = require("sequelize");
 
+const deleteReferenceManually = async (referenceId) => {
+  const transaction = await db.sequelize.transaction();
+  try {
+    await db.ReferenceFile.destroy({
+      where: { referenceId },
+      transaction
+    });
+
+    await db.Reference.destroy({
+      where: { id: referenceId },
+      transaction
+    });
+
+    await transaction.commit();
+    return;
+  } catch (error) {
+    await transaction.rollback();
+    throw new CustomError(error.message, 500);
+  }
+};
+
 //role user 0x01
 const getListReferences = async (userId) => {
   try {
@@ -141,5 +162,6 @@ module.exports = {
   createReference,
   getReferenceById,
   updateReferenceById,
-  getListReferencesRoleAuthority
+  getListReferencesRoleAuthority,
+  deleteReferenceManually
 };

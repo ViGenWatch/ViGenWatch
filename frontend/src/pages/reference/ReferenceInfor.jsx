@@ -6,12 +6,13 @@ import RunButton from '../../components/RunButton';
 import { downloadFile, getReferenceContentFile } from '../../service/reference';
 import ReadFile from '../../components/ReadFile';
 import { useTranslation } from 'react-i18next';
+import { RiDeleteBin6Line } from 'react-icons/ri';
 
 const cx = classNames.bind(style);
 
 const ReferenceInfor = (props) => {
   const { t } = useTranslation();
-  const { inputDataState, referencesState, authState, handleLoading, updateRequireStatus } = props;
+  const { inputDataState, referencesState, authState, handleLoading, updateRequireStatus, deleteReference } = props;
   const selectReference = referencesState.references.filter(
     (reference) => reference.id === inputDataState.selectedReferenceId
   )[0];
@@ -69,25 +70,30 @@ const ReferenceInfor = (props) => {
             </div>
           </div>
           <div className={cx('infor-reference-group')}>
-            <div className={cx('infor-reference-group__btn-edit')}>
-              {selectReference.userId === authState.user.id &&
-                (selectReference.status ? (
-                  <button
-                    className={cx('make-private', 'btn-edit-status')}
-                    onClick={() => updateRequireStatus(selectReference.id, 0)}
-                  >
-                    {t('reference:Make Private')}
-                  </button>
-                ) : selectReference.require ? (
-                  <button className={cx('pending', 'btn-edit-status')}>{t('reference:Pending')}</button>
-                ) : (
-                  <button
-                    className={cx('request-public', 'btn-edit-status')}
-                    onClick={() => updateRequireStatus(selectReference.id, 1)}
-                  >
-                    {t('reference:Request Public')}
-                  </button>
-                ))}
+            <div className={cx('infor-reference-group__btn')}>
+              <div className={cx('infor-reference-group__btn-edit')}>
+                {selectReference.userId === authState.user.id &&
+                  (selectReference.status ? (
+                    <button
+                      className={cx('make-private', 'btn-edit-status')}
+                      onClick={() => updateRequireStatus(selectReference.id, 0)}
+                    >
+                      {t('reference:Make Private')}
+                    </button>
+                  ) : selectReference.require ? (
+                    <button className={cx('pending', 'btn-edit-status')}>{t('reference:Pending')}</button>
+                  ) : (
+                    <button
+                      className={cx('request-public', 'btn-edit-status')}
+                      onClick={() => updateRequireStatus(selectReference.id, 1)}
+                    >
+                      {t('reference:Request Public')}
+                    </button>
+                  ))}
+              </div>
+              {selectReference.userId === authState.user.id && (
+                <RiDeleteBin6Line className={cx('icon-delete')} onClick={() => deleteReference(selectReference.id)} />
+              )}
             </div>
             <span className={cx('infor-reference-group__name')}>{selectReference.referenceName}</span>
             <div
@@ -129,7 +135,8 @@ ReferenceInfor.propTypes = {
   referencesState: PropTypes.object.isRequired,
   authState: PropTypes.object.isRequired,
   handleLoading: PropTypes.func.isRequired,
-  updateRequireStatus: PropTypes.func.isRequired
+  updateRequireStatus: PropTypes.func.isRequired,
+  deleteReference: PropTypes.func.isRequired
 };
 
 export default ReferenceInfor;

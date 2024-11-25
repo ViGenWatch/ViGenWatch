@@ -5,6 +5,25 @@ const process = require("process");
 const { exec } = require("child_process");
 const path = require("path");
 const executionHelper = require("../utils/execution");
+const referenceStorage = require("../utils/referenceStorage");
+
+const deleteReference = async (req, res) => {
+  try {
+    const referenceId = req.params.referenceId;
+    const reference = await referenceService.getReferenceById(referenceId);
+    if (reference) {
+      await referenceService.deleteReferenceManually(referenceId);
+      referenceStorage.deleteFolderReference(reference.referencePath);
+      return res.status(200).json({ message: "Reference deleted successfully" });
+    }
+  } catch (error) {
+    if (error instanceof CustomError) {
+      process.env.NODE_ENV == "development" ? console.log(error) : null;
+      return res.status(error.statusCode).json({ message: error.message });
+    }
+    return res.status(500).json({ message: error.message });
+  }
+};
 
 //role user 0x01
 const getListReferencesController = async (req, res) => {
@@ -154,5 +173,6 @@ module.exports = {
   getContentFileReference,
   onDownloadFileReference,
   updateReferenceControllder,
-  getListReferencesRoleAuthorityController
+  getListReferencesRoleAuthorityController,
+  deleteReference
 };

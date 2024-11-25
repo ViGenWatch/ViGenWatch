@@ -8,6 +8,8 @@ const verifyRole = require("../middlewares/verifyRole");
 
 let referenceRoutes = express.Router();
 
+referenceRoutes.delete("/delete/:referenceId", authMiddleware, referenceController.deleteReference);
+
 //role user 0x01
 referenceRoutes.get(
   "/getlist",

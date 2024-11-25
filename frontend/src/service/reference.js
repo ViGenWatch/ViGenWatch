@@ -1,5 +1,14 @@
 import axios from './axios';
 
+export const deleteReferenceFolder = async (referenceId) => {
+  try {
+    const response = await axios.delete(`/api/reference/delete/${referenceId}`);
+    return response;
+  } catch (error) {
+    return error.message;
+  }
+};
+
 //role user 0x01
 export const getListReferens = async () => {
   try {

@@ -45,16 +45,16 @@ const SignUp = () => {
         <div className={cx('signup-page')}>
           <LogoText style={{ fontSize: '60px', fontWeight: '300' }} />
           <span className={cx('signup-page__subtitle')}>
-            Clade assignment, mutation calling, and sequence quality checks
+            Trực quan hóa kết quả phân tích dữ liệu gen di truyền của dịch bệnh
           </span>
           <div className={cx('signup-page__container')}>
-            <span className={cx('title-signup')}>Sign Up</span>
+            <span className={cx('title-signup')}>Tạo tài khoản</span>
 
             <label className={cx('form-input-group')}>
-              <span className={cx('form-input-group__label')}>Account</span>
+              <span className={cx('form-input-group__label')}>Tài khoản</span>
               <div className={cx('form-input-group__input')}>
                 <BsFillPersonFill size={'22px'} color={'rgb(33, 150, 243)'} />
-                <input type='text' name='userName' placeholder='Account' onChange={onChangeInput} />
+                <input type='text' name='userName' placeholder='Tài khoản' onChange={onChangeInput} />
               </div>
             </label>
 
@@ -66,28 +66,28 @@ const SignUp = () => {
               </div>
             </label>
             <label className={cx('form-input-group')}>
-              <span className={cx('form-input-group__label')}>Password</span>
+              <span className={cx('form-input-group__label')}>Mật khẩu</span>
               <div className={cx('form-input-group__input')}>
                 <TbShieldLockFilled size={'22px'} color={'rgb(33, 150, 243)'} />
-                <input type='password' name='password' placeholder='Password' onChange={onChangeInput} />
+                <input type='password' name='password' placeholder='Mật khẩu' onChange={onChangeInput} />
                 <FaEyeSlash size={'22px'} color={'#bcc1c5'} cursor={'pointer'} />
               </div>
             </label>
             <label className={cx('form-input-group')}>
-              <span className={cx('form-input-group__label')}>Confirm Password</span>
+              <span className={cx('form-input-group__label')}>Xác nhận mật khẩu</span>
               <div className={cx('form-input-group__input')}>
                 <TbShieldLockFilled size={'22px'} color={'rgb(33, 150, 243)'} />
-                <input type='password' name='repassword' placeholder='Confirm Password' onChange={onChangeInput} />
+                <input type='password' name='repassword' placeholder='Xác nhận mật khẩu' onChange={onChangeInput} />
                 <FaEyeSlash size={'22px'} color={'#bcc1c5'} cursor={'pointer'} />
               </div>
             </label>
             <button type='submit' className={cx('submit-button')} onClick={handleRegister}>
-              Sign Up
+              Tạo tài khoản
             </button>
             <div className={cx('bottom-title')}>
-              <span className={cx('title')}>Already have an account? </span>
+              <span className={cx('title')}>Bạn đã có tài khoản? </span>
               <NavLink to={'/login'} className={cx('subtitle')}>
-                Login
+                Đăng nhập
               </NavLink>
             </div>
           </div>

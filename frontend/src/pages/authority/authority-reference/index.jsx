@@ -11,43 +11,58 @@ import ItemReference from '../../../components/ItemReference';
 import { MdFilterList } from 'react-icons/md';
 import ReferenceInfor from './ReferenceInfor';
 import CreateReference from '../../../components/CreateReference';
+import { useTranslation } from 'react-i18next';
 
 const cx = classNames.bind(style);
 
 const AuthorityReference = () => {
   const [openCreateReferecenceForm, setOpenCreateModal] = useState(false);
-  const { referencesState, authState, getReferences, inputDataState, updateRequireStatus } = useReferencesAuthority();
+  const { referencesState, authState, getReferences, inputDataState, updateRequireStatus, deleteReference } =
+    useReferencesAuthority();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const handleLoading = (isLoading) => {
     setLoading(isLoading);
   };
+  const { t } = useTranslation();
 
   const [optionRoleFilter, setOptionRoleFilter] = useState({
-    value: 'All',
+    value: t('reference:All'),
     key: 0
   });
 
   const [optionStatusFilter, setOptionStatusFilter] = useState({
-    value: 'All',
+    value: t('reference:All'),
     key: 0
   });
 
+  useEffect(() => {
+    setOptionRoleFilter({
+      value: t('reference:All'),
+      key: 0
+    });
+
+    setOptionStatusFilter({
+      value: t('reference:All'),
+      key: 0
+    });
+  }, [t]);
+
   const filters = [
     [
-      { value: 'All', key: 0 },
-      { value: 'Users References', key: 1 },
-      { value: "System's References", key: 2 }
+      { value: t('reference:All'), key: 0 },
+      { value: t('reference:Users References'), key: 1 },
+      { value: t("reference:System's References"), key: 2 }
     ],
     [
-      { value: 'All', key: 0 },
-      { value: 'Community', key: 1 },
-      { value: 'Pending', key: 2 }
+      { value: t('reference:All'), key: 0 },
+      { value: t('reference:Community'), key: 1 },
+      { value: t('reference:Pending'), key: 2 }
     ],
     [
-      { value: 'All', key: 0 },
-      { value: 'Community', key: 1 },
-      { value: 'Private', key: 2 }
+      { value: t('reference:All'), key: 0 },
+      { value: t('reference:Community'), key: 1 },
+      { value: t('reference:Private'), key: 2 }
     ]
   ];
 
@@ -98,14 +113,14 @@ const AuthorityReference = () => {
                     }}
                   >
                     <IoIosArrowBack className={cx('icon-btn')} />
-                    <span className={cx('text-btn')}>Add Data</span>
+                    <span className={cx('text-btn')}>{t('reference:Add Data')}</span>
                   </button>
 
                   <div className={cx('title-search-group')}>
-                    <span className={cx('title-select')}>Management References Folder</span>
+                    <span className={cx('title-select')}>{t('reference:Management References Folder')}</span>
                     <div className={cx('search-form-group')}>
                       <IoIosSearch className={cx('icon-search')} />
-                      <input className={cx('input-search')} placeholder='Search reference' />
+                      <input className={cx('input-search')} placeholder={t('reference:Search reference')} />
                     </div>
                   </div>
 
@@ -137,7 +152,7 @@ const AuthorityReference = () => {
                     <div>
                       {!openCreateReferecenceForm && (
                         <button className={cx('create-new-config')} onClick={handleStateOpen}>
-                          Create Reference Folder
+                          {t('reference:Create Reference Folder')}
                         </button>
                       )}
                     </div>
@@ -186,6 +201,7 @@ const AuthorityReference = () => {
                 handleLoading={handleLoading}
                 updateRequireStatus={updateRequireStatus}
                 getNewState={getReferences}
+                deleteReference={deleteReference}
               />
             )}
           </div>

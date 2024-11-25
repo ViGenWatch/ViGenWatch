@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LayoutComponent from '../../components/Layout';
 import style from './reference.module.scss';
 import classNames from 'classnames/bind';
@@ -17,7 +17,8 @@ const cx = classNames.bind(style);
 const ReferencePage = () => {
   const { t } = useTranslation();
   const [openCreateReferecenceForm, setOpenCreateModal] = useState(false);
-  const { referencesState, getReferences, authState, inputDataState, updateRequireStatus } = useReferences();
+  const { referencesState, getReferences, authState, inputDataState, updateRequireStatus, deleteReference } =
+    useReferences();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
@@ -30,6 +31,13 @@ const ReferencePage = () => {
     { value: t('reference:Your References'), key: 1 },
     { value: t("reference:System's References"), key: 2 }
   ];
+
+  useEffect(() => {
+    setOptionFilter({
+      value: t('reference:All'),
+      key: 0
+    });
+  }, [t]);
 
   const handleClickFilter = (index) => {
     setOptionFilter(filters[index]);
@@ -125,6 +133,7 @@ const ReferencePage = () => {
                 authState={authState}
                 handleLoading={handleLoading}
                 updateRequireStatus={updateRequireStatus}
+                deleteReference={deleteReference}
               />
             )}
           </div>

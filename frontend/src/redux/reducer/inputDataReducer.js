@@ -46,4 +46,5 @@ const inputDataSlice = createSlice({
 });
 
 export const Actions = inputDataSlice.actions;
+export const ActionsInputData = inputDataSlice.actions;
 export default inputDataSlice.reducer;
