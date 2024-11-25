@@ -4,10 +4,12 @@ import classNames from 'classnames/bind';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { MdOutlineArrowBackIos } from 'react-icons/md';
+import { useTranslation } from 'react-i18next';
 
 const cx = classNames.bind(style);
 
 const CreateReference = (props) => {
+  const { t } = useTranslation();
   const [clickChange, setClickChange] = useState(1);
   const authState = useSelector((state) => state.auth);
   const { user } = authState;
@@ -173,10 +175,10 @@ const CreateReference = (props) => {
       <div className={cx('add-reference-group__header-group')}>
         <span className={cx('header-title')}>
           <MdOutlineArrowBackIos role='button' onClick={props.closeModal} className={cx('button-arrow')} />
-          <span>Create Reference Folder</span>
+          <span>{t('reference:Create Reference Folder')}</span>
         </span>
         <button className={cx('create-new-config')} onClick={handleCreateNewReference}>
-          Create Reference Folder
+          {t('reference:Create Reference Folder')}
         </button>
       </div>
       <div className={cx('add-reference-group__btn-change')}>
@@ -184,20 +186,20 @@ const CreateReference = (props) => {
           className={cx('btn-infor', clickChange === 1 ? 'btn-change_active' : 'btn-change_unactive')}
           onClick={() => setClickChange(1)}
         >
-          Reference Information
+          {t('reference:Reference Information')}
         </button>
         <button
           className={cx('btn-upload', clickChange === 2 ? 'btn-change_active' : 'btn-change_unactive')}
           onClick={() => setClickChange(2)}
         >
-          Upload Reference Files
+          {t('reference:Upload Reference Files')}
         </button>
       </div>
       <div className={cx('form-reference-infor')}>
         {clickChange === 1 ? (
           <form className={cx('form-container')}>
             <div className={cx('form-group')}>
-              <label htmlFor='referenceName'>Folder Name</label>
+              <label htmlFor='referenceName'>{t('reference:Folder Name')}</label>
               <input
                 type='text'
                 id='folderName'
@@ -207,7 +209,7 @@ const CreateReference = (props) => {
               />
             </div>
             <div className={cx('form-group')}>
-              <label htmlFor='referenceName'>Reference Name</label>
+              <label htmlFor='referenceName'>{t('reference:Reference Name')}</label>
               <input
                 type='text'
                 id='referenceName'
@@ -218,7 +220,7 @@ const CreateReference = (props) => {
             </div>
 
             <div className={cx('form-group')}>
-              <label htmlFor='definition'>Definition</label>
+              <label htmlFor='definition'>{t('reference:Definition')}</label>
               <input
                 type='text'
                 id='definition'
@@ -229,22 +231,22 @@ const CreateReference = (props) => {
             </div>
 
             <div className={cx('form-group')}>
-              <label htmlFor='author'>Author</label>
+              <label htmlFor='author'>{t('reference:Author')}</label>
               <input type='text' id='author' name='author' value={formDataState.author} onChange={handleChange} />
             </div>
 
             <div className={cx('form-group')}>
-              <label htmlFor='version'>Version</label>
+              <label htmlFor='version'>{t('reference:Version')}</label>
               <input type='text' id='version' name='version' value={formDataState.version} onChange={handleChange} />
             </div>
 
             <div className={cx('form-group')}>
-              <label htmlFor='link'>Link Paper</label>
+              <label htmlFor='link'>{t('reference:Link Paper')}</label>
               <input type='text' id='link' name='link' value={formDataState.link} onChange={handleChange} />
             </div>
 
             <div className={cx('form-group')}>
-              <label htmlFor='require'>Status</label>
+              <label htmlFor='require'>{t('reference:Status')}</label>
               <select
                 className={cx('select')}
                 id='require'
@@ -252,8 +254,8 @@ const CreateReference = (props) => {
                 value={authState.user.role === '0x01' ? formDataState.require : formDataState.status}
                 onChange={handleChange}
               >
-                <option value={true}>Public</option>
-                <option value={false}>Private</option>
+                <option value={true}>{t('reference:Public')}</option>
+                <option value={false}>{t('reference:Private')}</option>
               </select>
             </div>
           </form>
@@ -276,7 +278,11 @@ const CreateReference = (props) => {
                       id={file.key}
                     />
                     <label htmlFor='fileInput' className={cx(!file.isDragging ? 'file-input-label' : 'dragging-label')}>
-                      {file.isDragging ? 'Drop it!' : file.value ? file.value.name : 'Drag & drop a file'}
+                      {file.isDragging
+                        ? t('reference:Drop it!')
+                        : file.value
+                          ? file.value.name
+                          : t('reference:Drag & drop a file')}
                     </label>
 
                     <button
@@ -291,7 +297,7 @@ const CreateReference = (props) => {
                       }}
                       className={cx('btn-select-file')}
                     >
-                      {file.value ? 'Remove' : 'Select a file'}
+                      {file.value ? t('reference:Remove') : t('reference:Select a file')}
                     </button>
                   </div>
                 </div>

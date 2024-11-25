@@ -10,23 +10,25 @@ import ReferenceInfor from './ReferenceInfor';
 import FilterGroup from '../../components/FilterGroup';
 import ItemReference from '../../components/ItemReference';
 import CreateReference from '../../components/CreateReference';
+import { useTranslation } from 'react-i18next';
 
 const cx = classNames.bind(style);
 
 const ReferencePage = () => {
+  const { t } = useTranslation();
   const [openCreateReferecenceForm, setOpenCreateModal] = useState(false);
   const { referencesState, getReferences, authState, inputDataState, updateRequireStatus } = useReferences();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const [optionFilter, setOptionFilter] = useState({
-    value: 'All',
+    value: t('reference:All'),
     key: 0
   });
   const filters = [
-    { value: 'All', key: 0 },
-    { value: 'Your References', key: 1 },
-    { value: "System's References", key: 2 }
+    { value: t('reference:All'), key: 0 },
+    { value: t('reference:Your References'), key: 1 },
+    { value: t("reference:System's References"), key: 2 }
   ];
 
   const handleClickFilter = (index) => {
@@ -68,14 +70,14 @@ const ReferencePage = () => {
                     }}
                   >
                     <IoIosArrowBack className={cx('icon-btn')} />
-                    <span className={cx('text-btn')}>Add Data</span>
+                    <span className={cx('text-btn')}>{t('reference:Add Data')}</span>
                   </button>
 
                   <div className={cx('title-search-group')}>
-                    <span className={cx('title-select')}>Select reference dataset</span>
+                    <span className={cx('title-select')}>{t('reference:Select reference dataset')}</span>
                     <div className={cx('search-form-group')}>
                       <IoIosSearch className={cx('icon-search')} />
-                      <input className={cx('input-search')} placeholder='Search reference' />
+                      <input className={cx('input-search')} placeholder={t('reference:Search reference')} />
                     </div>
                   </div>
 
@@ -89,7 +91,7 @@ const ReferencePage = () => {
                     <div>
                       {!openCreateReferecenceForm && (
                         <button className={cx('create-new-config')} onClick={handleStateOpen}>
-                          Create Reference Folder
+                          {t('reference:Create Reference Folder')}
                         </button>
                       )}
                     </div>

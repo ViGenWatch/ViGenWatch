@@ -5,10 +5,12 @@ import PropTypes from 'prop-types';
 import RunButton from '../../components/RunButton';
 import { downloadFile, getReferenceContentFile } from '../../service/reference';
 import ReadFile from '../../components/ReadFile';
+import { useTranslation } from 'react-i18next';
 
 const cx = classNames.bind(style);
 
 const ReferenceInfor = (props) => {
+  const { t } = useTranslation();
   const { inputDataState, referencesState, authState, handleLoading, updateRequireStatus } = props;
   const selectReference = referencesState.references.filter(
     (reference) => reference.id === inputDataState.selectedReferenceId
@@ -50,7 +52,7 @@ const ReferenceInfor = (props) => {
     <div className={cx('infor-reference-group')}>
       <div className={cx('infor-reference-group__header-group')}>
         <span className={cx('header-title')}>
-          <span>Select Reference</span>
+          <span>{t('reference:Select Reference Infor')}</span>
         </span>
         <RunButton
           inputDataState={inputDataState}
@@ -74,16 +76,16 @@ const ReferenceInfor = (props) => {
                     className={cx('make-private', 'btn-edit-status')}
                     onClick={() => updateRequireStatus(selectReference.id, 0)}
                   >
-                    Make Private
+                    {t('reference:Make Private')}
                   </button>
                 ) : selectReference.require ? (
-                  <button className={cx('pending', 'btn-edit-status')}>Pending</button>
+                  <button className={cx('pending', 'btn-edit-status')}>{t('reference:Pending')}</button>
                 ) : (
                   <button
                     className={cx('request-public', 'btn-edit-status')}
                     onClick={() => updateRequireStatus(selectReference.id, 1)}
                   >
-                    Request Public
+                    {t('reference:Request Public')}
                   </button>
                 ))}
             </div>
@@ -92,17 +94,21 @@ const ReferenceInfor = (props) => {
               style={{ background: !selectReference.status && (selectReference.require ? '#ffca28' : '#e67030') }}
               className={cx('infor-reference-group__icon')}
             >
-              {selectReference.status ? 'Community' : selectReference.require ? 'Pending' : 'Private'}
+              {selectReference.status
+                ? t('reference:Community')
+                : selectReference.require
+                  ? t('reference:Pending')
+                  : t('reference:Private')}
             </div>
             <span
               className={cx('infor-reference-group__definition', 'infor-text')}
-            >{`Definition: ${selectReference.definition}`}</span>
+            >{`${t('reference:Definition')}: ${selectReference.definition}`}</span>
             <span
               className={cx('infor-reference-group__author', 'infor-text')}
-            >{`Author: ${selectReference.author}`}</span>
+            >{`${t('reference:Author')}: ${selectReference.author}`}</span>
             <span
               className={cx('infor-reference-group__version', 'infor-text')}
-            >{`Version: ${selectReference.version}`}</span>
+            >{`${t('reference:Version')}: ${selectReference.version}`}</span>
           </div>
         </div>
       </div>

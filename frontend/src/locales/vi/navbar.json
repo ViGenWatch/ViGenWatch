@@ -1,0 +1,16 @@
+{
+  "Start": "Khởi tạo",
+  "Reference": "Tập tham chiếu",
+  "Main": "Trực quan",
+  "Export": "Kết quả",
+  "Profile": "Cá nhân",
+  "Logout": "Đăng xuất",
+  "Language": "Ngôn ngữ",
+  "Show start page": "Hiển thị trang khởi tạo",
+  "Select reference folder page": "Hiển thị trang chọn tập tham chiếu",
+  "Display a page for visualizing analysis results": "Trực quan hóa kết quả phân tích",
+  "Export analysis results page": "Xuất kết quả phân tích",
+  "Show profile page": "Thông tin cá nhân",
+  "VietNam": "Tiếng Việt",
+  "English": "Tiếng Anh"
+}

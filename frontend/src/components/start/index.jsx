@@ -13,6 +13,7 @@ import useReferencesAuthority from '../../hook/authority/useReferencesAuthority'
 import useReferences from '../../hook/useReferences';
 import RunButton from '../RunButton';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
 const cx = classNames.bind(style);
 
@@ -27,6 +28,7 @@ const StartComponent = (props) => {
   const navigate = useNavigate();
   const inputDataState = useSelector((state) => state.inputData);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const inputGroup1Height = inputGroup1Ref.current.scrollHeight;
@@ -48,12 +50,14 @@ const StartComponent = (props) => {
   return (
     <div className={cx('section-start')}>
       <LogoText style={{ fontSize: '6rem', fontWeight: '300' }} />
-      <span className={cx('subtitle')}>Clade assignment, mutation calling, and sequence quality checks</span>
+      <span className={cx('subtitle')}>
+        {t('start:Visualizing the analysis results of genetic data related to epidemics')}
+      </span>
 
       <div className={cx('input-group')}>
         <div ref={inputGroup1Ref} className={cx('input-group__sequence')}>
           <div className={cx('input-group__sequence-header')}>
-            <span>Select File Sequence Data</span>
+            <span>{t('start:Select File Sequence Data')}</span>
           </div>
           <div className={cx('input-group__sequence-category')}>
             <button
@@ -66,12 +70,13 @@ const StartComponent = (props) => {
             <button
               className={cx(`input-${inputCategory === 2 ? 'current' : 'category'}`)}
               onClick={() => setInputCategory(2)}
+              style={{ display: 'none' }}
             >
               <span>Text</span>
             </button>
 
             <button className={cx('input-category')}>
-              <span>Example</span>
+              <span>{t('start:Example')}</span>
               <IoMdArrowDropdown />
             </button>
           </div>
@@ -85,7 +90,7 @@ const StartComponent = (props) => {
                 multiple
               />
               <button className={cx('select-btn')} onClick={selectSequenceClick}>
-                Select Files
+                {t('start:Select Files')}
               </button>
             </div>
           ) : (
@@ -101,8 +106,8 @@ const StartComponent = (props) => {
           {inputDataState.inputFilesData.length > 0 && (
             <div className={cx('input-group__sequence-footer')}>
               <div className={cx('title-group')}>
-                <span className={cx('subtitle1')}>Sequence file data.fasta</span>
-                <span className={cx('subtitle2')}>Remove all</span>
+                <span className={cx('subtitle1')}>{t("start:Sequence data you've added")}</span>
+                <span className={cx('subtitle2')}>{t('start:Remove all')}</span>
               </div>
               <div className={cx('item-file-ls')}>
                 {inputDataState.inputFilesData.map((file) => (
@@ -125,7 +130,7 @@ const StartComponent = (props) => {
 
         <div ref={inputGroup2Ref} className={cx('input-group__dataset')}>
           <div className={cx('input-group__dataset-header')}>
-            <span>Select File Reference Dataset</span>
+            <span>{t('start:Select File Reference Dataset')}</span>
           </div>
           <div className={cx('input-group__dataset-suggest')}>
             {/* <div className={cx('toggle-select')} style={{ display: 'none' }}>
@@ -145,7 +150,7 @@ const StartComponent = (props) => {
                 }
               }}
             >
-              Change reference
+              {t('start:Change reference')}
             </button>
 
             <div className={cx('suggest-btn-group')}>
@@ -176,7 +181,7 @@ const StartComponent = (props) => {
                   navigate('/reference');
                 }}
               >
-                Select Reference Files
+                {t('start:Select References Files')}
               </button>
             </div>
           )}

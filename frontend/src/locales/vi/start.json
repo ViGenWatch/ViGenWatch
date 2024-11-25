@@ -1,0 +1,18 @@
+{
+  "Select File Sequence Data": "Cung cấp dữ liệu gen di truyền",
+  "Select Files": "Chọn tệp dữ liệu phù hợp",
+  "Visualizing the analysis results of genetic data related to epidemics": "Trực quan hóa kết quả phân tích dữ liệu gen di truyền của dịch bệnh",
+  "Select File Reference Dataset": "Tập dữ liệu tham chiếu đã chọn",
+  "Select References Files": "Chọn thư mục tham chiếu tương ứng",
+  "Change reference": "Thay đổi thư mục tham chiếu",
+  "Run": "Phân tích",
+  "Sequence data you've added": "Dữ liệu gen di truyền bạn đã thêm",
+  "Remove all": "Xóa tất cả",
+  "Example": "Ví dụ",
+  "Definition": "Định nghĩa",
+  "Author": "Tác giả",
+  "Version": "Phiên bản",
+  "Pending": "Đang chờ xử lý",
+  "Private": "Không công khai",
+  "Community": "Cộng đồng"
+}

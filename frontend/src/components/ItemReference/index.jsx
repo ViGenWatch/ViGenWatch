@@ -4,10 +4,12 @@ import classNames from 'classnames/bind';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Actions } from '../../redux/reducer/inputDataReducer';
+import { useTranslation } from 'react-i18next';
 
 const cx = classNames.bind(style);
 
 const ItemReference = (props) => {
+  const { t } = useTranslation();
   const { id, referenceName, author, definition, version, status, require } = props;
   const inputDataState = useSelector((state) => state.inputData);
 
@@ -35,11 +37,17 @@ const ItemReference = (props) => {
           style={{ background: !status && (require ? '#ffca28' : '#e67030') }}
           className={cx('infor-reference-group__icon')}
         >
-          {status ? 'Community' : require ? 'Pending' : 'Private'}
+          {status ? t('reference:Community') : require ? t('reference:Pending') : t('reference:Private')}
         </div>
-        <span className={cx('infor-reference-group__definition', 'infor-text')}>{`Definition: ${definition}`}</span>
-        <span className={cx('infor-reference-group__author', 'infor-text')}>{`Author: ${author}`}</span>
-        <span className={cx('infor-reference-group__version', 'infor-text')}>{`Version: ${version}`}</span>
+        <span
+          className={cx('infor-reference-group__definition', 'infor-text')}
+        >{`${t('reference:Definition')}: ${definition}`}</span>
+        <span
+          className={cx('infor-reference-group__author', 'infor-text')}
+        >{`${t('reference:Author')}: ${author}`}</span>
+        <span
+          className={cx('infor-reference-group__version', 'infor-text')}
+        >{`${t('reference:Version')}: ${version}`}</span>
       </div>
     </div>
   );

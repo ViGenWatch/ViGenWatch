@@ -6,8 +6,10 @@ import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { Actions } from '../../redux/reducer/executionReducer';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 const RunButton = (props) => {
+  const { t } = useTranslation();
   const { inputDataState, referencesState, authState, handleLoading } = props;
   const navigate = useNavigate();
   const dispath = useDispatch();
@@ -50,7 +52,7 @@ const RunButton = (props) => {
 
   return (
     <button className={cx('run_button')} onClick={handleUpload}>
-      Run
+      {t('start:Run')}
     </button>
   );
 };
