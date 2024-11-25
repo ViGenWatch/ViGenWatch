@@ -6,6 +6,9 @@ const { exec } = require("child_process");
 const path = require("path");
 const executionHelper = require("../utils/execution");
 const referenceStorage = require("../utils/referenceStorage");
+const userServices = require("../services/userServices");
+const sendEmailService = require("../config/nodemailer");
+const htmlEmailConfirmReference = require("../views/confirm-reference");
 
 const deleteReference = async (req, res) => {
   try {
@@ -134,8 +137,26 @@ const updateReferenceControllder = async (req, res) => {
   try {
     const referenceId = req.params.referenceId;
     const data = req.body;
+    const { userId } = req.body;
     const newReference = await referenceService.updateReferenceById(referenceId, data);
     if (newReference) {
+      if (userId) {
+        const user = await userServices.getUserAccountById(userId);
+        const reference = await referenceService.getReferenceById(referenceId);
+        if (user && reference) {
+          const htmlContent =
+            data.status === 1
+              ? htmlEmailConfirmReference.approvePublicReferenceEmail(user.userName, reference.referenceName)
+              : htmlEmailConfirmReference.closeReferenceEmail(user.userName, reference.referenceName);
+          const mailOptions = {
+            ...sendEmailService.mailOptionsTemplate,
+            to: [user.email],
+            subject: "Reference Sharing Confirmation",
+            html: htmlContent
+          };
+          sendEmailService.sendEmail(mailOptions);
+        }
+      }
       res.status(200).json({ message: "update successfull" });
     }
   } catch (error) {

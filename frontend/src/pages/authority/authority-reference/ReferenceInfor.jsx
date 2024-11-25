@@ -64,7 +64,7 @@ const ReferenceInfor = (props) => {
     handleLoading(true);
     const referenceId = selectReference.id;
     dispatch(Actions.removeSelectReference());
-    await updateReferenceServiceRoleAuthority({ referenceId, status: 0 });
+    await updateReferenceServiceRoleAuthority({ referenceId, status: 0, userId: selectReference.userId });
     await getNewState();
     setTimeout(() => {
       props.handleLoading(false);
@@ -75,7 +75,7 @@ const ReferenceInfor = (props) => {
     <div className={cx('infor-reference-group')}>
       <div className={cx('infor-reference-group__header-group')}>
         <span className={cx('header-title')}>
-          <span>{t('reference:Select Reference')}</span>
+          <span>{t('reference:Select Reference Infor')}</span>
         </span>
         <RunButton
           inputDataState={inputDataState}
@@ -121,7 +121,7 @@ const ReferenceInfor = (props) => {
                   <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
                     <button
                       className={cx('request-public', 'btn-edit-status')}
-                      onClick={() => updateRequireStatus(selectReference.id, 1)}
+                      onClick={() => updateRequireStatus(selectReference.id, 1, selectReference.userId)}
                     >
                       {t('reference:Approve')}
                     </button>

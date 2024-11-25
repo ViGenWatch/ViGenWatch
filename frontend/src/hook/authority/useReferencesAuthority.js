@@ -20,8 +20,8 @@ const useReferencesAuthority = () => {
     dispatch(Actions.getReferencesRequestRoleAuthority());
   };
 
-  const updateRequireStatus = (referenceId, status) => {
-    dispatch(Actions.updateStatusRequestRoleAuthority({ referenceId, status }));
+  const updateRequireStatus = (referenceId, status, userId = null) => {
+    dispatch(Actions.updateStatusRequestRoleAuthority({ referenceId, status, userId }));
   };
 
   const deleteReference = async (referenceId) => {

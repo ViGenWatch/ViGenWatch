@@ -42,8 +42,8 @@ export const getListReferensRoleAuthority = async () => {
 
 export const updateReferenceServiceRoleAuthority = async (params) => {
   try {
-    const { referenceId, status } = params;
-    let data = { require: 0, status };
+    const { referenceId, status, userId } = params;
+    let data = userId ? { require: 0, status, userId } : { require: 0, status };
     const response = await axios.put(`/api/reference/0x02/update/${referenceId}`, data);
     return response;
   } catch (error) {

@@ -24,6 +24,15 @@ const getUserAccountByEmail = async (email) => {
   }
 };
 
+const getUserAccountById = async (userId) => {
+  try {
+    const userAccount = await db.User.findOne({ where: { id: userId } });
+    return userAccount;
+  } catch (error) {
+    throw new CustomError(error.message, 400);
+  }
+};
+
 const getUserAccountByToken = async (refreshToken) => {
   try {
     const userAccount = await db.User.findOne({ where: { refreshToken: refreshToken } });
@@ -92,5 +101,6 @@ module.exports = {
   getUserAccountByEmail,
   updateUserByEmail,
   getUserAccountByToken,
-  updateUserById
+  updateUserById,
+  getUserAccountById
 };
