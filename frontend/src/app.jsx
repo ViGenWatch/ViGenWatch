@@ -1,16 +1,19 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
-import HomePage from './pages/start';
-import MainPage from './pages/main';
+import HomePage from './pages/researcher/start';
+import MainPage from './pages/researcher/main';
 import LoginPage from './pages/login';
 import useAuth from './hook/useAuth';
 import SignUp from './pages/signup';
-import ReferencePage from './pages/reference';
-import ExportPage from './pages/export';
+import ReferencePage from './pages/researcher/reference';
+import ExportPage from './pages/researcher/export';
 import AuthorityReference from './pages/authority/authority-reference';
 import AuthorityStart from './pages/authority/authority-start';
 import ForgotPasswordPage from './pages/forgot-password';
 import NewPasswordPage from './pages/reset-password';
+import AuthorityMain from './pages/authority/authority-main';
+import AuthorityExport from './pages/authority/authority-export';
+import ProfilePage from './pages/researcher/profile';
 
 const App = () => {
   const { authState, refreshToken, dataSaveSession } = useAuth();
@@ -34,6 +37,7 @@ const App = () => {
             <Route path='/reference' element={<ReferencePage />} />
             <Route path='/main' element={<MainPage />} />
             <Route path='/export' element={<ExportPage />} />
+            <Route path='/profile' element={<ProfilePage />} />
             <Route path='/*' element={<Navigate to='/start' />} />
           </Routes>
         );
@@ -43,8 +47,9 @@ const App = () => {
           <Routes>
             <Route path='/start' element={<AuthorityStart />} />
             <Route path='/reference' element={<AuthorityReference />} />
-            <Route path='/main' element={<MainPage />} />
-            <Route path='/export' element={<ExportPage />} />
+            <Route path='/main' element={<AuthorityMain />} />
+            <Route path='/export' element={<AuthorityExport />} />
+            <Route path='/profile' element={<AuthorityExport />} />
             <Route path='/*' element={<Navigate to='/start' />} />
           </Routes>
         );

@@ -75,7 +75,7 @@ const LoginPage = () => {
               Đăng nhập
             </button>
             <div className={cx('bottom-title')}>
-              <span className={cx('title')}>Bạn đã có tài khoản </span>
+              <span className={cx('title')}>Bạn chưa có tài khoản? </span>
               <NavLink to={'/signup'} className={cx('subtitle')}>
                 Tạo tài khoản
               </NavLink>

@@ -89,18 +89,25 @@ const LayoutComponent = ({ children, index }) => {
             <div
               className={cx('button-nav-group__btn')}
               style={{
+                background: index === 4 && '#2296f3',
+                fontWeight: index === 4 && '500'
+              }}
+              title={t('navbar:Export analysis results page')}
+            >
+              <NavLink style={{ color: index === 4 && '#ffffff' }} className={cx('navlink')} to='/export'>
+                {t('navbar:Export')}
+              </NavLink>
+            </div>
+            <RiArrowRightSFill fontSize={'25px'} />
+            <div
+              className={cx('button-nav-group__btn')}
+              style={{
                 background: index === 5 && '#2296f3',
                 fontWeight: index === 5 && '500'
               }}
               title={t('navbar:Export analysis results page')}
             >
-              <NavLink style={{ color: index === 5 && '#ffffff' }} className={cx('navlink')} to='/export'>
-                {t('navbar:Export')}
-              </NavLink>
-            </div>
-            <RiArrowRightSFill fontSize={'25px'} />
-            <div className={cx('button-nav-group__btn')} title={t('navbar:Show profile page')}>
-              <NavLink onClick={handleLogout} className={cx('navlink')} to=''>
+              <NavLink style={{ color: index === 5 && '#ffffff' }} className={cx('navlink')} to='/profile'>
                 {t('navbar:Profile')}
               </NavLink>
             </div>
@@ -148,7 +155,7 @@ const LayoutComponent = ({ children, index }) => {
                   }
                 }}
               >
-                <MenuItem value='vi'>{t('navbar:VietNam')}</MenuItem>
+                <MenuItem value='vi'>{t('navbar:Vietnamese')}</MenuItem>
                 <MenuItem value='en'>{t('navbar:English')}</MenuItem>
               </Select>
             </FormControl>

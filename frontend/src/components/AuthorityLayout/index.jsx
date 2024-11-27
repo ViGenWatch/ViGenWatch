@@ -89,12 +89,12 @@ const AuthorityLayout = ({ children, index }) => {
             <div
               className={cx('button-nav-group__btn')}
               style={{
-                background: index === 5 && '#2296f3',
-                fontWeight: index === 5 && '500'
+                background: index === 4 && '#2296f3',
+                fontWeight: index === 4 && '500'
               }}
               title={t('navbar:Export analysis results page')}
             >
-              <NavLink style={{ color: index === 5 && '#ffffff' }} className={cx('navlink')} to='/export'>
+              <NavLink style={{ color: index === 4 && '#ffffff' }} className={cx('navlink')} to='/export'>
                 {t('navbar:Export')}
               </NavLink>
             </div>
@@ -148,7 +148,7 @@ const AuthorityLayout = ({ children, index }) => {
                   }
                 }}
               >
-                <MenuItem value='vi'>{t('navbar:VietNam')}</MenuItem>
+                <MenuItem value='vi'>{t('navbar:Vietnamese')}</MenuItem>
                 <MenuItem value='en'>{t('navbar:English')}</MenuItem>
               </Select>
             </FormControl>

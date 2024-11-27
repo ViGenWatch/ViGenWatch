@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import AuthorityLayout from '../../../components/AuthorityLayout';
-import StartComponent from '../../../components/start';
+import StartComponent from '../../../components/Start';
 import { LOADING } from '../../../components/loading';
 
 const AuthorityStart = () => {

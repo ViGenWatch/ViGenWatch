@@ -1,18 +1,15 @@
 import styled from 'styled-components';
-import LayoutComponent from '../../components/Layout';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import SideBar from './SideBar';
 import { numberOfGridPanels } from '@khaitd0340/auspice/src/actions/panelDisplay';
 import { calcPanelDims, calcStyles } from '@khaitd0340/auspice/src/components/main/utils';
 import { PanelsContainer } from '@khaitd0340/auspice/src/components/main/styles';
-import TreeSection from '../../components/Tree/Tree';
-import MapSection from '../../components/Map/Map';
+import TreeSection from '../Tree/Tree';
+import MapSection from '../Map/Map';
 import { Suspense } from 'react';
-import EntropySection from '../../components/Entropy/EntropySection';
-import useExecution from '../../hook/useExecution';
-import { LOADING } from '../../components/loading';
-import InforSection from '../../components/Infor/Infor';
+import EntropySection from '../Entropy/EntropySection';
+import InforSection from '../Infor/Infor';
 import { calcUsableWidth } from '@khaitd0340/auspice/src/util/computeResponsive';
 
 const MainContainer = styled.div`
@@ -26,9 +23,8 @@ const MainContainer = styled.div`
     // overflow-y: 'scroll'
   `;
 
-const MainPage = () => {
+const MainComponent = () => {
   const state = useSelector((state: RootState) => state);
-  const { loading } = useExecution();
   const props = {
     panelsToDisplay: state.controls?.panelsToDisplay,
     panelLayout: state.controls?.panelLayout,
@@ -70,37 +66,31 @@ const MainPage = () => {
   );
 
   return (
-    <LayoutComponent index={3}>
-      {!loading ? (
-        <MainContainer>
-          <SideBar width={sidebarWidth} height={availableHeight} />
-          <PanelsContainer width={availableWidth} height={availableHeight} left={props.sidebarOpen ? sidebarWidth : 0}>
-            {props.displayNarrative || props.showOnlyPanels ? null : (
-              <InforSection width={calcUsableWidth(availableWidth, 1)} />
-            )}
-            {props.panelsToDisplay?.includes('tree') ? (
-              <TreeSection width={inGrid() ? grid.width : full.width} height={inGrid() ? grid.height : full.height} />
-            ) : null}
-            {props.panelsToDisplay?.includes('map') ? (
-              <MapSection
-                width={shouldMapBeInGrid() ? grid.width : full.width}
-                height={shouldMapBeInGrid() ? grid.height : full.height}
-                justGotNewDatasetRenderNewMap={false}
-                legend={shouldShowMapLegend()}
-              />
-            ) : null}
-            {props.panelsToDisplay?.includes('entropy') ? (
-              <Suspense fallback={null}>
-                <EntropySection width={chartEntropy.width} height={chartEntropy.height} />
-              </Suspense>
-            ) : null}
-          </PanelsContainer>
-        </MainContainer>
-      ) : (
-        <LOADING />
-      )}
-    </LayoutComponent>
+    <MainContainer>
+      <SideBar width={sidebarWidth} height={availableHeight} />
+      <PanelsContainer width={availableWidth} height={availableHeight} left={props.sidebarOpen ? sidebarWidth : 0}>
+        {props.displayNarrative || props.showOnlyPanels ? null : (
+          <InforSection width={calcUsableWidth(availableWidth, 1)} />
+        )}
+        {props.panelsToDisplay?.includes('tree') ? (
+          <TreeSection width={inGrid() ? grid.width : full.width} height={inGrid() ? grid.height : full.height} />
+        ) : null}
+        {props.panelsToDisplay?.includes('map') ? (
+          <MapSection
+            width={shouldMapBeInGrid() ? grid.width : full.width}
+            height={shouldMapBeInGrid() ? grid.height : full.height}
+            justGotNewDatasetRenderNewMap={false}
+            legend={shouldShowMapLegend()}
+          />
+        ) : null}
+        {props.panelsToDisplay?.includes('entropy') ? (
+          <Suspense fallback={null}>
+            <EntropySection width={chartEntropy.width} height={chartEntropy.height} />
+          </Suspense>
+        ) : null}
+      </PanelsContainer>
+    </MainContainer>
   );
 };
 
-export default MainPage;
+export default MainComponent;

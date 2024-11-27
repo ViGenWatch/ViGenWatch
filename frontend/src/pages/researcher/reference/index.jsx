@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import LayoutComponent from '../../components/Layout';
+import LayoutComponent from '../../../components/Layout';
 import style from './reference.module.scss';
 import classNames from 'classnames/bind';
 import { IoIosArrowBack, IoIosSearch } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
-import useReferences from '../../hook/useReferences';
-import { LOADING } from '../../components/loading';
+import useReferences from '../../../hook/useReferences';
+import { LOADING } from '../../../components/loading';
 import ReferenceInfor from './ReferenceInfor';
-import FilterGroup from '../../components/FilterGroup';
-import ItemReference from '../../components/ItemReference';
-import CreateReference from '../../components/CreateReference';
+import FilterGroup from '../../../components/FilterGroup';
+import ItemReference from '../../../components/ItemReference';
+import CreateReference from '../../../components/CreateReference';
 import { useTranslation } from 'react-i18next';
 
 const cx = classNames.bind(style);

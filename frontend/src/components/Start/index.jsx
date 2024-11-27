@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import style from './Start.module.scss';
 import classNames from 'classnames/bind';
-import LogoText from '../../components/Logo-Text';
+import LogoText from '../Logo-Text';
 import { IoMdArrowDropdown } from 'react-icons/io';
 import { CiFileOn } from 'react-icons/ci';
 import { RiDeleteBin6Line } from 'react-icons/ri';

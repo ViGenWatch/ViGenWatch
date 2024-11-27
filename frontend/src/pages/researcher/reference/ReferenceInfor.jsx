@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import style from './reference.module.scss';
 import classNames from 'classnames/bind';
 import PropTypes from 'prop-types';
-import RunButton from '../../components/RunButton';
-import { downloadFile, getReferenceContentFile } from '../../service/reference';
-import ReadFile from '../../components/ReadFile';
+import RunButton from '../../../components/RunButton';
+import { downloadFile, getReferenceContentFile } from '../../../service/reference';
+import ReadFile from '../../../components/ReadFile';
 import { useTranslation } from 'react-i18next';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 

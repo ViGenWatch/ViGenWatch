@@ -1,8 +1,8 @@
 import i18nOriginal from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
-// import enSidebar from '@khaitd0340/auspice/src/locales/en/sidebar.json';
-// import viSidebar from '@khaitd0340/auspice/src/locales/vi/sidebar.json';
+import enSidebar from '@khaitd0340/auspice/src/locales/en/sidebar.json';
+import viSidebar from '@khaitd0340/auspice/src/locales/vi/sidebar.json';
 
 // import enTranslation from '@khaitd0340/auspice/src/locales/en/translation.json';
 // import viTranslation from '@khaitd0340/auspice/src/locales/vi/translation.json';
@@ -21,8 +21,8 @@ export const AUSPICE_I18N_NAMESPACES = ['language', 'sidebar', 'translation'];
 export function i18nAuspiceInit() {
   const i18nAuspice = i18nOriginal.use(initReactI18next).createInstance({
     resources: {
-      vi: { navbar: viNavbar, start: viStart, reference: viReference, export: viExport },
-      en: { navbar: enNavbar, start: enStart, reference: enReference, export: enExport }
+      vi: { sidebar: viSidebar, navbar: viNavbar, start: viStart, reference: viReference, export: viExport },
+      en: { sidebar: enSidebar, navbar: enNavbar, start: enStart, reference: enReference, export: enExport }
     },
     lng: 'vi',
     fallbackLng: 'en',

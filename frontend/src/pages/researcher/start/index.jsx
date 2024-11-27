@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import LayoutComponent from '../../components/Layout';
-import { LOADING } from '../../components/loading';
-import StartComponent from '../../components/start';
+import LayoutComponent from '../../../components/Layout';
+import { LOADING } from '../../../components/loading';
+import StartComponent from '../../../components/Start';
 
 const HomePage = () => {
   const [loading, setLoading] = useState(false);
