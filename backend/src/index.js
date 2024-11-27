@@ -3,6 +3,12 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import initWebRouter from "./routers/web";
 import sshConnection from "./entity/sshConnect";
+
+const http = require("http");
+const initWebSocket = require("./config/websocket");
+const handleWebSocketConnection = require("./controllers/websocketController");
+const uploadRoutes = require("./controllers/uploadController");
+
 require("dotenv").config();
 
 const app = express();
@@ -12,18 +18,24 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api", initWebRouter);
+app.use("/hehe", uploadRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something broke!");
 });
 
+const server = http.createServer(app);
+const wss = initWebSocket(server);
+app.set("wss", wss);
+wss.on("connection", handleWebSocketConnection);
+
 const port = process.env.BACKEND_PORT || 5051;
 sshConnection
   .connect()
   .then(() => {
     console.log("Connected to SSH");
-    app.listen(port, () => {
+    server.listen(port, () => {
       console.log("Backend Nodejs is running on the port: " + port);
     });
   })

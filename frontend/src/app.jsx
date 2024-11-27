@@ -14,6 +14,7 @@ import NewPasswordPage from './pages/reset-password';
 import AuthorityMain from './pages/authority/authority-main';
 import AuthorityExport from './pages/authority/authority-export';
 import ProfilePage from './pages/researcher/profile';
+import FileUploader from './components/upload';
 
 const App = () => {
   const { authState, refreshToken, dataSaveSession } = useAuth();
@@ -33,6 +34,7 @@ const App = () => {
       case '0x01':
         content = (
           <Routes>
+            <Route path='/upload' element={<FileUploader />} />
             <Route path='/start' element={<HomePage />} />
             <Route path='/reference' element={<ReferencePage />} />
             <Route path='/main' element={<MainPage />} />
