@@ -17,11 +17,12 @@ referenceRoutes.get(
   verifyRole.VerifyRoleUser,
   referenceController.getListReferencesController
 );
+referenceRoutes.post("/create-reference", referenceController.uploadReferenceFileController);
+
 referenceRoutes.post(
-  "/create-reference",
-  referenceStorage.uploadReferenceFile.array("files", process.env.REFERENCE_FILE_INPUT_NUMBER || 5),
+  "/upload-infor-reference",
   checkInput.validateReferenceInput(),
-  referenceController.uploadReferenceFileController
+  referenceController.uploadInforReference
 );
 
 //role user 0x02

@@ -9,6 +9,8 @@ const referenceStorage = require("../utils/referenceStorage");
 const userServices = require("../services/userServices");
 const sendEmailService = require("../config/nodemailer");
 const htmlEmailConfirmReference = require("../views/confirm-reference");
+const sessionManager = require("../entity/sessionManager");
+const fileService = require("../entity/fileService");
 
 const deleteReference = async (req, res) => {
   try {
@@ -51,47 +53,101 @@ const getListReferencesController = async (req, res) => {
 
 const uploadReferenceFileController = async (req, res) => {
   try {
-    const { folderName, referenceName, definition, author, version, link, status, referencePath, userId, require } =
-      req.body;
+    const sessionId = req.headers["session-id"];
+    const fileIndex = parseInt(req.headers["file-index"]);
+    const chunkIndex = parseInt(req.headers["chunk-index"]);
+    const chunkSize = parseInt(req.headers["chunk-size"]);
 
-    const { auspiceConfig, colors, droppedTrains, latLongs, virusOutgroup } = req.body;
-    exec(
-      `chown -R ${process.env.UID}:${process.env.UID} ${referencePath} && chmod -R 775 ${referencePath}`,
-      async (error, stdout, stderr) => {
-        if (error) {
-          throw new CustomError({ message: error.message }, 400);
-        }
-        if (stderr) {
-          throw new CustomError({ message: error.message }, 400);
-        }
-        const newReference = await referenceService.createReference({
-          folderName,
-          referenceName,
-          definition,
-          author,
-          version,
-          link,
-          status,
-          referencePath,
-          userId,
-          require
-        });
+    const session = sessionManager.getSession(sessionId);
+    if (!session) {
+      return res.status(400).send("Invalid session");
+    }
 
-        const newReferenceFile = await referenceFileService.createReferenceFile({
-          auspiceConfig,
-          colors,
-          droppedTrains,
-          latLongs,
-          virusOutgroup,
-          referenceId: newReference.id
-        });
-        if (newReference && newReferenceFile) {
-          return res.status(200).json({ message: "create new reference successfull" });
-        } else {
-          throw new CustomError({ message: error.message }, 400);
+    const chunks = [];
+    req.on("data", (chunk) => chunks.push(chunk));
+
+    req.on("end", () => {
+      try {
+        const chunkData = Buffer.concat(chunks);
+        const updated = session.updateChunk(fileIndex, chunkIndex, chunkData, chunkSize);
+
+        if (!updated) {
+          return res.status(400).send("Invalid file index");
         }
+
+        if (session.isFileComplete(fileIndex, chunkSize)) {
+          const file = session.getFile(fileIndex);
+          const filePath = fileService.saveCompletedFile(file.name, file.buffer, file.size, file.folderName);
+
+          file.buffer = null;
+          const referencePath = path.resolve(__dirname, `../../upload/config/${file.folderName}`);
+          exec(
+            `chown -R ${process.env.UID}:${process.env.UID} ${referencePath} && chmod -R 775 ${referencePath}`,
+            async (error, stdout, stderr) => {
+              if (error) {
+                throw new CustomError({ message: error.message }, 400);
+              }
+              if (stderr) {
+                throw new CustomError({ message: error.message }, 400);
+              }
+              req.app.get("wss").clients.forEach((client) => {
+                if (client.readyState === WebSocket.OPEN) {
+                  client.send(
+                    JSON.stringify({
+                      type: "FILE_COMPLETED",
+                      fileIndex,
+                      fileName: file.name
+                    })
+                  );
+                }
+              });
+            }
+          );
+        }
+        res.sendStatus(200);
+      } catch (error) {
+        throw new CustomError("Upload error:" + error, 400);
       }
-    );
+    });
+  } catch (error) {
+    if (error instanceof CustomError) {
+      process.env.NODE_ENV == "development" ? console.log(error) : null;
+      return res.status(error.statusCode).json({ message: error.message });
+    }
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+const uploadInforReference = async (req, res) => {
+  try {
+    const { folderName, referenceName, definition, author, version, link, status, userId, require } = req.body;
+    const { auspiceConfig, colors, droppedTrains, latLongs, virusOutgroup } = req.body;
+    const referencePath = path.resolve(__dirname, `../../upload/config/${folderName}`);
+    const newReference = await referenceService.createReference({
+      folderName,
+      referenceName,
+      definition,
+      author,
+      version,
+      link,
+      status,
+      referencePath,
+      userId,
+      require
+    });
+    const newReferenceFile = await referenceFileService.createReferenceFile({
+      auspiceConfig,
+      colors,
+      droppedTrains,
+      latLongs,
+      virusOutgroup,
+      referenceId: newReference.id
+    });
+    if (newReference && newReferenceFile) {
+      return res.status(200).json({ message: "create new reference successfull" });
+    } else {
+      throw new CustomError({ message: error.message }, 400);
+    }
   } catch (error) {
     if (error instanceof CustomError) {
       process.env.NODE_ENV == "development" ? console.log(error) : null;
@@ -194,6 +250,7 @@ module.exports = {
   getContentFileReference,
   onDownloadFileReference,
   updateReferenceControllder,
+  uploadInforReference,
   getListReferencesRoleAuthorityController,
   deleteReference
 };

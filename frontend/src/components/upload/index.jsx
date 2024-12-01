@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useWebSocket } from './useWebSocket';
+import { useWebSocket } from '../../hook/useWebSocket';
 
 const FileUploader = () => {
   const API_URL = 'http://localhost:5050';
-  const [files, setFiles] = useState([]); // State để hiển thị danh sách file
-  const filesRef = useRef([]); // Lưu files để tránh reset ngoài ý muốn
+  const [files, setFiles] = useState([]);
+  const filesRef = useRef([]);
   const [progress, setProgress] = useState({});
   const [uploading, setUploading] = useState(false);
   const sessionIdRef = useRef(null);
@@ -28,7 +28,7 @@ const FileUploader = () => {
     switch (data.type) {
       case 'SESSION_CREATED': {
         sessionIdRef.current = data.sessionId;
-        startUploading(); // Bắt đầu upload khi nhận session ID
+        startUploading();
         break;
       }
 
@@ -62,12 +62,12 @@ const FileUploader = () => {
     if (selectedFiles.length > 0) {
       const fileArray = Array.from(selectedFiles);
       setFiles(fileArray);
-      filesRef.current = fileArray; // Lưu vào ref để bảo toàn giá trị
+      filesRef.current = fileArray;
     }
   };
 
   const handleStartUpload = () => {
-    console.log('Trước khi upload, files:', filesRef.current); // Kiểm tra file thực tế
+    console.log('Trước khi upload, files:', filesRef.current);
 
     if (!connected) {
       alert('Không có kết nối tới server');
@@ -82,7 +82,6 @@ const FileUploader = () => {
     setUploading(true);
     abortControllerRef.current = new AbortController();
 
-    // Gửi yêu cầu START_UPLOAD qua WebSocket
     socket.send(
       JSON.stringify({
         type: 'START_UPLOAD',
@@ -95,7 +94,7 @@ const FileUploader = () => {
   };
 
   const startUploading = async () => {
-    const chunkSize = 1024 * 1024; // 1MB chunks
+    const chunkSize = 1024 * 1024;
     const maxConcurrent = 3;
 
     try {
@@ -140,7 +139,7 @@ const FileUploader = () => {
       }
 
       setUploading(false);
-      setFiles([]); // Reset files sau khi upload xong
+      setFiles([]);
       filesRef.current = [];
     } catch (error) {
       if (error.name === 'AbortError') {

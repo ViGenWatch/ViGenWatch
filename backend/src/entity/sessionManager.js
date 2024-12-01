@@ -1,5 +1,5 @@
 const crypto = require("crypto");
-const UploadSession = require("../entity/UploadSesstion");
+const UploadSession = require("./UploadSesstion");
 
 class SessionManager {
   constructor() {
@@ -9,8 +9,8 @@ class SessionManager {
   createSession(files) {
     const sessionId = crypto.randomUUID();
     const session = new UploadSession(files);
+    session.updateFolderName(sessionId);
 
-    // Tự động cleanup sau 30 phút
     session.cleanupTimer = setTimeout(
       () => {
         this.cleanupSession(sessionId);

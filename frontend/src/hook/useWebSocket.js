@@ -25,10 +25,6 @@ export const useWebSocket = (url) => {
     };
 
     setSocket(ws);
-
-    // return () => {
-    //   ws.close();
-    // };
   }, [url]);
 
   return { socket, connected };

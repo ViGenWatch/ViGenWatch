@@ -3,7 +3,7 @@ const path = require("path");
 
 class FileService {
   constructor() {
-    this.uploadDir = path.join(__dirname, "../../uploads");
+    this.uploadDir = path.join(__dirname, "../../upload/config");
     this.ensureUploadDirectory();
   }
 
@@ -13,8 +13,12 @@ class FileService {
     }
   }
 
-  saveCompletedFile(fileName, buffer, size) {
-    const finalPath = path.join(this.uploadDir, fileName);
+  saveCompletedFile(fileName, buffer, size, folderName) {
+    const folderPath = path.join(this.uploadDir, folderName);
+    if (!fs.existsSync(folderPath)) {
+      fs.mkdirSync(folderPath, { recursive: true });
+    }
+    const finalPath = path.join(folderPath, fileName);
     fs.writeFileSync(finalPath, buffer.slice(0, size));
     return finalPath;
   }

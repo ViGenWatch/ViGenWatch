@@ -1,11 +1,10 @@
-const sessionManager = require("../services/sessionManager");
+const sessionManager = require("../entity/sessionManager");
 
 const handleWebSocketConnection = (ws) => {
   let currentSessionId = null;
   const handleMessage = (message) => {
     try {
       const data = JSON.parse(message);
-      console.log(data);
       switch (data.type) {
         case "START_UPLOAD":
           currentSessionId = sessionManager.createSession(data.files);

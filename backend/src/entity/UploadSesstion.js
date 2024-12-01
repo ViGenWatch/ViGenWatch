@@ -13,11 +13,16 @@ class UploadSession {
     return this.files[fileIndex];
   }
 
+  updateFolderName(sesstionID) {
+    this.files.forEach((file) => {
+      file.folderName = sesstionID;
+    });
+  }
+
   updateChunk(fileIndex, chunkIndex, chunkData, chunkSize) {
     const file = this.getFile(fileIndex);
     if (!file) return false;
 
-    // Mở rộng buffer nếu cần
     const newBuffer = Buffer.alloc(Math.max(file.buffer.length, (chunkIndex + 1) * chunkSize));
     file.buffer.copy(newBuffer);
     chunkData.copy(newBuffer, chunkIndex * chunkSize);

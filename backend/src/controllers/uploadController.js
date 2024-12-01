@@ -1,10 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const sessionManager = require("../services/sessionManager");
-const fileService = require("../services/fileService");
+const sessionManager = require("../entity/sessionManager");
+const fileService = require("../entity/fileService");
 
 router.post("/upload", (req, res) => {
-  console.log("sfjsdfhsjfhkshf");
   const sessionId = req.headers["session-id"];
   const fileIndex = parseInt(req.headers["file-index"]);
   const chunkIndex = parseInt(req.headers["chunk-index"]);
@@ -27,15 +26,12 @@ router.post("/upload", (req, res) => {
         return res.status(400).send("Invalid file index");
       }
 
-      // Kiểm tra file đã hoàn thành chưa
       if (session.isFileComplete(fileIndex, chunkSize)) {
         const file = session.getFile(fileIndex);
-        const filePath = fileService.saveCompletedFile(file.name, file.buffer, file.size);
+        const filePath = fileService.saveCompletedFile(file.name, file.buffer, file.size, file.folderName);
 
-        // Giải phóng buffer
         file.buffer = null;
 
-        // Thông báo hoàn thành qua WebSocket
         req.app.get("wss").clients.forEach((client) => {
           if (client.readyState === WebSocket.OPEN) {
             client.send(
