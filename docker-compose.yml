@@ -78,6 +78,32 @@ services:
     networks:
       - nextclade
 
+  frontend:
+    build:
+      context: ./frontend
+    volumes:
+      - ./frontend:/nextclade/frontend
+    working_dir: /nextclade/frontend
+    command: npm run build
+    container_name: nextclade_frontend
+    networks:
+      - nextclade
+
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - '88:80'
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    volumes_from:
+      - frontend
+    depends_on:
+      - frontend
+    container_name: nextclade_nginx
+    networks:
+      - nextclade
+
 networks:
   nextclade:
     driver: bridge
