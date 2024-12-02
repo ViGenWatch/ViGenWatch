@@ -17,6 +17,10 @@ const useReferences = () => {
   const sessionIdRef = useRef(null);
   const abortControllerRef = useRef(null);
   const { socket, connected } = useWebSocket('ws://localhost:5050');
+  const [uploadStatus, setUploadStatus] = useState({
+    uploadFile: false,
+    uploadInfor: false
+  });
 
   useEffect(() => {
     if (!referencesState.references) {
@@ -37,10 +41,22 @@ const useReferences = () => {
     setLoading(isLoading);
   };
 
+  const handleUploadInforComplete = () => {
+    setUploadStatus((prev) => ({
+      ...prev,
+      uploadInfor: true
+    }));
+  };
+
+  const resetUploadStatus = () => {
+    setUploadStatus({
+      uploadFile: false,
+      uploadInfor: false
+    });
+  };
+
   const handleSocketMessage = (event) => {
     const data = JSON.parse(event.data);
-    console.log('WebSocket message received:', data);
-
     switch (data.type) {
       case 'SESSION_CREATED': {
         sessionIdRef.current = data.sessionId;
@@ -159,6 +175,11 @@ const useReferences = () => {
 
       setLoading(false);
       filesRef.current = [];
+      setUploadStatus((prev) => ({
+        ...prev,
+        uploadFile: true
+      }));
+      sessionIdRef.current = null;
     } catch (error) {
       if (error.name === 'AbortError') {
         console.log('Upload bị hủy bởi người dùng');
@@ -212,7 +233,10 @@ const useReferences = () => {
     handleFileSelect,
     handleStartUpload,
     handleLoading,
-    sessionIdRef
+    sessionIdRef,
+    uploadStatus,
+    handleUploadInforComplete,
+    resetUploadStatus
   };
 };
 

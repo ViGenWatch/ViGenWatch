@@ -3,6 +3,7 @@ class UploadSession {
     this.files = files.map((file) => ({
       name: file.name,
       size: file.size,
+      userName: file.userName,
       receivedChunks: new Set(),
       buffer: Buffer.alloc(0)
     }));

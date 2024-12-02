@@ -14,6 +14,7 @@ import useReferences from '../../hook/useReferences';
 import RunButton from '../RunButton';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import FileUploadProgress from '../FileUploadProgress';
 
 const cx = classNames.bind(style);
 
@@ -28,6 +29,7 @@ const StartComponent = (props) => {
   const navigate = useNavigate();
   const inputDataState = useSelector((state) => state.inputData);
   const dispatch = useDispatch();
+  const [progress, setProgress] = useState({});
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -46,6 +48,8 @@ const StartComponent = (props) => {
   const selectSequenceClick = () => {
     document.getElementById('file-upload').click();
   };
+
+  console.log(progress);
 
   return (
     <div className={cx('section-start')}>
@@ -159,6 +163,7 @@ const StartComponent = (props) => {
                 referencesState={referencesState}
                 authState={authState}
                 handleLoading={handleLoading}
+                setProgress={setProgress}
               />
             </div>
           </div>
@@ -186,6 +191,20 @@ const StartComponent = (props) => {
             </div>
           )}
         </div>
+      </div>
+
+      <div className={cx('upload-progress-group')}>
+        {inputDataState.inputFilesData.length > 0 &&
+          Object.keys(progress).length > 0 &&
+          Object.entries(progress).map(([fileIndex, percent]) => (
+            <FileUploadProgress
+              key={fileIndex}
+              top={fileIndex * 105 + 60}
+              fileName={inputDataState.inputFilesData[fileIndex]?.name}
+              fileSize={'200'}
+              progress={percent.toFixed(0)}
+            />
+          ))}
       </div>
     </div>
   );

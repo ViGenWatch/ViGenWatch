@@ -142,7 +142,6 @@ const CreateReference = (props) => {
 
   const handleCreateNewReference = async (e) => {
     e.preventDefault();
-    props.closeModal();
     props.handleFileSelect(files);
     props.handleStartUpload();
   };
@@ -151,7 +150,7 @@ const CreateReference = (props) => {
     const uploadInfor = async (updatedFormData) => {
       const response = await uploadInforReference(updatedFormData);
       if (response.status === 200) {
-        // props.getNewState();
+        props.handleUploadInforComplete();
       }
     };
     if (props.sessionIdRef && props.sessionIdRef.current) {
@@ -168,6 +167,14 @@ const CreateReference = (props) => {
       uploadInfor(updatedFormData);
     }
   }, [props.sessionIdRef.current]);
+
+  useEffect(() => {
+    if (props.uploadStatus.uploadFile && props.uploadStatus.uploadInfor) {
+      props.closeModal();
+      props.getNewState();
+      props.resetUploadStatus();
+    }
+  }, [props.uploadStatus]);
 
   return (
     <div className={cx('add-reference-group')}>
@@ -314,7 +321,10 @@ CreateReference.propTypes = {
   closeModal: PropTypes.func.isRequired,
   handleFileSelect: PropTypes.func.isRequired,
   handleStartUpload: PropTypes.func.isRequired,
-  sessionIdRef: PropTypes.object
+  sessionIdRef: PropTypes.object.isRequired,
+  uploadStatus: PropTypes.object.isRequired,
+  handleUploadInforComplete: PropTypes.func.isRequired,
+  resetUploadStatus: PropTypes.func.isRequired
 };
 
 export default CreateReference;

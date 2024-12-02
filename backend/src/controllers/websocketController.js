@@ -5,6 +5,7 @@ const handleWebSocketConnection = (ws) => {
   const handleMessage = (message) => {
     try {
       const data = JSON.parse(message);
+      console.log(data);
       switch (data.type) {
         case "START_UPLOAD":
           currentSessionId = sessionManager.createSession(data.files);

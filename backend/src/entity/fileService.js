@@ -3,18 +3,29 @@ const path = require("path");
 
 class FileService {
   constructor() {
-    this.uploadDir = path.join(__dirname, "../../upload/config");
-    this.ensureUploadDirectory();
+    this.ConfigDir = path.join(__dirname, "../../upload/config");
+    this.UploadDir = path.join(__dirname, "../../upload");
+    this.ensureConfigDirectory();
   }
 
-  ensureUploadDirectory() {
-    if (!fs.existsSync(this.uploadDir)) {
-      fs.mkdirSync(this.uploadDir, { recursive: true });
+  ensureConfigDirectory() {
+    if (!fs.existsSync(this.ConfigDir)) {
+      fs.mkdirSync(this.ConfigDir, { recursive: true });
     }
   }
 
   saveCompletedFile(fileName, buffer, size, folderName) {
-    const folderPath = path.join(this.uploadDir, folderName);
+    const folderPath = path.join(this.ConfigDir, folderName);
+    if (!fs.existsSync(folderPath)) {
+      fs.mkdirSync(folderPath, { recursive: true });
+    }
+    const finalPath = path.join(folderPath, fileName);
+    fs.writeFileSync(finalPath, buffer.slice(0, size));
+    return finalPath;
+  }
+
+  saveCompletedInputFile(fileName, buffer, size, folderName, userName) {
+    const folderPath = path.join(this.UploadDir, `${userName}_workspace`, folderName);
     if (!fs.existsSync(folderPath)) {
       fs.mkdirSync(folderPath, { recursive: true });
     }

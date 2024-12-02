@@ -29,7 +29,10 @@ const ReferencePage = () => {
     handleFileSelect,
     handleStartUpload,
     handleLoading,
-    sessionIdRef
+    sessionIdRef,
+    uploadStatus,
+    handleUploadInforComplete,
+    resetUploadStatus
   } = useReferences();
 
   const navigate = useNavigate();
@@ -135,6 +138,9 @@ const ReferencePage = () => {
               handleFileSelect={handleFileSelect}
               handleStartUpload={handleStartUpload}
               sessionIdRef={sessionIdRef}
+              uploadStatus={uploadStatus}
+              handleUploadInforComplete={handleUploadInforComplete}
+              resetUploadStatus={resetUploadStatus}
             />
           )}
 
