@@ -34,7 +34,7 @@ const RunButton = (props) => {
     });
 
     try {
-      const response = await fetch('http://localhost:5050/api/file/upload', {
+      const response = await fetch('/api/file/upload', {
         method: 'POST',
         body: formData
       });

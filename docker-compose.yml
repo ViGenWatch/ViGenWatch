@@ -11,6 +11,7 @@ services:
     volumes:
       - ./backend/:/nextclade/backend/
       - ./data/:/nextclade/backend/upload
+      - /nextclade/backend/node_modules
     depends_on:
       mysql-db:
         condition: service_healthy
@@ -83,6 +84,7 @@ services:
       context: ./frontend
     volumes:
       - ./frontend:/nextclade/frontend
+      - /nextclade/frontend/node_modules
     working_dir: /nextclade/frontend
     command: npm run build
     container_name: nextclade_frontend
@@ -100,6 +102,7 @@ services:
       - frontend
     depends_on:
       - frontend
+      - workspace
     container_name: nextclade_nginx
     networks:
       - nextclade

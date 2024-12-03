@@ -2,7 +2,7 @@ import axios from './axios';
 
 export const deleteReferenceFolder = async (referenceId) => {
   try {
-    const response = await axios.delete(`/api/reference/delete/${referenceId}`);
+    const response = await axios.delete(`/reference/delete/${referenceId}`);
     return response;
   } catch (error) {
     return error.message;
@@ -12,7 +12,7 @@ export const deleteReferenceFolder = async (referenceId) => {
 //role user 0x01
 export const getListReferens = async () => {
   try {
-    const response = await axios.get(`/api/reference/getlist/`);
+    const response = await axios.get(`/reference/getlist/`);
     return response;
   } catch (error) {
     return error.message;
@@ -23,7 +23,7 @@ export const updateReferenceService = async (params) => {
   try {
     const { referenceId, status } = params;
     let data = status ? { require: true } : { status: false };
-    const response = await axios.put(`/api/reference/update/${referenceId}`, data);
+    const response = await axios.put(`/reference/update/${referenceId}`, data);
     return response;
   } catch (error) {
     return error.message;
@@ -33,7 +33,7 @@ export const updateReferenceService = async (params) => {
 //role user 0x02
 export const getListReferensRoleAuthority = async () => {
   try {
-    const response = await axios.get(`/api/reference/0x02/getlist/`);
+    const response = await axios.get(`/reference/0x02/getlist/`);
     return response;
   } catch (error) {
     return error.message;
@@ -44,7 +44,7 @@ export const updateReferenceServiceRoleAuthority = async (params) => {
   try {
     const { referenceId, status, userId } = params;
     let data = userId ? { require: 0, status, userId } : { require: 0, status };
-    const response = await axios.put(`/api/reference/0x02/update/${referenceId}`, data);
+    const response = await axios.put(`/reference/0x02/update/${referenceId}`, data);
     return response;
   } catch (error) {
     return error.message;
@@ -57,15 +57,12 @@ export const getReferenceContentFile = async (referenceId, fileName) => {
   try {
     const tokenString = sessionStorage.getItem('accessToken');
     const token = tokenString ? JSON.parse(tokenString) : null;
-    const response = await fetch(
-      `http://localhost:5050/api/reference/content-file?referenceId=${referenceId}&fileName=${fileName}`,
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const response = await fetch(`/api/reference/content-file?referenceId=${referenceId}&fileName=${fileName}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
 
     if (!response.ok) {
       throw new Error(`Network response was not ok: ${response.statusText}`);
@@ -95,15 +92,12 @@ export const downloadFile = async (referenceId, _fileName) => {
   try {
     const tokenString = sessionStorage.getItem('accessToken');
     const token = tokenString ? JSON.parse(tokenString) : null;
-    const response = await fetch(
-      `http://localhost:5050/api/reference/download-file?referenceId=${referenceId}&fileName=${_fileName}`,
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const response = await fetch(`/api/reference/download-file?referenceId=${referenceId}&fileName=${_fileName}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
     if (!response.ok) {
       throw new Error(`Network response was not ok: ${response.statusText}`);
     }
