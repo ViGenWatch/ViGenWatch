@@ -45,7 +45,7 @@ const SignUp = () => {
         <div className={cx('signup-page')}>
           <LogoText style={{ fontSize: '60px', fontWeight: '300' }} />
           <span className={cx('signup-page__subtitle')}>
-            Trực quan hóa kết quả phân tích dữ liệu gen di truyền của dịch bệnh
+            quan hóa kết quả phân tích dữ liệu gen di truyền của dịch bệnh
           </span>
           <div className={cx('signup-page__container')}>
             <span className={cx('title-signup')}>Tạo tài khoản</span>

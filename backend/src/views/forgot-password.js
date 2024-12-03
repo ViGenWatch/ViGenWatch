@@ -48,7 +48,7 @@ const generateResetPasswordEmail = (userName, resetLink) => `
     </div>
     <p>Hi <strong>${userName}</strong>,</p>
     <p>
-      You are receiving this because you (or someone else) requested the reset of your NextPhylo user account.
+      You are receiving this because you (or someone else) requested the reset of your ViGenWatch user account.
       Please click the button below to reset your password:
     </p>
     <p>
@@ -58,9 +58,9 @@ const generateResetPasswordEmail = (userName, resetLink) => `
       If you did not request a password reset, you can safely ignore this email.
     </p>
     <p>Thanks,</p>
-    <p>The NextPhylo Website</p>
+    <p>The ViGenWatch Website</p>
     <div class="footer">
-      <p>© 2024 NextPhylo. All rights reserved.</p>
+      <p>© 2024 ViGenWatch. All rights reserved.</p>
     </div>
   </div>
 </body>
@@ -111,15 +111,15 @@ const resetPasswordComplete = (userName) => `
     </div>
     <p>Hi <strong>${userName}</strong>,</p>
     <p>
-      You are receiving this because you (or someone else) have changed the password of your NextPhylo user account.
+      You are receiving this because you (or someone else) have changed the password of your ViGenWatch user account.
     </p>
     <p>
       If this was you, you can safely ignore this email. If not, please reach out to us at 
     </p>
     <p>Thanks,</p>
-    <p>The NextPhylo Website</p>
+    <p>The ViGenWatch Website</p>
     <div class="footer">
-      <p>© 2024 NextPhylo. All rights reserved.</p>
+      <p>© 2024 ViGenWatch. All rights reserved.</p>
     </div>
   </div>
 </body>
