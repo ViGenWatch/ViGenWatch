@@ -186,7 +186,7 @@ const sendEmailForgot = async (req, res) => {
     }
     const htmlContent = htmlEmailToResetPassword.generateResetPasswordEmail(
       user.userName,
-      `${process.env.FRONTEND_URL}/reset-password/${token}`
+      `${process.env.NODE_ENV === "development" ? process.env.FRONTEND_URL : process.env.URL_HOST}/reset-password/${token}`
     );
     const mailOptions = {
       ...sendEmailService.mailOptionsTemplate,
@@ -202,7 +202,7 @@ const sendEmailForgot = async (req, res) => {
     });
   } catch (error) {
     if (error instanceof CustomError) {
-      process.env.NODE_ENV == "development" ? console.log(error) : null;
+      process.env.NODE_ENV === "development" ? console.log(error) : null;
       return res.status(error.statusCode).json({ message: error.message });
     }
     return res.status(500).json({ message: error.message });

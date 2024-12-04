@@ -12,7 +12,7 @@ const cx = classNames.bind(style);
 
 const ReferenceInfor = (props) => {
   const { t } = useTranslation();
-  const { inputDataState, referencesState, authState, handleLoading, updateRequireStatus, deleteReference } = props;
+  const { inputDataState, referencesState, authState, updateRequireStatus, deleteReference, handleStartUpload } = props;
   const selectReference = referencesState.references.filter(
     (reference) => reference.id === inputDataState.selectedReferenceId
   )[0];
@@ -55,12 +55,7 @@ const ReferenceInfor = (props) => {
         <span className={cx('header-title')}>
           <span>{t('reference:Select Reference Infor')}</span>
         </span>
-        <RunButton
-          inputDataState={inputDataState}
-          referencesState={referencesState}
-          authState={authState}
-          handleLoading={handleLoading}
-        />
+        <RunButton handleStartUpload={handleStartUpload} />
       </div>
       <div className={cx('infor-reference-group__item')}>
         <div className={cx('item-reference-container')}>
@@ -134,9 +129,9 @@ ReferenceInfor.propTypes = {
   inputDataState: PropTypes.object.isRequired,
   referencesState: PropTypes.object.isRequired,
   authState: PropTypes.object.isRequired,
-  handleLoading: PropTypes.func.isRequired,
   updateRequireStatus: PropTypes.func.isRequired,
-  deleteReference: PropTypes.func.isRequired
+  deleteReference: PropTypes.func.isRequired,
+  handleStartUpload: PropTypes.func.isRequired
 };
 
 export default ReferenceInfor;

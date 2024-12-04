@@ -22,7 +22,8 @@ const ReferenceInfor = (props) => {
     handleLoading,
     updateRequireStatus,
     getNewState,
-    deleteReference
+    deleteReference,
+    handleStartUpload
   } = props;
   const selectReference = referencesState.references.filter(
     (reference) => reference.id === inputDataState.selectedReferenceId
@@ -77,12 +78,7 @@ const ReferenceInfor = (props) => {
         <span className={cx('header-title')}>
           <span>{t('reference:Select Reference Infor')}</span>
         </span>
-        <RunButton
-          inputDataState={inputDataState}
-          referencesState={referencesState}
-          authState={authState}
-          handleLoading={handleLoading}
-        />
+        <RunButton handleStartUpload={handleStartUpload} />
       </div>
       <div className={cx('infor-reference-group__item')}>
         <div className={cx('item-reference-container')}>
@@ -177,7 +173,8 @@ ReferenceInfor.propTypes = {
   handleLoading: PropTypes.func.isRequired,
   updateRequireStatus: PropTypes.func.isRequired,
   getNewState: PropTypes.func.isRequired,
-  deleteReference: PropTypes.func.isRequired
+  deleteReference: PropTypes.func.isRequired,
+  handleStartUpload: PropTypes.func.isRequired
 };
 
 export default ReferenceInfor;

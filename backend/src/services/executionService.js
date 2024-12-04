@@ -45,6 +45,20 @@ const getListExecutions = async (userId) => {
   }
 };
 
+const getListExecutionPath = async (userId) => {
+  try {
+    const executions = await db.Execution.findAll({
+      attributes: ["id", "executionName", "executionPath"],
+      where: {
+        userId: userId
+      }
+    });
+    return executions;
+  } catch (error) {
+    throw new CustomError(error.message, 400);
+  }
+};
+
 const getExecutionById = async (executionId) => {
   try {
     const execution = await db.Execution.findOne({
@@ -58,4 +72,4 @@ const getExecutionById = async (executionId) => {
   }
 };
 
-module.exports = { createExecution, getNextExecutionNumber, getListExecutions, getExecutionById };
+module.exports = { createExecution, getNextExecutionNumber, getListExecutions, getExecutionById, getListExecutionPath };

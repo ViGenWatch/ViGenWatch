@@ -7,8 +7,6 @@ import { ActionsInputData } from '../redux/reducer/inputDataReducer';
 const useReferences = () => {
   const dispatch = useDispatch();
   const referencesState = useSelector((state) => state.references);
-  const authState = useSelector((state) => state.auth);
-  const inputDataState = useSelector((state) => state.inputData);
 
   useEffect(() => {
     if (!referencesState.references) {
@@ -30,7 +28,7 @@ const useReferences = () => {
     getReferences();
   };
 
-  return { referencesState, getReferences, authState, inputDataState, updateRequireStatus, deleteReference };
+  return { referencesState, getReferences, updateRequireStatus, deleteReference };
 };
 
 export default useReferences;

@@ -4,24 +4,35 @@ import style from './reference.module.scss';
 import classNames from 'classnames/bind';
 import { IoIosArrowBack, IoIosSearch } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
-import useReferences from '../../../hook/useReferences';
 import { LOADING } from '../../../components/loading';
 import ReferenceInfor from './ReferenceInfor';
 import FilterGroup from '../../../components/FilterGroup';
 import ItemReference from '../../../components/ItemReference';
 import CreateReference from '../../../components/CreateReference';
 import { useTranslation } from 'react-i18next';
+import useUploadExecution from '../../../hook/useUploadExecution';
+import FileUploadProgress from '../../../components/FileUploadProgress';
 
 const cx = classNames.bind(style);
 
 const ReferencePage = () => {
   const { t } = useTranslation();
   const [openCreateReferecenceForm, setOpenCreateModal] = useState(false);
-  const { referencesState, getReferences, authState, inputDataState, updateRequireStatus, deleteReference } =
-    useReferences();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
+  const handleLoading = (isLoading) => {
+    setLoading(isLoading);
+  };
+  const {
+    referencesState,
+    getReferences,
+    authState,
+    inputDataState,
+    updateRequireStatus,
+    deleteReference,
+    handleStartUpload,
+    progress
+  } = useUploadExecution(handleLoading);
   const [optionFilter, setOptionFilter] = useState({
     value: t('reference:All'),
     key: 0
@@ -45,10 +56,6 @@ const ReferencePage = () => {
 
   const handleStateOpen = () => {
     setOpenCreateModal((prevState) => !prevState);
-  };
-
-  const handleLoading = (isLoading) => {
-    setLoading(isLoading);
   };
 
   return (
@@ -131,11 +138,25 @@ const ReferencePage = () => {
                 inputDataState={inputDataState}
                 referencesState={referencesState}
                 authState={authState}
-                handleLoading={handleLoading}
                 updateRequireStatus={updateRequireStatus}
                 deleteReference={deleteReference}
+                handleStartUpload={handleStartUpload}
               />
             )}
+
+            <div className={cx('upload-progress-group')}>
+              {inputDataState.inputFilesData.length > 0 &&
+                Object.keys(progress).length > 0 &&
+                Object.entries(progress).map(([fileIndex, percent]) => (
+                  <FileUploadProgress
+                    key={fileIndex}
+                    top={fileIndex * 105 + 60}
+                    fileName={inputDataState.inputFilesData[fileIndex]?.name}
+                    fileSize={200}
+                    progress={percent.toFixed(0)}
+                  />
+                ))}
+            </div>
           </div>
         </div>
       ) : (

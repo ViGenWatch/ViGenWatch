@@ -53,3 +53,26 @@ export const getResultJson = async (data: number) => {
     throw error;
   }
 };
+
+type executionParams = {
+  referenceId: number;
+  referencePath: string;
+  folderName: string;
+};
+
+export const createExecution = async (params: executionParams): Promise<ResponseType> => {
+  try {
+    const response = await axios.post(`/api/file/upload-infor-execution`, params);
+    return {
+      data: response.data,
+      status: response.status,
+      message: response.statusText || 'Success'
+    };
+  } catch (error: any) {
+    return {
+      data: null,
+      status: error.response?.status || 500,
+      message: error.message || 'An error occurred'
+    };
+  }
+};
