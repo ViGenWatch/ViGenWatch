@@ -53,15 +53,6 @@ export const updateReferenceServiceRoleAuthority = async (params) => {
 
 ///////////////////////////////////////////
 
-export const uploadInforReference = async (data) => {
-  try {
-    const response = await axios.post(`/api/reference/upload-infor-reference`, data);
-    return response;
-  } catch (error) {
-    return error.message;
-  }
-};
-
 export const getReferenceContentFile = async (referenceId, fileName) => {
   try {
     const tokenString = sessionStorage.getItem('accessToken');

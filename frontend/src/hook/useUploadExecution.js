@@ -10,7 +10,8 @@ import useReferencesAuthority from './authority/useReferencesAuthority';
 
 const useUploadExecution = (handleLoading) => {
   const authState = useSelector((state) => state.auth);
-  const { referencesState } = authState.user.role === '0x01' ? useReferences() : useReferencesAuthority();
+  const { referencesState, getReferences, updateRequireStatus, deleteReference } =
+    authState.user.role === '0x01' ? useReferences() : useReferencesAuthority();
   const inputDataState = useSelector((state) => state.inputData);
   const [sessionId, setSessionId] = useState(null);
   const [progress, setProgress] = useState({});
@@ -30,7 +31,6 @@ const useUploadExecution = (handleLoading) => {
 
     const handleSocketMessage = (event) => {
       const data = JSON.parse(event.data);
-      console.log(data);
       switch (data.type) {
         case 'SESSION_CREATED': {
           setSessionId(data.sessionId);
@@ -236,8 +236,12 @@ const useUploadExecution = (handleLoading) => {
   return {
     handleStartUpload,
     handleUploadCancel,
+    authState,
     inputDataState,
     referencesState,
+    getReferences,
+    updateRequireStatus,
+    deleteReference,
     progress
   };
 };

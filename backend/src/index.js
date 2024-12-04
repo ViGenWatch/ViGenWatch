@@ -7,7 +7,6 @@ import sshConnection from "./entity/sshConnect";
 const http = require("http");
 const initWebSocket = require("./config/websocket");
 const handleWebSocketConnection = require("./controllers/websocketController");
-const uploadRoutes = require("./controllers/uploadController");
 
 require("dotenv").config();
 
@@ -18,7 +17,6 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api", initWebRouter);
-app.use("/hehe", uploadRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

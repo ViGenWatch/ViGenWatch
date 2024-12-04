@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import style from './CreateReference.module.scss';
 import classNames from 'classnames/bind';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { MdOutlineArrowBackIos } from 'react-icons/md';
 import { useTranslation } from 'react-i18next';
-import { uploadInforReference } from '../../service/reference';
 
 const cx = classNames.bind(style);
 
@@ -140,41 +139,36 @@ const CreateReference = (props) => {
     });
   };
 
-  const handleCreateNewReference = async (e) => {
-    e.preventDefault();
-    props.handleFileSelect(files);
-    props.handleStartUpload();
-  };
-
-  useEffect(() => {
-    const uploadInfor = async (updatedFormData) => {
-      const response = await uploadInforReference(updatedFormData);
-      if (response.status === 200) {
-        props.handleUploadInforComplete();
-      }
-    };
-    if (props.sessionIdRef && props.sessionIdRef.current) {
-      const updatedFormData = {
-        ...formDataState,
-        userId: user.id,
-        folderName: props.sessionIdRef.current
-      };
-      files.forEach((file) => {
-        if (file.value) {
-          updatedFormData[file.key] = file.value.name;
-        }
+  const handleCreateNewReference = async () => {
+    props.handleLoading(true);
+    const formData = new FormData();
+    Object.entries(formDataState).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    formData.append('userId', user.id);
+    files.forEach((file) => {
+      file.value && formData.append(file.key, file.value.name);
+    });
+    files.forEach((file) => {
+      file.value && formData.append('files', file.value);
+    });
+    try {
+      const response = await fetch('http://localhost:5050/api/reference/create-reference/', {
+        method: 'POST',
+        body: formData
       });
-      uploadInfor(updatedFormData);
-    }
-  }, [props.sessionIdRef.current]);
-
-  useEffect(() => {
-    if (props.uploadStatus.uploadFile && props.uploadStatus.uploadInfor) {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
       props.closeModal();
       props.getNewState();
-      props.resetUploadStatus();
+      setTimeout(() => {
+        props.handleLoading(false);
+      }, 750);
+    } catch (error) {
+      console.error('Error uploading files:', error);
     }
-  }, [props.uploadStatus]);
+  };
 
   return (
     <div className={cx('add-reference-group')}>
@@ -183,7 +177,7 @@ const CreateReference = (props) => {
           <MdOutlineArrowBackIos role='button' onClick={props.closeModal} className={cx('button-arrow')} />
           <span>{t('reference:Create Reference Folder')}</span>
         </span>
-        <button className={cx('create-new-config')} onClick={(e) => handleCreateNewReference(e)}>
+        <button className={cx('create-new-config')} onClick={handleCreateNewReference}>
           {t('reference:Create Reference Folder')}
         </button>
       </div>
@@ -319,12 +313,7 @@ const CreateReference = (props) => {
 CreateReference.propTypes = {
   getNewState: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  handleFileSelect: PropTypes.func.isRequired,
-  handleStartUpload: PropTypes.func.isRequired,
-  sessionIdRef: PropTypes.object.isRequired,
-  uploadStatus: PropTypes.object.isRequired,
-  handleUploadInforComplete: PropTypes.func.isRequired,
-  resetUploadStatus: PropTypes.func.isRequired
+  handleLoading: PropTypes.func.isRequired
 };
 
 export default CreateReference;

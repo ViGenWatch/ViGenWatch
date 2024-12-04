@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import AuthorityLayout from '../../../components/AuthorityLayout';
 import style from './authorityReferences.module.scss';
 import classNames from 'classnames/bind';
-import useReferencesAuthority from '../../../hook/authority/useReferencesAuthority';
 import { useNavigate } from 'react-router';
 import { LOADING } from '../../../components/loading';
 import { IoIosArrowBack, IoIosSearch } from 'react-icons/io';
@@ -12,18 +11,28 @@ import { MdFilterList } from 'react-icons/md';
 import ReferenceInfor from './ReferenceInfor';
 import CreateReference from '../../../components/CreateReference';
 import { useTranslation } from 'react-i18next';
+import useUploadExecution from '../../../hook/useUploadExecution';
+import FileUploadProgress from '../../../components/FileUploadProgress';
 
 const cx = classNames.bind(style);
 
 const AuthorityReference = () => {
   const [openCreateReferecenceForm, setOpenCreateModal] = useState(false);
-  const { referencesState, authState, getReferences, inputDataState, updateRequireStatus, deleteReference } =
-    useReferencesAuthority();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const handleLoading = (isLoading) => {
     setLoading(isLoading);
   };
+  const {
+    referencesState,
+    getReferences,
+    authState,
+    inputDataState,
+    updateRequireStatus,
+    deleteReference,
+    handleStartUpload,
+    progress
+  } = useUploadExecution(handleLoading);
   const { t } = useTranslation();
 
   const [optionRoleFilter, setOptionRoleFilter] = useState({
@@ -202,8 +211,23 @@ const AuthorityReference = () => {
                 updateRequireStatus={updateRequireStatus}
                 getNewState={getReferences}
                 deleteReference={deleteReference}
+                handleStartUpload={handleStartUpload}
               />
             )}
+
+            <div className={cx('upload-progress-group')}>
+              {inputDataState.inputFilesData.length > 0 &&
+                Object.keys(progress).length > 0 &&
+                Object.entries(progress).map(([fileIndex, percent]) => (
+                  <FileUploadProgress
+                    key={fileIndex}
+                    top={fileIndex * 105 + 60}
+                    fileName={inputDataState.inputFilesData[fileIndex]?.name}
+                    fileSize={200}
+                    progress={percent.toFixed(0)}
+                  />
+                ))}
+            </div>
           </div>
         </div>
       ) : (
