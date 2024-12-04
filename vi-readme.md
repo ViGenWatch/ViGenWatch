@@ -48,7 +48,7 @@
 - ssh-keygen -A
 - /usr/sbin/sshd -D
 
-## Bước 7: Chạy migrate để tạo bảng cho cơ sở dữ liệu
+## Bước 8: Chạy migrate để tạo bảng cho cơ sở dữ liệu
 
 - sudo docker exec -it nextclade_workspace sh
 - npx sequelize-cli db:migrate
