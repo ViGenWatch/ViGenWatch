@@ -62,7 +62,7 @@ type executionParams = {
 
 export const createExecution = async (params: executionParams): Promise<ResponseType> => {
   try {
-    const response = await axios.post(`/api/file/upload-infor-execution`, params);
+    const response = await axios.post(`/file/upload-infor-execution`, params);
     return {
       data: response.data,
       status: response.status,
