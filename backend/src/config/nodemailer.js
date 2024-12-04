@@ -27,11 +27,11 @@ const sendEmail = (mailOptions) => {
 
 const mailOptionsTemplate = {
   from: {
-    name: "NextPhylo Support",
+    name: "ViGenWatch Support",
     address: process.env.MAIL_USER
   },
   to: [""],
-  subject: "Email from NextPhylo",
+  subject: "Email from ViGenWatch",
   html: "",
   attachments: []
 };

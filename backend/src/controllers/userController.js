@@ -191,7 +191,7 @@ const sendEmailForgot = async (req, res) => {
     const mailOptions = {
       ...sendEmailService.mailOptionsTemplate,
       to: [user.email],
-      subject: "Reset Your NextPhylo Password",
+      subject: "Reset Your ViGenWatch Password",
       html: htmlContent
     };
 
@@ -249,7 +249,7 @@ const resetPassword = async (req, res) => {
         const mailOptions = {
           ...sendEmailService.mailOptionsTemplate,
           to: [userUpdate.email],
-          subject: "Your NextPhylo Password Has Been Changed",
+          subject: "Your ViGenWatch Password Has Been Changed",
           html: htmlContent
         };
 

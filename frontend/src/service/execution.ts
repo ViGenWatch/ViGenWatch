@@ -2,7 +2,7 @@ import axios, { ResponseType } from './axios';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const getListExecutions = async (): Promise<ResponseType> => {
   try {
-    const response = await axios.get(`/api/execution/list-executions`);
+    const response = await axios.get(`/execution/list-executions`);
     return {
       data: response.data,
       status: response.status,
@@ -21,7 +21,7 @@ export const getResultJson = async (data: number) => {
   try {
     const tokenString = sessionStorage.getItem('accessToken');
     const token = tokenString ? JSON.parse(tokenString) : null;
-    const response = await fetch(`http://localhost:5050/api/execution/output-json/${data}`, {
+    const response = await fetch(`/api/execution/output-json/${data}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`

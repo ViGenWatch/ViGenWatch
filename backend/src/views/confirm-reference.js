@@ -45,9 +45,9 @@ const approvePublicReferenceEmail = (userName, referenceName) => `
       After carefully reviewing the contents of the reference dataset <strong>${referenceName}</strong> that you requested, we have agreed to allow you to share this reference dataset with the community.
     </p>
     <p>Thank you,</p>
-    <p>The NextPhylo Website</p>
+    <p>The ViGenWatch Website</p>
     <div class="footer">
-      <p>© 2024 NextPhylo. All rights reserved.</p>
+      <p>© 2024 ViGenWatch. All rights reserved.</p>
     </div>
   </div>
 </body>
@@ -100,9 +100,9 @@ a:hover {
     <p>After carefully reviewing the content of the reference dataset <strong>${referenceName}</strong> that you requested, we regret to inform you that we do not have sufficient grounds to share your dataset with the community.</p>
     <p>We kindly request that you review the content again. We remain ready to receive and process your request and are open to further discussion.</p>
      <p>Thank you,</p>
-    <p>The NextPhylo Website</p>
+    <p>The ViGenWatch Website</p>
     <div class="footer">
-      <p>© 2024 NextPhylo. All rights reserved.</p>
+      <p>© 2024 ViGenWatch. All rights reserved.</p>
     </div>
 </div>
 </body>

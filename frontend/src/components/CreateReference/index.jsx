@@ -153,7 +153,7 @@ const CreateReference = (props) => {
       file.value && formData.append('files', file.value);
     });
     try {
-      const response = await fetch('http://localhost:5050/api/reference/create-reference/', {
+      const response = await fetch('/api/reference/create-reference/', {
         method: 'POST',
         body: formData
       });

@@ -1,7 +1,7 @@
 import axios from './axios';
 export const getFirstLoadDirTreeService = async () => {
   try {
-    const response = await axios.get(`/api/directory/tree`);
+    const response = await axios.get(`/directory/tree`);
     return response;
   } catch (error) {
     return error.message;
@@ -13,7 +13,7 @@ export const getContentFile = async (data) => {
     const tokenString = sessionStorage.getItem('accessToken');
     const token = tokenString ? JSON.parse(tokenString) : null;
     const encodedPath = encodeURIComponent(data);
-    const response = await fetch(`http://localhost:5050/api/execution/content-file?path=${encodedPath}`, {
+    const response = await fetch(`/api/execution/content-file?path=${encodedPath}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`
@@ -49,7 +49,7 @@ export const downloadFile = async (filePath) => {
     const tokenString = sessionStorage.getItem('accessToken');
     const token = tokenString ? JSON.parse(tokenString) : null;
     const encodedPath = encodeURIComponent(filePath);
-    const response = await fetch(`http://localhost:5050/api/execution/download-file?filePath=${encodedPath}`, {
+    const response = await fetch(`/api/execution/download-file?filePath=${encodedPath}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`
