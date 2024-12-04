@@ -9,6 +9,11 @@ const formatWorkspaceName = (executionNumber) => {
   return `execution_${executionNumber}`;
 };
 
+const formatExecutionName = (executionNumber) => {
+  const timestamp = Date.now();
+  return `execution_${timestamp}_${executionNumber}`;
+};
+
 const createOutputExecution = async (executionPath, configPath) => {
   try {
     const configExecutionPath = path.join(executionPath, "config");
@@ -22,7 +27,6 @@ const createOutputExecution = async (executionPath, configPath) => {
         const targetPath = path.join(configExecutionPath, file);
         try {
           await fs.promises.copyFile(sourcePath, targetPath);
-          console.log(`Symlink created successfully for ${file}`);
         } catch (err) {
           throw new CustomError(err.message, 400);
         }
@@ -114,4 +118,11 @@ const onDownloadFile = async (fullFilePath, res) => {
   }
 };
 
-module.exports = { formatWorkspaceName, createOutputExecution, getAuspiceOutputJson, getContentFile, onDownloadFile };
+module.exports = {
+  formatWorkspaceName,
+  createOutputExecution,
+  getAuspiceOutputJson,
+  getContentFile,
+  onDownloadFile,
+  formatExecutionName
+};

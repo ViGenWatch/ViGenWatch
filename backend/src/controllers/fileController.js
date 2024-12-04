@@ -10,6 +10,14 @@ const augurVariable = require("../utils/augur");
 const refernceFileService = require("../services/referenceFileService");
 const sessionManager = require("../entity/sessionManager");
 const fileService = require("../entity/fileService");
+const workspace = require("../utils/workspace");
+
+const uploadPath = (workspaceName) => {
+  if (workspaceName) {
+    return path.resolve(__dirname, `../../upload/${workspaceName}`);
+  }
+  return path.resolve(__dirname, "../../upload");
+};
 
 const uploadFileInput = async (req, res) => {
   try {
@@ -65,7 +73,6 @@ const uploadFileInput = async (req, res) => {
             if (result) {
               return res.status(200).json({ message: "Create Execution Successfull" });
             }
-            console.log("successfull");
           }
         }
       );
@@ -153,4 +160,48 @@ const uploadFilesInput = async (req, res) => {
   }
 };
 
-module.exports = { uploadFileInput, uploadFilesInput };
+const uploadInforExecution = async (req, res) => {
+  try {
+    const { id, userName } = req.user;
+    const { referenceId, referencePath, folderName } = req.body;
+    const workspaceName = workspace.formatWorkspaceName(userName);
+    const workspacePath = uploadPath(workspaceName);
+    const executionNumber = await executionService.getNextExecutionNumber(id);
+    const executionName = execution.formatExecutionName(executionNumber);
+    const executionPath = path.join(workspacePath, folderName);
+    const _uploadPath = uploadPath();
+    const configPath = path.resolve(__dirname, referencePath);
+    const result = await execution.createOutputExecution(executionPath, configPath);
+    if (result) {
+      exec(
+        `chown -R ${process.env.UID}:${process.env.UID} ${_uploadPath} && chmod -R 775 ${_uploadPath}`,
+        async (error, stdout, stderr) => {
+          if (error) {
+            throw new CustomError({ message: error.message }, 400);
+          }
+          if (stderr) {
+            throw new CustomError({ message: error.message }, 400);
+          }
+          const newExecution = await executionService.createExecution({
+            userId: id,
+            executionName: executionName,
+            executionNumber: executionNumber,
+            referenceId: referenceId,
+            executionPath: executionPath
+          });
+          if (newExecution) {
+            return res.status(200).json({ message: "Create Execution Successfull" });
+          }
+        }
+      );
+    }
+  } catch (error) {
+    if (error instanceof CustomError) {
+      process.env.NODE_ENV == "development" ? console.log(error) : null;
+      return res.status(error.statusCode).json({ message: error.message });
+    }
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = { uploadFileInput, uploadFilesInput, uploadInforExecution };

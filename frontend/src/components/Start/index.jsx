@@ -6,11 +6,9 @@ import { IoMdArrowDropdown } from 'react-icons/io';
 import { CiFileOn } from 'react-icons/ci';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Actions } from '../../redux/reducer/inputDataReducer';
 import ItemReferenceSelected from './ItemReferenceSelected';
-import useReferencesAuthority from '../../hook/authority/useReferencesAuthority';
-import useReferences from '../../hook/useReferences';
 import RunButton from '../RunButton';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
@@ -19,17 +17,13 @@ import FileUploadProgress from '../FileUploadProgress';
 const cx = classNames.bind(style);
 
 const StartComponent = (props) => {
-  const { handleLoading } = props;
-  const authState = useSelector((state) => state.auth);
-  const { referencesState } = authState.user.role === '0x01' ? useReferences() : useReferencesAuthority();
+  const { referencesState, inputDataState, progress, handleStartUpload } = props;
   // const [toggle, setToggle] = useState(false);
   const [inputCategory, setInputCategory] = useState(1);
   const inputGroup1Ref = useRef(null);
   const inputGroup2Ref = useRef(null);
   const navigate = useNavigate();
-  const inputDataState = useSelector((state) => state.inputData);
   const dispatch = useDispatch();
-  const [progress, setProgress] = useState({});
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -48,8 +42,6 @@ const StartComponent = (props) => {
   const selectSequenceClick = () => {
     document.getElementById('file-upload').click();
   };
-
-  console.log(progress);
 
   return (
     <div className={cx('section-start')}>
@@ -158,13 +150,7 @@ const StartComponent = (props) => {
             </button>
 
             <div className={cx('suggest-btn-group')}>
-              <RunButton
-                inputDataState={inputDataState}
-                referencesState={referencesState}
-                authState={authState}
-                handleLoading={handleLoading}
-                setProgress={setProgress}
-              />
+              <RunButton handleStartUpload={handleStartUpload} />
             </div>
           </div>
 
@@ -201,7 +187,7 @@ const StartComponent = (props) => {
               key={fileIndex}
               top={fileIndex * 105 + 60}
               fileName={inputDataState.inputFilesData[fileIndex]?.name}
-              fileSize={'200'}
+              fileSize={200}
               progress={percent.toFixed(0)}
             />
           ))}
@@ -211,7 +197,10 @@ const StartComponent = (props) => {
 };
 
 StartComponent.propTypes = {
-  handleLoading: PropTypes.func.isRequired
+  handleStartUpload: PropTypes.func.isRequired,
+  inputDataState: PropTypes.object.isRequired,
+  referencesState: PropTypes.object.isRequired,
+  progress: PropTypes.object.isRequired
 };
 
 export default StartComponent;

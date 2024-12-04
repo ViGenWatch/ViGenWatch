@@ -64,4 +64,5 @@ export const executionSlice = createSlice({
 });
 
 export const Actions = executionSlice.actions;
+export const ActionsExecution = executionSlice.actions;
 export default executionSlice.reducer;

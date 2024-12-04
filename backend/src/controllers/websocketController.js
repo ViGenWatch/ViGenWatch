@@ -1,11 +1,11 @@
 const sessionManager = require("../entity/sessionManager");
+const RunCommandAnalysis = require("../entity/runCommandAnalysis");
 
 const handleWebSocketConnection = (ws) => {
   let currentSessionId = null;
-  const handleMessage = (message) => {
+  const handleMessage = async (message) => {
     try {
       const data = JSON.parse(message);
-      console.log(data);
       switch (data.type) {
         case "START_UPLOAD":
           currentSessionId = sessionManager.createSession(data.files);
@@ -37,6 +37,25 @@ const handleWebSocketConnection = (ws) => {
           if (data.sessionId) {
             sessionManager.cleanupSession(data.sessionId);
             ws.send(JSON.stringify({ type: "UPLOAD_CANCELLED" }));
+          }
+          break;
+
+        case "RUN_EXECUTION":
+          if (data) {
+            const command = new RunCommandAnalysis(data);
+            ws.send(JSON.stringify({ type: "PROCESSING_COMMAND" }));
+
+            try {
+              const result = await command.runCommandExecution();
+              if (result) {
+                ws.send(JSON.stringify({ type: "COMPLETE_ANALYSIS_EXECUTION" }));
+              } else {
+                ws.send(JSON.stringify({ type: "EXECUTION_ANALYSIS_NOT_FOUND" }));
+              }
+            } catch (error) {
+              console.error("Error during command execution:", error);
+              ws.send(JSON.stringify({ type: "COMMAND_EXECUTION_FAILED", error: error.message }));
+            }
           }
           break;
       }
