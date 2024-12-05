@@ -19,7 +19,7 @@ const useUploadExecution = (handleLoading) => {
   const [abortController, setAbortController] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { socket, connected } = useWebSocket('/ws');
+  const { socket, connected } = useWebSocket(`ws://${window.location.host}/ws`);
   const [uploadStatus, setUploadStatus] = useState({
     uploadFile: false,
     uploadInfor: false
