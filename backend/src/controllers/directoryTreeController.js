@@ -20,7 +20,6 @@ const getDirectoryTree = async (req, res) => {
       });
 
       if (match) {
-        console.log("dshfkhfkaskf");
         child.name = match.executionName;
       }
     });

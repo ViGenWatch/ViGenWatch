@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import style from './login.module.scss';
 import classNames from 'classnames/bind';
-import LogoText from '../../components/Logo-Text';
+import LogoText from '../../../components/Logo-Text';
 import { MdEmail } from 'react-icons/md';
 import { TbShieldLockFilled } from 'react-icons/tb';
-import useAuth from '../../hook/useAuth';
+import useAuth from '../../../hook/useAuth';
 import { NavLink } from 'react-router-dom';
-import { LOADING } from '../../components/loading';
+import { LOADING } from '../../../components/loading';
 import { FaEyeSlash } from 'react-icons/fa';
 
 const cx = classNames.bind(style);

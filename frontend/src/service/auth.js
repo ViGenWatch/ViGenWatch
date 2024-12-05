@@ -65,3 +65,12 @@ export const resetPasswordService = async (data, token) => {
     return { success: 0, error: error.message };
   }
 };
+
+export const updateInforUser = async (data) => {
+  try {
+    const response = await axios.put(`/auth/update-infor/`, data);
+    return response;
+  } catch (error) {
+    return { success: 0, error: error.message };
+  }
+};

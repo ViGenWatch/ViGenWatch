@@ -21,7 +21,7 @@ export const getResultJson = async (data: number) => {
   try {
     const tokenString = sessionStorage.getItem('accessToken');
     const token = tokenString ? JSON.parse(tokenString) : null;
-    const response = await fetch(`/api/execution/output-json/${data}`, {
+    const response = await fetch(`${process.env.BACKEND_URL}execution/output-json/${data}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`
@@ -62,7 +62,7 @@ type executionParams = {
 
 export const createExecution = async (params: executionParams): Promise<ResponseType> => {
   try {
-    const response = await axios.post(`/api/file/upload-infor-execution`, params);
+    const response = await axios.post(`/file/upload-infor-execution`, params);
     return {
       data: response.data,
       status: response.status,

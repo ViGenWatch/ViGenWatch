@@ -3,8 +3,8 @@ import style from './forgot-password.module.scss';
 import classNames from 'classnames/bind';
 import { MdEmail } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
-import { forgotPasswordService } from '../../service/auth';
-import LogoText from '../../components/Logo-Text';
+import { forgotPasswordService } from '../../../service/auth';
+import LogoText from '../../../components/Logo-Text';
 
 const cx = classNames.bind(style);
 

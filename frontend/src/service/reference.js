@@ -57,12 +57,15 @@ export const getReferenceContentFile = async (referenceId, fileName) => {
   try {
     const tokenString = sessionStorage.getItem('accessToken');
     const token = tokenString ? JSON.parse(tokenString) : null;
-    const response = await fetch(`/api/reference/content-file?referenceId=${referenceId}&fileName=${fileName}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`
+    const response = await fetch(
+      `${process.env.BACKEND_URL}reference/content-file?referenceId=${referenceId}&fileName=${fileName}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
+    );
 
     if (!response.ok) {
       throw new Error(`Network response was not ok: ${response.statusText}`);
@@ -92,12 +95,15 @@ export const downloadFile = async (referenceId, _fileName) => {
   try {
     const tokenString = sessionStorage.getItem('accessToken');
     const token = tokenString ? JSON.parse(tokenString) : null;
-    const response = await fetch(`/api/reference/download-file?referenceId=${referenceId}&fileName=${_fileName}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`
+    const response = await fetch(
+      `${process.env.BACKEND_URL}reference/download-file?referenceId=${referenceId}&fileName=${_fileName}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
+    );
     if (!response.ok) {
       throw new Error(`Network response was not ok: ${response.statusText}`);
     }

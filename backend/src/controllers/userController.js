@@ -23,12 +23,19 @@ const createUserController = async (req, res) => {
       });
       throw new CustomError("Validate Error", 400);
     }
-    const { firstName, lastName, userName, password, email } = req.body;
+    const { firstName, lastName, userName, password, email, role } = req.body;
     const existUser = await userServices.getUserAccount({ email, userName });
     if (existUser.count != 0) {
       throw new CustomError("Exist User", 400);
     } else {
-      const createUserComplete = await userServices.createUser({ firstName, lastName, userName, password, email });
+      const createUserComplete = await userServices.createUser({
+        firstName,
+        lastName,
+        userName,
+        password,
+        email,
+        role
+      });
       await workspace.createWorkspace(userName);
       if (createUserComplete) {
         await workspaceService.createWorkspace({
@@ -265,6 +272,32 @@ const resetPassword = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+const updateInforUser = async (req, res) => {
+  try {
+    const user = req.user;
+    const { id } = user;
+    const data = req.body;
+    const update = await userServices.updateInforUserById(id, data);
+    if (update) {
+      const user = await userServices.getUserAccountById(id);
+      res.status(200).json({
+        message: "update successfull",
+        data: {
+          firstName: user.firstName,
+          lastName: user.lastName
+        }
+      });
+    }
+  } catch (error) {
+    if (error instanceof CustomError) {
+      process.env.NODE_ENV == "development" ? console.log(error) : null;
+      return res.status(error.statusCode).json({ message: error.message });
+    }
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   createUserController,
   userLoginController,
@@ -272,5 +305,6 @@ module.exports = {
   userLogout,
   sendEmailForgot,
   checkTokenResetPassword,
-  resetPassword
+  resetPassword,
+  updateInforUser
 };

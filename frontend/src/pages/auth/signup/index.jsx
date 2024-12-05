@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import style from './signup.module.scss';
-import LogoText from '../../components/Logo-Text';
+import LogoText from '../../../components/Logo-Text';
 import { MdEmail } from 'react-icons/md';
 import { TbShieldLockFilled } from 'react-icons/tb';
 import { FaEyeSlash } from 'react-icons/fa';
 import { BsFillPersonFill } from 'react-icons/bs';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { signUpService } from '../../service/auth';
-import { LOADING } from '../../components/loading';
+import { signUpService } from '../../../service/auth';
+import { LOADING } from '../../../components/loading';
 const cx = classNames.bind(style);
 const SignUp = () => {
   const navigate = useNavigate();
@@ -17,7 +17,8 @@ const SignUp = () => {
     email: null,
     password: null,
     repassword: null,
-    userName: null
+    userName: null,
+    role: '0x01'
   });
   const onChangeInput = (e) => {
     const { name, value } = e.target;

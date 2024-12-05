@@ -49,7 +49,8 @@ const createUser = async (user) => {
       password: user.password,
       firstName: user.firstName,
       lastName: user.lastName,
-      email: user.email
+      email: user.email,
+      role: user.role
     });
     return newUser;
   } catch (error) {
@@ -95,6 +96,17 @@ const updateUserById = async (userId, data) => {
   }
 };
 
+const updateInforUserById = async (userId, data) => {
+  try {
+    const update = db.User.update(data, {
+      where: { id: userId }
+    });
+    return update;
+  } catch (error) {
+    throw new CustomError(error.message, 400);
+  }
+};
+
 module.exports = {
   getUserAccount,
   createUser,
@@ -102,5 +114,6 @@ module.exports = {
   updateUserByEmail,
   getUserAccountByToken,
   updateUserById,
-  getUserAccountById
+  getUserAccountById,
+  updateInforUserById
 };
