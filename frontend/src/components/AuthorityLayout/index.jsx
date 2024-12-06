@@ -99,9 +99,16 @@ const AuthorityLayout = ({ children, index }) => {
               </NavLink>
             </div>
             <RiArrowRightSFill fontSize={'25px'} />
-            <div className={cx('button-nav-group__btn')} title={t('navbar:Show profile page')}>
-              <NavLink onClick={handleLogout} className={cx('navlink')} to=''>
-                {t('navbar:Profile')}
+            <div
+              className={cx('button-nav-group__btn')}
+              style={{
+                background: index === 5 && '#2296f3',
+                fontWeight: index === 5 && '500'
+              }}
+              title={t('navbar:Export analysis results page')}
+            >
+              <NavLink style={{ color: index === 5 && '#ffffff' }} className={cx('navlink')} to='/profile'>
+                {t('navbar:Export')}
               </NavLink>
             </div>
             <RiArrowRightSFill fontSize={'25px'} />

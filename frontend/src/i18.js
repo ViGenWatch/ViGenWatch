@@ -15,14 +15,30 @@ import enReference from '../src/locales/en/reference.json';
 import viReference from '../src/locales/vi/reference.json';
 import enExport from '../src/locales/en/export.json';
 import viExport from '../src/locales/vi/export.json';
+import enProfile from '../src/locales/en/profile.json';
+import viProfile from '../src/locales/vi/profile.json';
 
 export const AUSPICE_I18N_NAMESPACES = ['language', 'sidebar', 'translation'];
 
 export function i18nAuspiceInit() {
   const i18nAuspice = i18nOriginal.use(initReactI18next).createInstance({
     resources: {
-      vi: { sidebar: viSidebar, navbar: viNavbar, start: viStart, reference: viReference, export: viExport },
-      en: { sidebar: enSidebar, navbar: enNavbar, start: enStart, reference: enReference, export: enExport }
+      vi: {
+        sidebar: viSidebar,
+        navbar: viNavbar,
+        start: viStart,
+        reference: viReference,
+        export: viExport,
+        profile: viProfile
+      },
+      en: {
+        sidebar: enSidebar,
+        navbar: enNavbar,
+        start: enStart,
+        reference: enReference,
+        export: enExport,
+        profile: enProfile
+      }
     },
     lng: 'vi',
     fallbackLng: 'en',

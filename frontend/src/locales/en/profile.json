@@ -1,0 +1,22 @@
+{
+  "personal_information": "Personal Information",
+  "customize_personal_information": "Customize your personal information",
+  "change_password": "Change Password",
+  "password_change_instructions": "You need to enter both the old and new password for us to verify",
+  "new_password": "New Password",
+  "old_password": "Old Password",
+  "confirm_new_password": "Confirm New Password",
+  "fill_required_information": "Please fill in all the required information",
+  "password_change_success": "You have successfully changed your password",
+  "information_update_success": "You have successfully updated your information",
+  "information_change_failed": "Information update was unsuccessful",
+  "password_change_failed": "Password change was unsuccessful",
+  "username": "Username",
+  "role": "Role",
+  "fullname": "Name",
+  "first_name": "First name",
+  "last_name": "Last name",
+  "researcher": "Research",
+  "authority": "Authority",
+  "save": "Save"
+}
