@@ -1,0 +1,22 @@
+{
+  "personal_information": "Thông tin cá nhân",
+  "customize_personal_information": "Tùy chỉnh thông tin cá nhân của bạn",
+  "change_password": "Thay đổi mật khẩu",
+  "password_change_instructions": "Bạn cần nhập đầy đủ mật khẩu cũ và mới để chúng tôi xác nhận",
+  "new_password": "Mật khẩu mới",
+  "old_password": "Mật khẩu cũ",
+  "confirm_new_password": "Xác nhận mật khẩu mới",
+  "fill_required_information": "Vui lòng nhập đầy đủ thông tin!",
+  "password_change_success": "Thay đổi mật khẩu thành công",
+  "information_update_success": "Thay đổi thông tin thành công",
+  "password_change_failed": "Thay đổi mật khẩu không thành công",
+  "information_change_failed": "Thay đổi thông tin không thành công",
+  "username": "Tài khoản",
+  "role": "Vai trò",
+  "fullname": "Tên đầy đủ",
+  "first_name": "Họ",
+  "last_name": "Tên",
+  "researcher": "Nghiên cứu",
+  "authority": "Kiểm duyệt",
+  "save": "Lưu"
+}

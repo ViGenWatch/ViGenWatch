@@ -15,6 +15,7 @@ import AuthorityMain from './pages/authority/authority-main';
 import AuthorityExport from './pages/authority/authority-export';
 import ProfilePage from './pages/researcher/profile';
 import { ToastProvider } from './components/Toast/ToastContext';
+import AuthotityProfile from './pages/authority/authority-profile';
 
 const App = () => {
   const { authState, refreshToken, dataSaveSession } = useAuth();
@@ -50,7 +51,7 @@ const App = () => {
             <Route path='/reference' element={<AuthorityReference />} />
             <Route path='/main' element={<AuthorityMain />} />
             <Route path='/export' element={<AuthorityExport />} />
-            <Route path='/profile' element={<AuthorityExport />} />
+            <Route path='/profile' element={<AuthotityProfile />} />
             <Route path='/*' element={<Navigate to='/start' />} />
           </Routes>
         );
