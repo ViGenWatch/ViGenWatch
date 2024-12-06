@@ -230,7 +230,9 @@ const resetPassword = async (req, res, next) => {
     if (newPassword !== confirmPassword) {
       throw new Error("Passwords do not match");
     }
-    const userUpdate = await userServices.updateUserById(userId, { password: newPassword });
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+    const userUpdate = await userServices.updateUserById(userId, { password: hashedPassword });
     if (userUpdate) {
       const closeTokenResetPassword = await passwordResetService.closeToken(token);
       if (closeTokenResetPassword) {

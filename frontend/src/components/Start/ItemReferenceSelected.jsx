@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 const cx = classNames.bind(style);
 
 const ItemReferenceSelected = (props) => {
-  const { referenceName, author, definition, version, status } = props;
+  const { referenceName, author, definition, version, status, require } = props;
   const { t } = useTranslation();
   return (
     <div className={cx('item-reference-container')}>
@@ -41,7 +41,8 @@ ItemReferenceSelected.propTypes = {
   author: PropTypes.string.isRequired,
   definition: PropTypes.string.isRequired,
   version: PropTypes.string.isRequired,
-  status: PropTypes.boolean
+  status: PropTypes.boolean,
+  require: PropTypes.boolean
 };
 
 export default ItemReferenceSelected;
