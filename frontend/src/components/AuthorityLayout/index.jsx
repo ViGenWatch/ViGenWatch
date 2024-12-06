@@ -108,7 +108,7 @@ const AuthorityLayout = ({ children, index }) => {
               title={t('navbar:Export analysis results page')}
             >
               <NavLink style={{ color: index === 5 && '#ffffff' }} className={cx('navlink')} to='/profile'>
-                {t('navbar:Export')}
+                {t('navbar:Profile')}
               </NavLink>
             </div>
             <RiArrowRightSFill fontSize={'25px'} />
