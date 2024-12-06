@@ -74,3 +74,12 @@ export const updateInforUser = async (data) => {
     return { success: 0, error: error.message };
   }
 };
+
+export const changePassword = async (data) => {
+  try {
+    const response = await axios.put(`/auth/change-password/`, data);
+    return response;
+  } catch (error) {
+    return { success: 0, error: error.message };
+  }
+};

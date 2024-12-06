@@ -4,12 +4,14 @@ import style from './signup.module.scss';
 import LogoText from '../../../components/Logo-Text';
 import { MdEmail } from 'react-icons/md';
 import { TbShieldLockFilled } from 'react-icons/tb';
-import { FaEyeSlash } from 'react-icons/fa';
+import { FaEyeSlash, FaEye } from 'react-icons/fa';
 import { BsFillPersonFill } from 'react-icons/bs';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { signUpService } from '../../../service/auth';
 import { LOADING } from '../../../components/loading';
+
 const cx = classNames.bind(style);
+
 const SignUp = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -20,6 +22,9 @@ const SignUp = () => {
     userName: null,
     role: '0x01'
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showRePassword, setShowRePassword] = useState(false);
+
   const onChangeInput = (e) => {
     const { name, value } = e.target;
     setInputData((prevData) => ({
@@ -27,6 +32,7 @@ const SignUp = () => {
       [name]: value
     }));
   };
+
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -38,6 +44,7 @@ const SignUp = () => {
       setLoading(false);
     }, 1000);
   };
+
   return (
     <div style={{ position: 'relative' }}>
       {loading ? (
@@ -66,22 +73,53 @@ const SignUp = () => {
                 <input type='text' name='email' placeholder='Email' onChange={onChangeInput} />
               </div>
             </label>
+
             <label className={cx('form-input-group')}>
               <span className={cx('form-input-group__label')}>Mật khẩu</span>
               <div className={cx('form-input-group__input')}>
                 <TbShieldLockFilled size={'22px'} color={'rgb(33, 150, 243)'} />
-                <input type='password' name='password' placeholder='Mật khẩu' onChange={onChangeInput} />
-                <FaEyeSlash size={'22px'} color={'#bcc1c5'} cursor={'pointer'} />
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  name='password'
+                  placeholder='Mật khẩu'
+                  onChange={onChangeInput}
+                />
+                {showPassword ? (
+                  <FaEye size={'22px'} color={'#bcc1c5'} cursor={'pointer'} onClick={() => setShowPassword(false)} />
+                ) : (
+                  <FaEyeSlash
+                    size={'22px'}
+                    color={'#bcc1c5'}
+                    cursor={'pointer'}
+                    onClick={() => setShowPassword(true)}
+                  />
+                )}
               </div>
             </label>
+
             <label className={cx('form-input-group')}>
               <span className={cx('form-input-group__label')}>Xác nhận mật khẩu</span>
               <div className={cx('form-input-group__input')}>
                 <TbShieldLockFilled size={'22px'} color={'rgb(33, 150, 243)'} />
-                <input type='password' name='repassword' placeholder='Xác nhận mật khẩu' onChange={onChangeInput} />
-                <FaEyeSlash size={'22px'} color={'#bcc1c5'} cursor={'pointer'} />
+                <input
+                  type={showRePassword ? 'text' : 'password'}
+                  name='repassword'
+                  placeholder='Xác nhận mật khẩu'
+                  onChange={onChangeInput}
+                />
+                {showRePassword ? (
+                  <FaEye size={'22px'} color={'#bcc1c5'} cursor={'pointer'} onClick={() => setShowRePassword(false)} />
+                ) : (
+                  <FaEyeSlash
+                    size={'22px'}
+                    color={'#bcc1c5'}
+                    cursor={'pointer'}
+                    onClick={() => setShowRePassword(true)}
+                  />
+                )}
               </div>
             </label>
+
             <button type='submit' className={cx('submit-button')} onClick={handleRegister}>
               Tạo tài khoản
             </button>

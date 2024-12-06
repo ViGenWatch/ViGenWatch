@@ -1,7 +1,6 @@
 const { mkdir } = require("fs/promises");
 const fs = require("fs");
 const path = require("path");
-const CustomError = require("../entity/customError");
 const glob = require("glob-promise");
 const mime = require("mime-types");
 
@@ -28,7 +27,7 @@ const createOutputExecution = async (executionPath, configPath) => {
         try {
           await fs.promises.copyFile(sourcePath, targetPath);
         } catch (err) {
-          throw new CustomError(err.message, 400);
+          throw new Error(err.message, 400);
         }
       })
     );
@@ -36,7 +35,7 @@ const createOutputExecution = async (executionPath, configPath) => {
     return true;
   } catch (error) {
     console.error(error);
-    throw new CustomError(error.message, 400);
+    throw new Error(error.message, 400);
   }
 };
 
@@ -46,14 +45,14 @@ const getAuspiceOutputJson = async (executionPath, res) => {
     const pattern = path.join(auspicePath, "**");
     const files = await glob(pattern, { cwd: auspicePath, nodir: true });
     if (files.length === 0) {
-      throw new CustomError("No Auspice output found", 404);
+      throw new Error("No Auspice output found", 404);
     }
     const virusName = path.basename(files[0]);
     const dataPath = path.resolve(__dirname, `${auspicePath}/${virusName}`);
     res.setHeader("Content-Type", "application/json");
     fs.createReadStream(dataPath).pipe(res);
   } catch (err) {
-    throw new CustomError(err.message, err.status || 500);
+    throw new Error(err.message, err.status || 500);
   }
 };
 

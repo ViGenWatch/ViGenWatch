@@ -1,4 +1,3 @@
-const CustomError = require("../entity/customError");
 const referenceService = require("../services/referenceService");
 const referenceFileService = require("../services/referenceFileService");
 const process = require("process");
@@ -10,7 +9,7 @@ const userServices = require("../services/userServices");
 const sendEmailService = require("../config/nodemailer");
 const htmlEmailConfirmReference = require("../views/confirm-reference");
 
-const deleteReference = async (req, res) => {
+const deleteReference = async (req, res, next) => {
   try {
     const referenceId = req.params.referenceId;
     const reference = await referenceService.getReferenceById(referenceId);
@@ -20,36 +19,28 @@ const deleteReference = async (req, res) => {
       return res.status(200).json({ message: "Reference deleted successfully" });
     }
   } catch (error) {
-    if (error instanceof CustomError) {
-      process.env.NODE_ENV == "development" ? console.log(error) : null;
-      return res.status(error.statusCode).json({ message: error.message });
-    }
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
 //role user 0x01
-const getListReferencesController = async (req, res) => {
+const getListReferencesController = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const references = await referenceService.getListReferences(userId);
     if (!references) {
-      throw new CustomError("Get Reference Not Found", 500);
+      throw new Error("Get Reference Not Found", 500);
     }
     return res.status(200).json({
       message: "get list references successfull",
       data: references
     });
   } catch (error) {
-    if (error instanceof CustomError) {
-      process.env.NODE_ENV == "development" ? console.log(error) : null;
-      return res.status(error.statusCode).json({ message: error.message });
-    }
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-const uploadReferenceFileController = async (req, res) => {
+const uploadReferenceFileController = async (req, res, next) => {
   try {
     const { folderName, referenceName, definition, author, version, link, status, referencePath, userId, require } =
       req.body;
@@ -59,10 +50,10 @@ const uploadReferenceFileController = async (req, res) => {
       `chown -R ${process.env.UID}:${process.env.UID} ${referencePath} && chmod -R 775 ${referencePath}`,
       async (error, stdout, stderr) => {
         if (error) {
-          throw new CustomError({ message: error.message }, 400);
+          throw new Error({ message: error.message }, 400);
         }
         if (stderr) {
-          throw new CustomError({ message: error.message }, 400);
+          throw new Error({ message: error.message }, 400);
         }
         const newReference = await referenceService.createReference({
           folderName,
@@ -88,20 +79,16 @@ const uploadReferenceFileController = async (req, res) => {
         if (newReference && newReferenceFile) {
           return res.status(200).json({ message: "create new reference successfull" });
         } else {
-          throw new CustomError({ message: error.message }, 400);
+          throw new Error({ message: error.message }, 400);
         }
       }
     );
   } catch (error) {
-    if (error instanceof CustomError) {
-      process.env.NODE_ENV == "development" ? console.log(error) : null;
-      return res.status(error.statusCode).json({ message: error.message });
-    }
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-const getContentFileReference = async (req, res) => {
+const getContentFileReference = async (req, res, next) => {
   try {
     const referenceId = req.query.referenceId;
     const fileName = req.query.fileName;
@@ -109,15 +96,11 @@ const getContentFileReference = async (req, res) => {
     const filePath = path.join(reference.referencePath, fileName);
     await executionHelper.getContentFile(filePath, res);
   } catch (error) {
-    if (error instanceof CustomError) {
-      process.env.NODE_ENV == "development" ? console.log(error) : null;
-      return res.status(error.statusCode).json({ message: error.message });
-    }
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-const onDownloadFileReference = async (req, res) => {
+const onDownloadFileReference = async (req, res, next) => {
   try {
     const referenceId = req.query.referenceId;
     const fileName = req.query.fileName;
@@ -125,15 +108,11 @@ const onDownloadFileReference = async (req, res) => {
     const filePath = path.join(reference.referencePath, fileName);
     await executionHelper.onDownloadFile(filePath, res);
   } catch (error) {
-    if (error instanceof CustomError) {
-      process.env.NODE_ENV == "development" ? console.log(error) : null;
-      return res.status(error.statusCode).json({ message: error.message });
-    }
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-const updateReferenceControllder = async (req, res) => {
+const updateReferenceControllder = async (req, res, next) => {
   try {
     const referenceId = req.params.referenceId;
     const data = req.body;
@@ -160,31 +139,23 @@ const updateReferenceControllder = async (req, res) => {
       res.status(200).json({ message: "update successfull" });
     }
   } catch (error) {
-    if (error instanceof CustomError) {
-      process.env.NODE_ENV == "development" ? console.log(error) : null;
-      return res.status(error.statusCode).json({ message: error.message });
-    }
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
 //role user 0x02
-const getListReferencesRoleAuthorityController = async (req, res) => {
+const getListReferencesRoleAuthorityController = async (req, res, next) => {
   try {
     const references = await referenceService.getListReferencesRoleAuthority();
     if (!references) {
-      throw new CustomError("Get Reference Not Found", 500);
+      throw new Error("Get Reference Not Found", 500);
     }
     return res.status(200).json({
       message: "get list references successfull",
       data: references
     });
   } catch (error) {
-    if (error instanceof CustomError) {
-      process.env.NODE_ENV == "development" ? console.log(error) : null;
-      return res.status(error.statusCode).json({ message: error.message });
-    }
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 

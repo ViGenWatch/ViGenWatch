@@ -1,5 +1,4 @@
 const db = require("../models/index");
-const CustomError = require("../entity/customError");
 
 const createWorkspace = async (workspace) => {
   try {
@@ -9,7 +8,7 @@ const createWorkspace = async (workspace) => {
     });
     return newWorkspace;
   } catch (error) {
-    throw new CustomError(error.message, 400);
+    throw new Error(error.message, 400);
   }
 };
 

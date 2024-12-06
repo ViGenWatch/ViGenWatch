@@ -1,5 +1,4 @@
 const db = require("../models/index");
-const CustomError = require("../entity/customError");
 const { where, Op } = require("sequelize");
 
 const getUserAccount = async (user) => {
@@ -11,7 +10,7 @@ const getUserAccount = async (user) => {
     });
     return existUsers;
   } catch (error) {
-    throw new CustomError(error.message, 400);
+    throw new Error(error.message, 400);
   }
 };
 
@@ -20,7 +19,7 @@ const getUserAccountByEmail = async (email) => {
     const userAccount = await db.User.findOne({ where: { email: email } });
     return userAccount;
   } catch (error) {
-    throw new CustomError(error.message, 400);
+    throw new Error(error.message, 400);
   }
 };
 
@@ -29,7 +28,7 @@ const getUserAccountById = async (userId) => {
     const userAccount = await db.User.findOne({ where: { id: userId } });
     return userAccount;
   } catch (error) {
-    throw new CustomError(error.message, 400);
+    throw new Error(error.message, 400);
   }
 };
 
@@ -38,7 +37,7 @@ const getUserAccountByToken = async (refreshToken) => {
     const userAccount = await db.User.findOne({ where: { refreshToken: refreshToken } });
     return userAccount;
   } catch (error) {
-    throw new CustomError(error.message, 400);
+    throw new Error(error.message, 400);
   }
 };
 
@@ -54,7 +53,7 @@ const createUser = async (user) => {
     });
     return newUser;
   } catch (error) {
-    throw new CustomError(error.message, 400);
+    throw new Error(error.message, 400);
   }
 };
 
@@ -72,10 +71,10 @@ const updateUserByEmail = async (email, data) => {
       }
     );
     if (updatedRowsCount === 0) {
-      throw new CustomError("No user found with the provided email", 404);
+      throw new Error("No user found with the provided email", 404);
     }
   } catch (error) {
-    throw new CustomError(error.message, 400);
+    throw new Error(error.message, 400);
   }
 };
 
@@ -85,14 +84,14 @@ const updateUserById = async (userId, data) => {
       where: { id: userId }
     });
     if (affectedRows === 0) {
-      throw new CustomError("User not found or no changes applied.", 404);
+      throw new Error("User not found or no changes applied.", 404);
     }
     const updatedUser = await db.User.findOne({
       where: { id: userId }
     });
     return updatedUser;
   } catch (error) {
-    throw new CustomError(error.message, 400);
+    throw new Error(error.message, 400);
   }
 };
 
@@ -103,7 +102,7 @@ const updateInforUserById = async (userId, data) => {
     });
     return update;
   } catch (error) {
-    throw new CustomError(error.message, 400);
+    throw new Error(error.message, 400);
   }
 };
 

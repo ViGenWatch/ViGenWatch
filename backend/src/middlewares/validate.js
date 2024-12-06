@@ -48,10 +48,22 @@ const validateResetPassword = () => {
   ];
 };
 
+const validateChangePW = () => {
+  return [
+    check("prePassword").notEmpty().withMessage("pre password cannot be empty"),
+    check("newPassword").notEmpty().isLength({ min: 8 }).withMessage("Password must be at least 8 characters long"),
+    check("newPasswordConfirm")
+      .notEmpty()
+      .isLength({ min: 8 })
+      .withMessage("Confirm password must be at least 8 characters long")
+  ];
+};
+
 module.exports = {
   validateRegisterUser,
   validateSignIn,
   validateGetAccountByToken,
   validateReferenceInput,
-  validateResetPassword
+  validateResetPassword,
+  validateChangePW
 };

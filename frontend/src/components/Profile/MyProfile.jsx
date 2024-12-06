@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import React, { useState } from 'react';
 import { useToast } from '../Toast/ToastContext';
 import { Actions } from '../../redux/reducer/authReducer';
+import { changePassword } from '../../service/auth';
 // import CountrySelector from './CountrySelector';
 
 export default function MyProfile() {
@@ -23,6 +24,11 @@ export default function MyProfile() {
     firstName: userInfor.firstName || '',
     lastName: userInfor.lastName || ''
   });
+  const [formPassword, setFormPassword] = useState({
+    prePassword: '',
+    newPassword: '',
+    newPasswordConfirm: ''
+  });
   const dispatch = useDispatch();
 
   const toast = useToast();
@@ -30,6 +36,14 @@ export default function MyProfile() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleChangeFormPassword = (e) => {
+    const { name, value } = e.target;
+    setFormPassword((prevState) => ({
       ...prevState,
       [name]: value
     }));
@@ -46,6 +60,25 @@ export default function MyProfile() {
       } else {
         toast.success('Bạn đã chỉnh sửa thông tin thành công');
       }
+    }
+  };
+
+  const handlePassword = async (e) => {
+    e.preventDefault();
+    if (formPassword.prePassword && formPassword.newPassword && formPassword.newPasswordConfirm) {
+      const response = await changePassword(formPassword);
+      if (response.status === 200) {
+        toast.success('Bạn đã thay đổi mật khẩu thành công');
+        setFormPassword({
+          prePassword: '',
+          newPassword: '',
+          newPasswordConfirm: ''
+        });
+      } else {
+        toast.error('Thay đổi mật khẩu không thành công');
+      }
+    } else {
+      toast.error('Vui lòng nhập đầy đủ thông tin!');
     }
   };
   return (
@@ -126,9 +159,6 @@ export default function MyProfile() {
 
           <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
             <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
-              <Button size='sm' variant='outlined' color='neutral'>
-                Cancel
-              </Button>
               <Button size='sm' variant='solid' onClick={(e) => handleSaveInfor(e)}>
                 Save
               </Button>
@@ -147,35 +177,47 @@ export default function MyProfile() {
               <Stack spacing={1}>
                 <FormLabel>Mật khẩu cũ</FormLabel>
                 <FormControl sx={{ display: { sm: 'flex-column', md: 'flex-row' }, gap: 2 }}>
-                  <Input size='sm' placeholder='Mật khẩu cũ' />
+                  <Input
+                    type='password'
+                    size='sm'
+                    placeholder='Mật khẩu cũ'
+                    name='prePassword'
+                    value={formPassword.prePassword}
+                    onChange={handleChangeFormPassword}
+                  />
                 </FormControl>
               </Stack>
               <Stack spacing={1}>
                 <FormLabel>Mật khẩu mới</FormLabel>
                 <FormControl sx={{ display: { sm: 'flex-column', md: 'flex-row' }, gap: 2 }}>
-                  <Input size='sm' placeholder='Mật khẩu mới' />
+                  <Input
+                    type='password'
+                    size='sm'
+                    placeholder='Mật khẩu mới'
+                    name='newPassword'
+                    value={formPassword.newPassword}
+                    onChange={handleChangeFormPassword}
+                  />
                 </FormControl>
               </Stack>
               <Stack spacing={1}>
                 <FormLabel>Xác nhận mật khẩu mới</FormLabel>
                 <FormControl sx={{ display: { sm: 'flex-column', md: 'flex-row' }, gap: 2 }}>
-                  <Input size='sm' placeholder='Xác nhận mật khẩu mới' />
+                  <Input
+                    type='password'
+                    size='sm'
+                    placeholder='Xác nhận mật khẩu mới'
+                    name='newPasswordConfirm'
+                    value={formPassword.newPasswordConfirm}
+                    onChange={handleChangeFormPassword}
+                  />
                 </FormControl>
               </Stack>
             </Stack>
           </Stack>
           <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
             <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
-              <Button size='sm' variant='outlined' color='neutral'>
-                Cancel
-              </Button>
-              <Button
-                size='sm'
-                variant='solid'
-                onClick={() => {
-                  toast.error('Toast lỗi');
-                }}
-              >
+              <Button size='sm' variant='solid' onClick={(e) => handlePassword(e)}>
                 Save
               </Button>
             </CardActions>

@@ -1,7 +1,6 @@
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
-const CustomError = require("../entity/customError");
 
 const referencePath = (folerName) => {
   return path.resolve(__dirname, `../../upload/config/${folerName}`);
@@ -28,7 +27,7 @@ const uploadReferenceFile = multer({
     const validFormats = [".txt", ".tsv", ".gb", ".json"];
     const fileExtension = path.extname(file.originalname).toLowerCase();
     if (!validFormats.includes(fileExtension)) {
-      return cb(new CustomError("Invalid file format! Please upload a .fasta or .tsv file.", 400), false);
+      return cb(new Error("Invalid file format! Please upload a .fasta or .tsv file.", 400), false);
     }
     cb(null, true);
   }

@@ -2,7 +2,6 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 const workspace = require("./workspace");
-const CustomError = require("../entity/customError");
 const executionService = require("../services/executionService");
 const execution = require("../utils/execution");
 
@@ -41,7 +40,7 @@ const upload = multer({
     const validFormats = [".fasta", ".tsv"];
     const fileExtension = path.extname(file.originalname).toLowerCase();
     if (!validFormats.includes(fileExtension)) {
-      return cb(new CustomError("Invalid file format! Please upload a .fasta or .tsv file.", 400), false);
+      return cb(new Error("Invalid file format! Please upload a .fasta or .tsv file.", 400), false);
     }
     cb(null, true);
   }
