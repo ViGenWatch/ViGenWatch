@@ -19,7 +19,7 @@ const useUploadExecution = (handleLoading) => {
   const [abortController, setAbortController] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { socket, connected } = useWebSocket('ws://localhost:5050');
+  const { socket, connected } = useWebSocket(`ws://${window.location.host}/ws`);
   const [uploadStatus, setUploadStatus] = useState({
     uploadFile: false,
     uploadInfor: false
@@ -136,7 +136,6 @@ const useUploadExecution = (handleLoading) => {
           for (let j = 0; j < maxConcurrent && i + j < totalChunks; j++) {
             const chunkIndex = i + j;
             const chunk = file.slice(chunkIndex * chunkSize, (chunkIndex + 1) * chunkSize);
-
             const promise = fetch(`${process.env.BACKEND_URL}file/upload-input-files`, {
               method: 'POST',
               headers: {
