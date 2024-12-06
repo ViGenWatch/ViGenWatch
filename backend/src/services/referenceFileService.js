@@ -1,5 +1,4 @@
 const db = require("../models/index");
-const CustomError = require("../entity/customError");
 const { where } = require("sequelize");
 
 const createReferenceFile = async (data) => {
@@ -15,7 +14,7 @@ const createReferenceFile = async (data) => {
     });
     return referenceFile;
   } catch (error) {
-    throw new CustomError(error.message, 400);
+    throw new Error(error.message, 400);
   }
 };
 
@@ -28,7 +27,7 @@ const getReferenceFileByReferenceId = async (referenceId) => {
     });
     return referenceFile;
   } catch (error) {
-    throw new CustomError(error.message, 400);
+    throw new Error(error.message, 400);
   }
 };
 

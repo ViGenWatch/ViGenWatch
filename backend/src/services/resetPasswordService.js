@@ -1,5 +1,4 @@
 const db = require("../models/index");
-const CustomError = require("../entity/customError");
 const { where, Op } = require("sequelize");
 
 const createPasswordReset = async (data) => {
@@ -12,7 +11,7 @@ const createPasswordReset = async (data) => {
     });
     return newPasswordReset;
   } catch (error) {
-    throw new CustomError(error.message, 400);
+    throw new Error(error.message, 400);
   }
 };
 
@@ -27,7 +26,7 @@ const checkTokenDuration = async (token) => {
     });
     return resetRecord;
   } catch (error) {
-    throw new CustomError(error.message, 400);
+    throw new Error(error.message, 400);
   }
 };
 
@@ -41,7 +40,7 @@ const closeToken = async (token) => {
     );
     return updateUsed;
   } catch (error) {
-    throw new CustomError(error.message, 400);
+    throw new Error(error.message, 400);
   }
 };
 

@@ -1,6 +1,5 @@
 const { mkdir } = require("fs/promises");
 const path = require("path");
-const CustomError = require("../entity/customError");
 
 const formatWorkspaceName = (username) => {
   return `${username}_workspace`;
@@ -17,7 +16,7 @@ const createWorkspace = async (username) => {
     const workspacePath = path.join(directoryPath, workspaceName);
     await mkdir(workspacePath, { recursive: true });
   } catch (error) {
-    throw new CustomError(error.message, 400);
+    throw new Error(error.message, 400);
   }
 };
 

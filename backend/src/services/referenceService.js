@@ -1,5 +1,4 @@
 const db = require("../models/index");
-const CustomError = require("../entity/customError");
 const { where, Op } = require("sequelize");
 const Sequelize = require("sequelize");
 
@@ -20,7 +19,7 @@ const deleteReferenceManually = async (referenceId) => {
     return;
   } catch (error) {
     await transaction.rollback();
-    throw new CustomError(error.message, 500);
+    throw new Error(error.message, 500);
   }
 };
 
@@ -57,7 +56,7 @@ const getListReferences = async (userId) => {
     });
     return references;
   } catch (error) {
-    throw new CustomError(error.message, 500);
+    throw new Error(error.message, 500);
   }
 };
 
@@ -78,7 +77,7 @@ const createReference = async (data) => {
 
     return reference;
   } catch (error) {
-    throw new CustomError(error.message, 400);
+    throw new Error(error.message, 400);
   }
 };
 
@@ -92,7 +91,7 @@ const getReferenceById = async (referenceId) => {
 
     return reference;
   } catch (error) {
-    throw new CustomError(error.message, 400);
+    throw new Error(error.message, 400);
   }
 };
 
@@ -103,7 +102,7 @@ const updateReferenceById = async (referenceId, data) => {
     });
     return newReference;
   } catch (error) {
-    throw new CustomError(error.message, 400);
+    throw new Error(error.message, 400);
   }
 };
 
@@ -153,7 +152,7 @@ const getListReferencesRoleAuthority = async () => {
     });
     return references;
   } catch (error) {
-    throw new CustomError(error.message, 500);
+    throw new Error(error.message, 500);
   }
 };
 

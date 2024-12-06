@@ -1,6 +1,5 @@
 const userServices = require("../services/userServices");
 const { validationResult } = require("express-validator");
-const CustomError = require("../entity/customError");
 const jwtVariable = require("../utils/jwt");
 const process = require("process");
 const authMethods = require("../utils/authMethods");
@@ -12,8 +11,9 @@ const { v4: uuidv4 } = require("uuid");
 const passwordResetService = require("../services/resetPasswordService");
 const htmlEmailToResetPassword = require("../views/forgot-password");
 const sendEmailService = require("../config/nodemailer");
+const bcrypt = require("bcrypt");
 
-const createUserController = async (req, res) => {
+const createUserController = async (req, res, next) => {
   try {
     const errors = validationResult(req);
     let errorsInfor = "";
@@ -21,14 +21,26 @@ const createUserController = async (req, res) => {
       errors.array().forEach((e) => {
         errorsInfor += e.param + " " + e.msg + "\n";
       });
-      throw new CustomError("Validate Error", 400);
+      throw new Error("Validate Error", 400);
     }
-    const { firstName, lastName, userName, password, email } = req.body;
+    const { firstName, lastName, userName, password, repassword, email, role } = req.body;
+    if (password !== repassword) {
+      throw new Error("Password and RePassword not true", 400);
+    }
     const existUser = await userServices.getUserAccount({ email, userName });
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
     if (existUser.count != 0) {
-      throw new CustomError("Exist User", 400);
+      throw new Error("Exist User", 400);
     } else {
-      const createUserComplete = await userServices.createUser({ firstName, lastName, userName, password, email });
+      const createUserComplete = await userServices.createUser({
+        firstName,
+        lastName,
+        userName,
+        password: hashedPassword,
+        email,
+        role
+      });
       await workspace.createWorkspace(userName);
       if (createUserComplete) {
         await workspaceService.createWorkspace({
@@ -39,23 +51,20 @@ const createUserController = async (req, res) => {
       }
     }
   } catch (error) {
-    if (error instanceof CustomError) {
-      process.env.NODE_ENV == "development" ? console.log(error) : null;
-      return res.status(error.statusCode).json({ message: error.message });
-    }
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-const userLoginController = async (req, res) => {
+const userLoginController = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const user = await userServices.getUserAccountByEmail(email);
     if (!user) {
-      throw new CustomError("User Not Found", 400);
+      throw new Error("User Not Found", 400);
     }
-    if (password != user.password) {
-      throw new CustomError("Password is incorrect", 400);
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      throw new Error("Password is incorrect", 400);
     }
 
     const accessTokenLife = process.env.ACCESS_TOKEN_LIFE || jwtVariable.accessTokenLife;
@@ -68,7 +77,7 @@ const userLoginController = async (req, res) => {
 
     const accessToken = await authMethods.generateToken(dataForAccessToken, accessTokenSecret, accessTokenLife);
     if (!accessToken) {
-      throw new CustomError("Login Faild", 400);
+      throw new Error("Login Faild", 400);
     }
     let newRefreshToken = randToken.generate(jwtVariable.refreshTokenSize);
     if (!user.refreshToken) {
@@ -97,20 +106,16 @@ const userLoginController = async (req, res) => {
       }
     });
   } catch (error) {
-    if (error instanceof CustomError) {
-      process.env.NODE_ENV == "development" ? console.log(error) : null;
-      return res.status(error.statusCode).json({ message: error.message });
-    }
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-const getAccountController = async (req, res) => {
+const getAccountController = async (req, res, next) => {
   const refreshToken = req.body.refreshToken;
   try {
     const user = await userServices.getUserAccountByToken(refreshToken);
     if (!user) {
-      throw new CustomError("User Not Found", 400);
+      throw new Error("User Not Found", 400);
     }
     const accessTokenLife = process.env.ACCESS_TOKEN_LIFE || jwtVariable.accessTokenLife;
     const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || jwtVariable.accessTokenSecret;
@@ -122,7 +127,7 @@ const getAccountController = async (req, res) => {
 
     const accessToken = await authMethods.generateToken(dataForAccessToken, accessTokenSecret, accessTokenLife);
     if (!accessToken) {
-      throw new CustomError("Login Faild", 400);
+      throw new Error("Login Faild", 400);
     }
     return res.status(200).json({
       message: "LoginSuccess",
@@ -137,15 +142,11 @@ const getAccountController = async (req, res) => {
       }
     });
   } catch (error) {
-    if (error instanceof CustomError) {
-      process.env.NODE_ENV == "development" ? console.log(error) : null;
-      return res.status(error.statusCode).json({ message: error.message });
-    }
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-const userLogout = async (req, res) => {
+const userLogout = async (req, res, next) => {
   const user = req.user;
   const accessToken = req.accessToken;
   try {
@@ -157,20 +158,16 @@ const userLogout = async (req, res) => {
       return res.status(200).json({ message: "You are logged out!" });
     }
   } catch (error) {
-    if (error instanceof CustomError) {
-      process.env.NODE_ENV == "development" ? console.log(error) : null;
-      return res.status(error.statusCode).json({ message: error.message });
-    }
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-const sendEmailForgot = async (req, res) => {
+const sendEmailForgot = async (req, res, next) => {
   try {
     const email = req.body.email;
     const user = await userServices.getUserAccountByEmail(email);
     if (!user) {
-      throw new CustomError("User Not Found", 400);
+      throw new Error("User Not Found", 400);
     }
     const token = uuidv4();
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
@@ -182,7 +179,7 @@ const sendEmailForgot = async (req, res) => {
       used: false
     });
     if (!newPasswordReset) {
-      throw new CustomError("Password Reset Not Found", 400);
+      throw new Error("Password Reset Not Found", 400);
     }
     const htmlContent = htmlEmailToResetPassword.generateResetPasswordEmail(
       user.userName,
@@ -201,32 +198,24 @@ const sendEmailForgot = async (req, res) => {
       message: "Reset token generated successfully."
     });
   } catch (error) {
-    if (error instanceof CustomError) {
-      process.env.NODE_ENV === "development" ? console.log(error) : null;
-      return res.status(error.statusCode).json({ message: error.message });
-    }
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-const checkTokenResetPassword = async (req, res) => {
+const checkTokenResetPassword = async (req, res, next) => {
   try {
     const { token } = req.params;
     const resetRecord = await passwordResetService.checkTokenDuration(token);
     if (!resetRecord) {
-      throw new CustomError("Invalid token or token has expired.", 400);
+      throw new Error("Invalid token or token has expired.", 400);
     }
     return res.status(200).json({ message: "Token is valid.", data: { userId: resetRecord.userId } });
   } catch (error) {
-    if (error instanceof CustomError) {
-      process.env.NODE_ENV == "development" ? console.log(error) : null;
-      return res.status(error.statusCode).json({ message: error.message });
-    }
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-const resetPassword = async (req, res) => {
+const resetPassword = async (req, res, next) => {
   try {
     const token = req.params.token;
     const errors = validationResult(req);
@@ -235,11 +224,11 @@ const resetPassword = async (req, res) => {
       errors.array().forEach((e) => {
         errorsInfor += e.param + " " + e.msg + "\n";
       });
-      throw new CustomError("Validate Error", 400);
+      throw new Error("Validate Error", 400);
     }
     const { userId, newPassword, confirmPassword } = req.body;
     if (newPassword !== confirmPassword) {
-      throw new CustomError("Passwords do not match");
+      throw new Error("Passwords do not match");
     }
     const userUpdate = await userServices.updateUserById(userId, { password: newPassword });
     if (userUpdate) {
@@ -258,13 +247,56 @@ const resetPassword = async (req, res) => {
       }
     }
   } catch (error) {
-    if (error instanceof CustomError) {
-      process.env.NODE_ENV == "development" ? console.log(error) : null;
-      return res.status(error.statusCode).json({ message: error.message });
-    }
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
+
+const updateInforUser = async (req, res, next) => {
+  try {
+    const user = req.user;
+    const { id } = user;
+    const data = req.body;
+    const update = await userServices.updateInforUserById(id, data);
+    if (update) {
+      const user = await userServices.getUserAccountById(id);
+      res.status(200).json({
+        message: "update successfull",
+        data: {
+          firstName: user.firstName,
+          lastName: user.lastName
+        }
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const changePassword = async (req, res, next) => {
+  try {
+    const { prePassword, newPassword, newPasswordConfirm } = req.body;
+    const { password, id } = req.user;
+    const isPasswordValid = await bcrypt.compare(prePassword, password);
+    if (!isPasswordValid) {
+      throw new Error("Pre Password Error", 400);
+    } else {
+      if (newPassword !== newPasswordConfirm) {
+        throw new Error("new pw and new pwc not true", 400);
+      }
+      const saltRounds = 10;
+      const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+      const update = await userServices.updateInforUserById(id, { password: hashedPassword });
+      if (update) {
+        res.status(200).json({
+          message: "change password successfull"
+        });
+      }
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createUserController,
   userLoginController,
@@ -272,5 +304,7 @@ module.exports = {
   userLogout,
   sendEmailForgot,
   checkTokenResetPassword,
-  resetPassword
+  resetPassword,
+  updateInforUser,
+  changePassword
 };

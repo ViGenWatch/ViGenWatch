@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 const promisify = require("util").promisify;
-const CustomError = require("../entity/customError");
 const sign = promisify(jwt.sign).bind(jwt);
 const verify = promisify(jwt.verify).bind(jwt);
 
@@ -17,7 +16,7 @@ const generateToken = async (payload, secretSignature, tokenLife) => {
       }
     );
   } catch (error) {
-    throw new CustomError(error.message, error.statusCode);
+    throw new Error(error.message, error.statusCode);
   }
 };
 

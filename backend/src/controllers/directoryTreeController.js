@@ -1,10 +1,9 @@
 const DirectoryTree = require("../entity/directory-tree");
 const storage = require("../utils/storage");
-const CustomError = require("../entity/customError");
 const workspace = require("../utils/workspace");
 const executionService = require("../services/executionService");
 
-const getDirectoryTree = async (req, res) => {
+const getDirectoryTree = async (req, res, next) => {
   try {
     const user = req.user;
     const { userName, id } = user;
@@ -25,11 +24,7 @@ const getDirectoryTree = async (req, res) => {
     });
     return res.status(200).json({ data: directoryObject, message: "getDirectory Successfull" });
   } catch (error) {
-    if (error instanceof CustomError) {
-      process.env.NODE_ENV == "development" ? console.log(error) : null;
-      return res.status(error.statusCode).json({ message: error.message });
-    }
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 

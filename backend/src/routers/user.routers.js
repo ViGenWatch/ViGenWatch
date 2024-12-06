@@ -12,5 +12,7 @@ userRoutes.post("/forgot-password", userController.sendEmailForgot);
 userRoutes.get("/logout", authMiddleware, userController.userLogout);
 userRoutes.get("/reset-password/:token", userController.checkTokenResetPassword);
 userRoutes.put("/update-password/:token", userController.resetPassword);
+userRoutes.put("/update-infor/", authMiddleware, userController.updateInforUser);
+userRoutes.put("/change-password/", authMiddleware, userController.changePassword);
 
 module.exports = userRoutes;

@@ -1,11 +1,10 @@
-const CustomError = require("../entity/customError");
 const executionService = require("../services/executionService");
 const executionHelper = require("../utils/execution");
 const process = require("process");
 const storage = require("../utils/storage");
 const path = require("path");
 
-const getListExecutionController = async (req, res) => {
+const getListExecutionController = async (req, res, next) => {
   try {
     const user = req.user;
     const userId = user.id;
@@ -17,59 +16,43 @@ const getListExecutionController = async (req, res) => {
       });
     }
   } catch (error) {
-    if (error instanceof CustomError) {
-      process.env.NODE_ENV == "development" ? console.log(error) : null;
-      return res.status(error.statusCode).json({ message: error.message });
-    }
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-const getOutputJsonController = async (req, res) => {
+const getOutputJsonController = async (req, res, next) => {
   try {
     const execution = await executionService.getExecutionById(req.params.executionId);
     if (execution) {
       const executionPath = execution.executionPath;
       await executionHelper.getAuspiceOutputJson(executionPath, res);
     } else {
-      throw new CustomError("Execution Not Found", 400);
+      throw new Error("Execution Not Found", 400);
     }
   } catch (error) {
-    if (error instanceof CustomError) {
-      process.env.NODE_ENV == "development" ? console.log(error) : null;
-      return res.status(error.statusCode).json({ message: error.message });
-    }
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-const getContentFileController = async (req, res) => {
+const getContentFileController = async (req, res, next) => {
   try {
     const filePath = decodeURIComponent(req.query.path);
     const _uploadPath = storage.uploadPath();
     const fullFilePath = path.join(_uploadPath, filePath);
     await executionHelper.getContentFile(fullFilePath, res);
   } catch (error) {
-    if (error instanceof CustomError) {
-      process.env.NODE_ENV == "development" ? console.log(error) : null;
-      return res.status(error.statusCode).json({ message: error.message });
-    }
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-const downloadFileController = async (req, res) => {
+const downloadFileController = async (req, res, next) => {
   try {
     const filePath = decodeURIComponent(req.query.filePath);
     const _uploadPath = storage.uploadPath();
     const fullFilePath = path.join(_uploadPath, filePath);
     await executionHelper.onDownloadFile(fullFilePath, res);
   } catch (error) {
-    if (error instanceof CustomError) {
-      process.env.NODE_ENV == "development" ? console.log(error) : null;
-      return res.status(error.statusCode).json({ message: error.message });
-    }
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 

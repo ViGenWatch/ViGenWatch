@@ -3,6 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import initWebRouter from "./routers/web";
 import sshConnection from "./entity/sshConnect";
+import { errorHandler } from "./entity/customError";
 
 const http = require("http");
 const initWebSocket = require("./config/websocket");
@@ -17,6 +18,8 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api", initWebRouter);
+
+app.use(errorHandler);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

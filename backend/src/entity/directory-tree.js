@@ -1,6 +1,5 @@
 const glob = require("glob-promise");
 const path = require("path");
-const CustomError = require("./customError");
 const storage = require("../utils/storage");
 
 class DirectoryTree {
@@ -79,7 +78,7 @@ class DirectoryTree {
       return directory;
     } catch (err) {
       console.error(err.message);
-      throw new CustomError("Failed to load directory tree", 500);
+      throw new Error("Failed to load directory tree", 500);
     }
   }
 }

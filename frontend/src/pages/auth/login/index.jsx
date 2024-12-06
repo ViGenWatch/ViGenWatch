@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import style from './login.module.scss';
 import classNames from 'classnames/bind';
-import LogoText from '../../components/Logo-Text';
+import LogoText from '../../../components/Logo-Text';
 import { MdEmail } from 'react-icons/md';
 import { TbShieldLockFilled } from 'react-icons/tb';
-import useAuth from '../../hook/useAuth';
+import useAuth from '../../../hook/useAuth';
 import { NavLink } from 'react-router-dom';
-import { LOADING } from '../../components/loading';
-import { FaEyeSlash } from 'react-icons/fa';
+import { LOADING } from '../../../components/loading';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const cx = classNames.bind(style);
 
@@ -17,6 +17,8 @@ const LoginPage = () => {
     email: null,
     password: null
   });
+  const [showPassword, setShowPassword] = useState(false);
+
   const onChangeInput = (e) => {
     const { name, value } = e.target;
     setInputData((prevData) => ({
@@ -25,20 +27,15 @@ const LoginPage = () => {
     }));
   };
 
-  // const onChangeCheckbox = () => {
-  //   const { remember_token } = inputData;
-
-  //   setInputData((preData) => ({
-  //     ...preData,
-  //     remember_token: !remember_token
-  //   }));
-  // };
-  //Mình viết đoạn này định làm cho xong chức năng có thể lựa chọn ghi nhớ đăng nhập hay không, do thời gian gấp nên mình để mặc định ghi nhớ đăng nhập luôn
-
   const handleSignIn = (e) => {
     e.preventDefault();
     signInRequest(inputData);
   };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevState) => !prevState);
+  };
+
   return (
     <div style={{ position: 'relative' }}>
       {authState.loading ? (
@@ -62,8 +59,17 @@ const LoginPage = () => {
               <span className={cx('form-input-group__label')}>Mật khẩu</span>
               <div className={cx('form-input-group__input')}>
                 <TbShieldLockFilled size={'22px'} color={'rgb(33, 150, 243)'} />
-                <input type='password' name='password' placeholder='Mật khẩu' onChange={onChangeInput} />
-                <FaEyeSlash size={'22px'} color={'#bcc1c5'} cursor={'pointer'} />
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  name='password'
+                  placeholder='Mật khẩu'
+                  onChange={onChangeInput}
+                />
+                {showPassword ? (
+                  <FaEye size={'22px'} color={'#bcc1c5'} cursor={'pointer'} onClick={togglePasswordVisibility} />
+                ) : (
+                  <FaEyeSlash size={'22px'} color={'#bcc1c5'} cursor={'pointer'} onClick={togglePasswordVisibility} />
+                )}
               </div>
             </label>
             <div className={cx('forgot-password')}>

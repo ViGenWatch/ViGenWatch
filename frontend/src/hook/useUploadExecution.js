@@ -136,8 +136,7 @@ const useUploadExecution = (handleLoading) => {
           for (let j = 0; j < maxConcurrent && i + j < totalChunks; j++) {
             const chunkIndex = i + j;
             const chunk = file.slice(chunkIndex * chunkSize, (chunkIndex + 1) * chunkSize);
-
-            const promise = fetch(`/api/file/upload-input-files`, {
+            const promise = fetch(`${process.env.BACKEND_URL}file/upload-input-files`, {
               method: 'POST',
               headers: {
                 'session-id': sessionId,

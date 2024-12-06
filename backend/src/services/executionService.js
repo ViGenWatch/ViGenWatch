@@ -1,5 +1,4 @@
 const db = require("../models/index");
-const CustomError = require("../entity/customError");
 const { where } = require("sequelize");
 
 const createExecution = async (execution) => {
@@ -14,7 +13,7 @@ const createExecution = async (execution) => {
 
     return newExecution;
   } catch (error) {
-    throw new CustomError(error.message, 400);
+    throw new Error(error.message, 400);
   }
 };
 
@@ -27,7 +26,7 @@ const getNextExecutionNumber = async (userId) => {
     });
     return count + 1;
   } catch (error) {
-    throw new CustomError(error.message, 400);
+    throw new Error(error.message, 400);
   }
 };
 
@@ -41,7 +40,7 @@ const getListExecutions = async (userId) => {
     });
     return executions;
   } catch (error) {
-    throw new CustomError(error.message, 400);
+    throw new Error(error.message, 400);
   }
 };
 
@@ -55,7 +54,7 @@ const getListExecutionPath = async (userId) => {
     });
     return executions;
   } catch (error) {
-    throw new CustomError(error.message, 400);
+    throw new Error(error.message, 400);
   }
 };
 
@@ -68,7 +67,7 @@ const getExecutionById = async (executionId) => {
     });
     return execution;
   } catch (error) {
-    throw new CustomError(error.message, 400);
+    throw new Error(error.message, 400);
   }
 };
 

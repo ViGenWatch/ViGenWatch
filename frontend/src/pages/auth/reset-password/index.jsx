@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import style from './reset-password.module.scss';
 import classNames from 'classnames/bind';
-import LogoText from '../../components/Logo-Text';
+import LogoText from '../../../components/Logo-Text';
 import { TbShieldLockFilled } from 'react-icons/tb';
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
-import { LOADING } from '../../components/loading';
+import { LOADING } from '../../../components/loading';
 import { useNavigate, useParams } from 'react-router-dom';
-import { checkTokenResetPasswordService, resetPasswordService } from '../../service/auth';
+import { checkTokenResetPasswordService, resetPasswordService } from '../../../service/auth';
 
 const cx = classNames.bind(style);
 

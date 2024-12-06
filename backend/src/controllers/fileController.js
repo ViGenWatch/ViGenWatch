@@ -1,4 +1,3 @@
-const CustomError = require("../entity/customError");
 const process = require("process");
 const executionService = require("../services/executionService");
 const execution = require("../utils/execution");
@@ -19,10 +18,10 @@ const uploadPath = (workspaceName) => {
   return path.resolve(__dirname, "../../upload");
 };
 
-const uploadFileInput = async (req, res) => {
+const uploadFileInput = async (req, res, next) => {
   try {
     if (!req.files || req.files.length === 0) {
-      throw new CustomError("Please upload a file!", 400);
+      throw new Error("Please upload a file!", 400);
     }
     const { workspaceName, executionPath, userId, executionName, executionNumber, referenceId, referencePath } =
       req.body;
@@ -34,10 +33,10 @@ const uploadFileInput = async (req, res) => {
         `chown -R ${process.env.UID}:${process.env.UID} ${uploadPath} && chmod -R 775 ${uploadPath}`,
         async (error, stdout, stderr) => {
           if (error) {
-            throw new CustomError({ message: error.message }, 400);
+            throw new Error({ message: error.message }, 400);
           }
           if (stderr) {
-            throw new CustomError({ message: error.message }, 400);
+            throw new Error({ message: error.message }, 400);
           }
           const newExecution = await executionService.createExecution({
             userId: userId,
@@ -78,16 +77,11 @@ const uploadFileInput = async (req, res) => {
       );
     }
   } catch (error) {
-    console.log(error);
-    if (error instanceof CustomError) {
-      process.env.NODE_ENV == "development" ? console.log(error) : null;
-      return res.status(error.statusCode).json({ message: error.message });
-    }
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-const uploadFilesInput = async (req, res) => {
+const uploadFilesInput = async (req, res, next) => {
   try {
     const sessionId = req.headers["session-id"];
     const fileIndex = parseInt(req.headers["file-index"]);
@@ -127,10 +121,10 @@ const uploadFilesInput = async (req, res) => {
             `chown -R ${process.env.UID}:${process.env.UID} ${executionPath} && chmod -R 775 ${executionPath}`,
             async (error, stdout, stderr) => {
               if (error) {
-                throw new CustomError({ message: error.message }, 400);
+                throw new Error({ message: error.message }, 400);
               }
               if (stderr) {
-                throw new CustomError({ message: error.message }, 400);
+                throw new Error({ message: error.message }, 400);
               }
               req.app.get("wss").clients.forEach((client) => {
                 if (client.readyState === WebSocket.OPEN) {
@@ -148,19 +142,15 @@ const uploadFilesInput = async (req, res) => {
         }
         res.sendStatus(200);
       } catch (error) {
-        throw new CustomError("Upload error:" + error, 400);
+        throw new Error("Upload error:" + error, 400);
       }
     });
   } catch (error) {
-    if (error instanceof CustomError) {
-      process.env.NODE_ENV == "development" ? console.log(error) : null;
-      return res.status(error.statusCode).json({ message: error.message });
-    }
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-const uploadInforExecution = async (req, res) => {
+const uploadInforExecution = async (req, res, next) => {
   try {
     const { id, userName } = req.user;
     const { referenceId, referencePath, folderName } = req.body;
@@ -177,10 +167,10 @@ const uploadInforExecution = async (req, res) => {
         `chown -R ${process.env.UID}:${process.env.UID} ${_uploadPath} && chmod -R 775 ${_uploadPath}`,
         async (error, stdout, stderr) => {
           if (error) {
-            throw new CustomError({ message: error.message }, 400);
+            throw new Error({ message: error.message }, 400);
           }
           if (stderr) {
-            throw new CustomError({ message: error.message }, 400);
+            throw new Error({ message: error.message }, 400);
           }
           const newExecution = await executionService.createExecution({
             userId: id,
@@ -196,11 +186,7 @@ const uploadInforExecution = async (req, res) => {
       );
     }
   } catch (error) {
-    if (error instanceof CustomError) {
-      process.env.NODE_ENV == "development" ? console.log(error) : null;
-      return res.status(error.statusCode).json({ message: error.message });
-    }
-    return res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
